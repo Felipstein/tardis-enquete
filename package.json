@@ -1,0 +1,15 @@
+{
+  "name": "tardis-enquete",
+  "version": "0.1.0",
+  "author": "Felipstein <luisfelipe-oliveira@outlook.com.br>",
+  "license": "MIT",
+  "scripts": {
+    "preinstall": "npx only-allow yarn",
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^18.4.3",
+    "@commitlint/config-conventional": "^18.4.3",
+    "husky": "^8.0.0"
+  }
+}
