@@ -1,0 +1,6 @@
+{
+  "extends": [
+    "@felipstein/eslint-config-node",
+    "./base"
+  ]
+}

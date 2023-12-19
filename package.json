@@ -3,10 +3,15 @@
   "version": "0.1.0",
   "author": "Felipstein <luisfelipe-oliveira@outlook.com.br>",
   "license": "MIT",
+  "private": true,
   "scripts": {
     "preinstall": "npx only-allow yarn",
     "prepare": "husky install"
   },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "devDependencies": {
     "@commitlint/cli": "^18.4.3",
     "@commitlint/config-conventional": "^18.4.3",

@@ -1,0 +1,12 @@
+{
+  "name": "@tardis-enquete/eslint-config",
+  "version": "0.1.0",
+  "license": "MIT",
+  "dependencies": {
+    "@felipstein/eslint-config-node": "^1.1.2",
+    "@felipstein/eslint-config-react": "^1.1.2",
+    "eslint": "^8.56.0",
+    "eslint-plugin-next-recommended": "^1.0.3",
+    "typescript": "^5.3.3"
+  }
+}

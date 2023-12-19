@@ -1,0 +1,10 @@
+{
+  "plugins": [
+    "next-recommended"
+  ],
+  "extends": [
+    "@felipstein/eslint-config-react",
+    "plugin:next-recommended/recommended",
+    "./base"
+  ]
+}

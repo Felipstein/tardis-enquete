@@ -1,0 +1,23 @@
+{
+  "rules": {
+    "no-unused-vars": "off",
+
+    "no-shadow": "off",
+
+    "class-methods-use-this": "off",
+
+    "no-underscore-dangle": "off",
+
+    "no-promise-executor-return": "off",
+
+    "import/no-extraneous-dependencies": "off",
+
+    "import/extensions": "off",
+
+    "import/no-unresolved": "off",
+
+    "react/require-default-props": "off",
+
+    "@typescript-eslint/no-unused-vars": "error"
+  }
+}
