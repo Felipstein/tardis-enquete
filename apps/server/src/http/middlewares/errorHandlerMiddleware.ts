@@ -61,10 +61,12 @@ export function errorHandler(error: Error, req: Request, res: Response, next: Ne
     console.error('');
   }
 
+  const showDebug = process.env.NODE_ENV !== 'production' || req.user?.role === 'developer';
+
   return res.status(statusCode).json({
     name,
     message,
     statusCode,
-    debug: process.env.NODE_ENV !== 'production' ? debug : undefined,
+    debug: showDebug ? debug : undefined,
   } satisfies APIErrorResponse);
 }
