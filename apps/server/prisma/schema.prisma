@@ -13,5 +13,46 @@ model User {
   refreshToken String  @map("refresh_token")
   expiresIn    Decimal @map("expires_in")
 
+  pollsCreated Poll[]
+  votes        Vote[]
+
   @@map("users")
+}
+
+model Poll {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  createdAt   DateTime @default(now()) @map("created_at")
+  expireAt    DateTime @map("expire_at")
+  authorId    String   @map("author_id")
+
+  options Option[]
+
+  author User @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@map("polls")
+}
+
+model Option {
+  id     String @id @default(cuid())
+  text   String
+  pollId String @map("poll_id")
+
+  votes Vote[]
+
+  poll Poll @relation(fields: [pollId], references: [id], onDelete: Cascade)
+
+  @@map("options")
+}
+
+model Vote {
+  id       String @id @default(cuid())
+  optionId String @map("option_id")
+  userId   String @map("user_id")
+
+  option Option @relation(fields: [optionId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("votes")
 }
