@@ -8,6 +8,7 @@ interface UserProps {
   username: string;
   globalName: string;
   email: string;
+  avatar: string;
   auth: OmitTyped<StoredUser, 'id'>;
 }
 
@@ -26,6 +27,10 @@ export default class User extends Entity<UserProps> {
 
   get email() {
     return this.attributes.email;
+  }
+
+  get avatar() {
+    return this.attributes.avatar;
   }
 
   get auth() {
