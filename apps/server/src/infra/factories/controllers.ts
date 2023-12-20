@@ -1,9 +1,8 @@
 import OAuthController from '../../http/controllers/OAuthController';
 
-import { factoryStoredUsersRepository } from './repositories';
-import { factoryDiscordService } from './services';
+import { factoryDiscordService, factoryUserService } from './services';
 
-const oAuthController = new OAuthController(factoryDiscordService(), factoryStoredUsersRepository());
+const oAuthController = new OAuthController(factoryUserService(), factoryDiscordService());
 
 export function factoryOAuthController() {
   return oAuthController;

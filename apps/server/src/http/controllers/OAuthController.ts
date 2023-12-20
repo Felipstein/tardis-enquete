@@ -1,19 +1,17 @@
 import chalk from 'chalk';
 import { Request, Response } from 'express';
 
-import StoredUser from '../../domain/entities/StoredUser';
-import User from '../../domain/entities/User';
 import InternalServerError from '../../domain/errors/InternalServerError';
-import IStoredUsersRepository from '../../domain/repositories/StoredUsersStoredRepository';
 import DiscordService from '../../services/DiscordService';
+import UserService from '../../services/UserService';
 import { getHostURLInRequest } from '../../utils/getHostURLInRequest';
 
 import { handleDiscordCallbackQueryRequest } from './OAuthValidations';
 
 export default class OAuthController {
   constructor(
+    private readonly userService: UserService,
     private readonly discordService: DiscordService,
-    private readonly storedUsersRepository: IStoredUsersRepository,
   ) {}
 
   async redirectToDiscordOAuthURL(req: Request, res: Response) {
@@ -32,35 +30,7 @@ export default class OAuthController {
 
       const tokenInfo = await this.discordService.exchangeCodeForToken(code, redirectBaseURL);
 
-      const userInfo = await this.discordService.getUserInfo(tokenInfo.access_token);
-
-      let storedUser: StoredUser;
-
-      const userAlreadyStored = await this.storedUsersRepository.exists(userInfo.id);
-      if (userAlreadyStored) {
-        storedUser = await this.storedUsersRepository.update(userInfo.id, {
-          accessToken: tokenInfo.access_token,
-          refreshToken: tokenInfo.refresh_token,
-          expiresIn: tokenInfo.expires_in,
-        });
-      } else {
-        storedUser = await this.storedUsersRepository.create({
-          discordUserId: userInfo.id,
-          accessToken: tokenInfo.access_token,
-          refreshToken: tokenInfo.refresh_token,
-          expiresIn: tokenInfo.expires_in,
-        });
-      }
-
-      const user = new User({
-        id: storedUser.id,
-        username: userInfo.username,
-        globalName: userInfo.global_name,
-        email: userInfo.email,
-        avatar: userInfo.avatar,
-        role: storedUser.role,
-        auth: storedUser,
-      });
+      const user = await this.userService.upsert(tokenInfo);
 
       return res.json(user.toObject());
     } catch (error: unknown) {
