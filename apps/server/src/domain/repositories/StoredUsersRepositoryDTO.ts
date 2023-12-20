@@ -9,4 +9,4 @@ export interface CreateStoredUserDTO {
   expiresIn: number;
 }
 
-export type UpdateStoredUserDTO = Partial<OmitTyped<ReturnType<StoredUser['toObject']>, 'id'>>;
+export type UpdateStoredUserDTO = Partial<OmitTyped<StoredUser, 'id'>>;

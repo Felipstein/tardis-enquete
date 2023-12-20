@@ -21,3 +21,7 @@ export default class Entity<TProps extends object> {
     return Object.freeze(object);
   }
 }
+
+export type EntityProps<TEntity extends Entity<TEntityProps>, TEntityProps extends object = object> = ReturnType<
+  TEntity['toObject']
+>;
