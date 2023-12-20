@@ -1,0 +1,45 @@
+{
+  "name": "@tardis-enquete/server",
+  "version": "0.1.0",
+  "license": "MIT",
+  "scripts": {
+    "test": "cross-env NODE_ENV=test jest",
+    "test:watch": "jest --watch",
+    "dev": "cross-env NODE_ENV=development tsx watch src/http/server.ts",
+    "build": "tsup src",
+    "start": "cross-env NODE_ENV=production tsx watch dist/http/server.js"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.7.1",
+    "@tardis-enquete/contracts": "*",
+    "axios": "^1.6.2",
+    "chalk": "4.1.2",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-async-errors": "^3.1.1",
+    "express-rate-limit": "^7.1.5",
+    "helmet": "^7.1.0",
+    "module-alias": "^2.2.3",
+    "morgan": "^1.10.0",
+    "querystring": "^0.2.1",
+    "tsup": "^8.0.1",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@tardis-enquete/eslint-config": "*",
+    "@types/compression": "^1.7.5",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/jest": "^29.5.11",
+    "@types/morgan": "^1.9.9",
+    "eslint": "^8.56.0",
+    "jest": "^29.7.0",
+    "prisma": "^5.7.1",
+    "ts-jest": "^29.1.1",
+    "tsx": "^4.6.2",
+    "typescript": "^5.3.3"
+  }
+}

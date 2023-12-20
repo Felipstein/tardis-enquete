@@ -1,8 +1,14 @@
 {
   "rules": {
+    "camelcase": "off",
+
+    "no-restricted-syntax": "off",
+
     "no-unused-vars": "off",
 
     "no-shadow": "off",
+
+    "no-continue": "off",
 
     "class-methods-use-this": "off",
 

@@ -1,0 +1,3 @@
+{
+  "extends": "@tardis-enquete/eslint-config/node"
+}
