@@ -1,7 +1,7 @@
-import { OmitTyped } from '../../utils/OmitTyped';
-
 import Entity from './core/Entity';
 import StoredUser from './StoredUser';
+
+import type { OmitTyped } from '../../utils/OmitTyped';
 
 interface UserProps {
   id: string;
@@ -33,11 +33,18 @@ export default class User extends Entity<UserProps> {
   }
 
   toObject(): UserProps {
-    const object = super.toObject();
+    const originalFreezedObject = super.toObject();
+
+    const object = {
+      ...originalFreezedObject,
+      auth: {
+        ...originalFreezedObject.auth,
+      },
+    };
 
     // @ts-expect-error A propriedade id retorna dentro de auth, já que é um mero StoredUser.
     delete object.auth.id;
 
-    return object;
+    return Object.freeze(object);
   }
 }

@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 
 import StoredUser from '../../../domain/entities/StoredUser';
-import { CreateStoredUserDTO } from '../../../domain/repositories/StoredUsersRepositoryDTO';
+import { CreateStoredUserDTO, UpdateStoredUserDTO } from '../../../domain/repositories/StoredUsersRepositoryDTO';
 import IStoredUsersRepository from '../../../domain/repositories/StoredUsersStoredRepository';
 
 import PrismaStoredUserMapper from './PrismaStoredUsersMapper';
@@ -45,7 +45,16 @@ export default class PrismaStoredUsersRepository implements IStoredUsersReposito
     return PrismaStoredUserMapper.toDomain(storedUser);
   }
 
-  async update(data: StoredUser): Promise<void> {
+  async update(id: string, data: UpdateStoredUserDTO): Promise<StoredUser> {
+    const storedUser = await this.prismaClient.user.update({
+      where: { id },
+      data,
+    });
+
+    return PrismaStoredUserMapper.toDomain(storedUser);
+  }
+
+  async updateByInstance(data: StoredUser): Promise<void> {
     const { id, ...dataToUpdate } = data.toObject();
 
     await this.prismaClient.user.update({

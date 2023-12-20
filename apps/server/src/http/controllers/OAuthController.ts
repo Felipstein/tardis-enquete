@@ -1,6 +1,7 @@
 import chalk from 'chalk';
 import { Request, Response } from 'express';
 
+import StoredUser from '../../domain/entities/StoredUser';
 import User from '../../domain/entities/User';
 import InternalServerError from '../../domain/errors/InternalServerError';
 import IStoredUsersRepository from '../../domain/repositories/StoredUsersStoredRepository';
@@ -33,12 +34,23 @@ export default class OAuthController {
 
       const userInfo = await this.discordService.getUserInfo(tokenInfo.access_token);
 
-      const storedUser = await this.storedUsersRepository.create({
-        discordUserId: userInfo.id,
-        accessToken: tokenInfo.access_token,
-        refreshToken: tokenInfo.refresh_token,
-        expiresIn: tokenInfo.expires_in,
-      });
+      let storedUser: StoredUser;
+
+      const userAlreadyStored = await this.storedUsersRepository.exists(userInfo.id);
+      if (userAlreadyStored) {
+        storedUser = await this.storedUsersRepository.update(userInfo.id, {
+          accessToken: tokenInfo.access_token,
+          refreshToken: tokenInfo.refresh_token,
+          expiresIn: tokenInfo.expires_in,
+        });
+      } else {
+        storedUser = await this.storedUsersRepository.create({
+          discordUserId: userInfo.id,
+          accessToken: tokenInfo.access_token,
+          refreshToken: tokenInfo.refresh_token,
+          expiresIn: tokenInfo.expires_in,
+        });
+      }
 
       const user = new User({
         id: storedUser.id,

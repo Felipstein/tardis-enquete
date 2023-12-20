@@ -1,6 +1,6 @@
 import StoredUser from '../entities/StoredUser';
 
-import { CreateStoredUserDTO } from './StoredUsersRepositoryDTO';
+import { CreateStoredUserDTO, UpdateStoredUserDTO } from './StoredUsersRepositoryDTO';
 
 export default interface IStoredUsersRepository {
   exists(id: string): Promise<boolean>;
@@ -9,7 +9,9 @@ export default interface IStoredUsersRepository {
 
   create(data: CreateStoredUserDTO): Promise<StoredUser>;
 
-  update(data: StoredUser): Promise<void>;
+  update(id: string, data: UpdateStoredUserDTO): Promise<StoredUser>;
+
+  updateByInstance(data: StoredUser): Promise<void>;
 
   delete(id: string): Promise<void>;
 }
