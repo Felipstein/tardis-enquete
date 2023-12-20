@@ -7,11 +7,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum UserRole {
+  COMMON
+  ADMIN
+  DEVELOPER
+
+  @@map("user_roles")
+}
+
 model User {
-  id           String  @id
-  accessToken  String  @map("access_token")
-  refreshToken String  @map("refresh_token")
-  expiresIn    Decimal @map("expires_in")
+  id           String   @id
+  role         UserRole @default(COMMON)
+  accessToken  String   @map("access_token")
+  refreshToken String   @map("refresh_token")
+  expiresIn    Decimal  @map("expires_in")
 
   pollsCreated Poll[]
   votes        Vote[]
