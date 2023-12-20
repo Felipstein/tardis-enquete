@@ -10,11 +10,13 @@
 
     "no-continue": "off",
 
-    "class-methods-use-this": "off",
+    "no-use-before-define": "off",
 
     "no-underscore-dangle": "off",
 
     "no-promise-executor-return": "off",
+
+    "class-methods-use-this": "off",
 
     "import/no-extraneous-dependencies": "off",
 
