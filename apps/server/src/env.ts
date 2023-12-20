@@ -14,6 +14,9 @@ const envVariablesSchema = z.object({
 
   DISCORD_CLIENT_ID: z.string(),
   DISCORD_SECRET_KEY: z.string(),
+
+  ACCESS_TOKEN_SECRET_KEY: z.string(),
+  ACCESS_TOKEN_EXPIRES_IN: z.string(),
 });
 
 try {
