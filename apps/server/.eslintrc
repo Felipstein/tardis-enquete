@@ -2,5 +2,6 @@
   "env": {
     "jest": true
   },
-  "extends": "@tardis-enquete/eslint-config/node"
+  "extends": "@tardis-enquete/eslint-config/node",
+  "ignorePatterns": ["dist"]
 }
