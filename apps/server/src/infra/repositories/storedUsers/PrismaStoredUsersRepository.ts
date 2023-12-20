@@ -48,7 +48,10 @@ export default class PrismaStoredUsersRepository implements IStoredUsersReposito
   async update(id: string, data: UpdateStoredUserDTO): Promise<StoredUser> {
     const storedUser = await this.prismaClient.user.update({
       where: { id },
-      data,
+      data: {
+        ...data,
+        role: data.role && PrismaStoredUserMapper.roleDomainToPrisma(data.role),
+      },
     });
 
     return PrismaStoredUserMapper.toDomain(storedUser);
@@ -59,7 +62,10 @@ export default class PrismaStoredUsersRepository implements IStoredUsersReposito
 
     await this.prismaClient.user.update({
       where: { id },
-      data: dataToUpdate,
+      data: {
+        ...dataToUpdate,
+        role: PrismaStoredUserMapper.roleDomainToPrisma(dataToUpdate.role),
+      },
       select: { id: true },
     });
   }

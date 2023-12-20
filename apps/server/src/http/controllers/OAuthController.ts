@@ -58,6 +58,7 @@ export default class OAuthController {
         globalName: userInfo.global_name,
         email: userInfo.email,
         avatar: userInfo.avatar,
+        role: storedUser.role,
         auth: storedUser,
       });
 

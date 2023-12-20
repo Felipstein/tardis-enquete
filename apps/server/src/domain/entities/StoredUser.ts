@@ -1,7 +1,12 @@
 import Entity from './core/Entity';
 
+export const userRoles = ['common', 'admin', 'developer'] as const;
+
+export type UserRole = (typeof userRoles)[number];
+
 interface StoredUserProps {
   id: string;
+  role: UserRole;
   accessToken: string;
   refreshToken: string;
   expiresIn: number;
@@ -10,6 +15,14 @@ interface StoredUserProps {
 export default class StoredUser extends Entity<StoredUserProps> {
   get id() {
     return this.attributes.id;
+  }
+
+  get role() {
+    return this.attributes.role;
+  }
+
+  set role(role: UserRole) {
+    this.attributes.role = role;
   }
 
   get accessToken() {

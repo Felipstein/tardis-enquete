@@ -1,7 +1,9 @@
 import Entity from './core/Entity';
-import StoredUser from './StoredUser';
+import StoredUser, { UserRole } from './StoredUser';
 
 import type { OmitTyped } from '../../utils/OmitTyped';
+
+type StoredUserWithoutId = OmitTyped<StoredUser, 'id'>;
 
 interface UserProps {
   id: string;
@@ -9,7 +11,8 @@ interface UserProps {
   globalName: string;
   email: string;
   avatar: string;
-  auth: OmitTyped<StoredUser, 'id'>;
+  role: UserRole;
+  auth: StoredUserWithoutId;
 }
 
 export default class User extends Entity<UserProps> {
@@ -33,8 +36,20 @@ export default class User extends Entity<UserProps> {
     return this.attributes.avatar;
   }
 
+  get role() {
+    return this.attributes.auth.role;
+  }
+
+  set role(role: UserRole) {
+    this.attributes.auth.role = role;
+  }
+
   get auth() {
     return this.attributes.auth;
+  }
+
+  set auth(auth: StoredUserWithoutId) {
+    this.attributes.auth = auth;
   }
 
   toObject(): UserProps {

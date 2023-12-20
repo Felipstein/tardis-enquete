@@ -1,8 +1,9 @@
 import { OmitTyped } from '../../utils/OmitTyped';
-import StoredUser from '../entities/StoredUser';
+import StoredUser, { UserRole } from '../entities/StoredUser';
 
 export interface CreateStoredUserDTO {
   discordUserId: string;
+  role?: UserRole;
   accessToken: string;
   refreshToken: string;
   expiresIn: number;
