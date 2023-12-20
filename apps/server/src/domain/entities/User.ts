@@ -65,6 +65,9 @@ export default class User extends Entity<UserProps> {
     // @ts-expect-error A propriedade id retorna dentro de auth, já que é um mero StoredUser.
     delete object.auth.id;
 
+    // @ts-expect-error A propriedade id retorna dentro de auth, já que é um mero StoredUser.
+    delete object.auth.role;
+
     return Object.freeze(object);
   }
 }
