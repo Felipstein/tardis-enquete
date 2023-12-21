@@ -1,3 +1,4 @@
+import { discordCallbackQueryRequest } from '@tardis-enquete/contracts';
 import chalk from 'chalk';
 import { Request, Response } from 'express';
 
@@ -5,8 +6,6 @@ import InternalServerError from '../../domain/errors/InternalServerError';
 import DiscordService from '../../services/DiscordService';
 import UserService from '../../services/UserService';
 import { getHostURLInRequest } from '../../utils/getHostURLInRequest';
-
-import { handleDiscordCallbackQueryRequest } from './OAuthValidations';
 
 export default class OAuthController {
   constructor(
@@ -24,7 +23,7 @@ export default class OAuthController {
 
   async handleDiscordCallback(req: Request, res: Response) {
     try {
-      const { code } = handleDiscordCallbackQueryRequest.parse(req.query);
+      const { code } = discordCallbackQueryRequest.parse(req.query);
 
       const redirectBaseURL = getHostURLInRequest(req);
 
