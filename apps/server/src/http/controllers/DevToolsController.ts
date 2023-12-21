@@ -2,7 +2,6 @@ import {
   GenerateAccessTokenResponse,
   GetDiscordUserInfoResponse,
   generateAccessTokenBodyRequest,
-  getDiscordUserInfoHeadersRequest,
   getDiscordUserInfoParamsRequest,
 } from '@tardis-enquete/contracts';
 import { Request, Response } from 'express';
@@ -38,18 +37,9 @@ export default class DevToolsController {
   }
 
   async getDiscordUserInfo(req: Request, res: Response) {
-    const { discordUserId } = getDiscordUserInfoParamsRequest.parse(req.params);
-    const headersParsed = getDiscordUserInfoHeadersRequest.parse(req.headers);
-
-    const headers = {
-      ...req.headers,
-      ...headersParsed,
-    };
-
-    const discordToken = headers['x-discord-token'];
+    const { discordToken } = getDiscordUserInfoParamsRequest.parse(req.params);
 
     const discordUserInfo = await this.getDiscordUserInfoUseCase.execute({
-      userId: discordUserId,
       discordToken,
     });
 
