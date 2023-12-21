@@ -1,0 +1,4 @@
+# @name getDiscordUserInfo
+
+GET {{baseURL}}/dev/discord-user-info/987105916803514428
+X-Discord-Token: 987105916803514428

@@ -92,4 +92,12 @@ export default class DefaultService {
 
     return response.data;
   }
+
+  async getUserInfoByUserId(userId: string, accessToken: string) {
+    const response = await this.discordAPI.get<GetUserInfoResponse>(`/api/users/${userId}`, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+
+    return response.data;
+  }
 }
