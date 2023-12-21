@@ -1,6 +1,7 @@
 import { DiscordCallbackResponse, discordCallbackQueryRequest } from '@tardis-enquete/contracts';
 import chalk from 'chalk';
 import { Request, Response } from 'express';
+import { ZodError } from 'zod';
 
 import InternalServerError from '../../domain/errors/InternalServerError';
 import DiscordService from '../../services/DiscordService';
@@ -35,6 +36,10 @@ export default class OAuthController {
 
       return res.json(response);
     } catch (error: unknown) {
+      if (error instanceof ZodError) {
+        throw error;
+      }
+
       let errorInstance: Error;
 
       if (error instanceof Error) {
