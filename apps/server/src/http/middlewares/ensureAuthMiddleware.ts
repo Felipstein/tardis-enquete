@@ -1,13 +1,16 @@
 import { NextFunction, Request, Response } from 'express';
 
-import { userRoles } from '../../domain/entities/StoredUser';
+import { UserRole, userRoles } from '../../domain/entities/StoredUser';
 import Forbidden from '../../domain/errors/Forbidden';
 import Unauthorized from '../../domain/errors/Unauthorized';
 import { factoryTokenService } from '../../infra/factories/services';
 
 const tokenService = factoryTokenService();
 
-export function ensureAuth(authorizedRoles = userRoles) {
+export function ensureAuth(...authorizedRoles: UserRole[]) {
+  // eslint-disable-next-line no-param-reassign
+  authorizedRoles = authorizedRoles.length === 0 ? (userRoles as unknown as UserRole[]) : authorizedRoles;
+
   return async (req: Request, res: Response, next: NextFunction) => {
     const tokenHeader = req.headers.authorization;
 
