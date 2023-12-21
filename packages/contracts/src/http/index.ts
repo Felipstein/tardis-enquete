@@ -1,3 +1,4 @@
 export * from './oauth';
 export * from './polls';
-export * from './APIErrorResposne';
+export * from './APIErrorResponse';
+export * from './RouteModels';

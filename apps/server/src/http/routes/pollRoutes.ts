@@ -1,3 +1,4 @@
+import { RouteModels } from '@tardis-enquete/contracts';
 import { Router } from 'express';
 
 import { factoryPollController } from '../../infra/factories/controllers';
@@ -7,6 +8,6 @@ const route = Router();
 
 const controller = factoryPollController();
 
-route.post('/polls', ensureAuth('admin', 'developer'), controller.createPoll.bind(controller));
+route.post(RouteModels.createPoll, ensureAuth('admin', 'developer'), controller.createPoll.bind(controller));
 
 export { route as pollRoutes };
