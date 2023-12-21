@@ -7,6 +7,7 @@ export interface CreatePollDTO {
   description: string;
   expireAt: Date;
   authorId: string;
+  options: string[];
 }
 
 export type UpdatePollDTO = Partial<OmitTyped<EntityProps<Poll>, 'id' | 'createdAt' | 'authorId'>>;

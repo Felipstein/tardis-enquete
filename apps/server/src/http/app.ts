@@ -11,6 +11,7 @@ import TooManyRequests from '../domain/errors/TooManyRequests';
 
 import { errorHandler } from './middlewares/errorHandlerMiddleware';
 import { handleZodError } from './middlewares/handleZodErrorMiddleware';
+import { omitPrismaErrors } from './middlewares/omitPrismaErrorsMiddleware';
 import { routes } from './routes';
 
 const app = express();
@@ -39,6 +40,7 @@ app.use(morgan(process.env.NODE_ENV === 'development' ? 'dev' : 'combined'));
 
 app.use(routes);
 
+app.use(omitPrismaErrors);
 app.use(handleZodError);
 app.use(errorHandler);
 

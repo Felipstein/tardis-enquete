@@ -1,4 +1,4 @@
-import { createPollBodyRequest } from '@tardis-enquete/contracts';
+import { CreatePollResponse, createPollBodyRequest } from '@tardis-enquete/contracts';
 import { Request, Response } from 'express';
 
 import CreatePollUseCase from '../../domain/useCases/polls/CreatePollUseCase';
@@ -16,6 +16,10 @@ export default class PollController {
       authorId: userId,
     });
 
-    return res.status(201).json(poll.toObject());
+    const response: CreatePollResponse = {
+      pollId: poll.id,
+    };
+
+    return res.status(201).json(response);
   }
 }

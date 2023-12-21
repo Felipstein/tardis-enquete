@@ -56,7 +56,19 @@ export default class PrismaPollsRepository implements IPollsRepository {
 
   async create(data: CreatePollDTO): Promise<Poll> {
     const poll = await this.prismaClient.poll.create({
-      data,
+      data: {
+        title: data.title,
+        description: data.description,
+        expireAt: data.expireAt,
+        authorId: data.authorId,
+        options: {
+          createMany: {
+            data: data.options.map((option) => ({
+              text: option,
+            })),
+          },
+        },
+      },
     });
 
     return PrismaPollsMapper.toDomain(poll);
