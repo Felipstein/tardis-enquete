@@ -38,6 +38,10 @@ export function ensureAuth(...authorizedRoles: UserRole[]) {
       throw new Unauthorized('Não autenticado: informações inválidas.');
     }
 
+    if (payload.development && process.env.NODE_ENV !== 'development') {
+      throw new Unauthorized();
+    }
+
     if (!authorizedRoles.includes(payload.role)) {
       throw new Forbidden();
     }

@@ -1,0 +1,9 @@
+# @name generateAccessToken
+
+POST {{baseURL}}/dev/generate-token
+Content-Type: application/json
+
+{
+  "discordUserId": "fake-discord-user-id",
+  "role": "developer"
+}

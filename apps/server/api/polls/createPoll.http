@@ -1,0 +1,10 @@
+# @name createPoll
+
+POST {{baseURL}}/polls
+Content-Type: application/json
+Authorization: Bearer {{$dotenv %developerAccessToken}}
+
+{
+  "title": "Enquete Teste",
+  "description": "Apenas uma enquete teste"
+}

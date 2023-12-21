@@ -4,8 +4,10 @@ import type { UserRole } from '../domain/entities/StoredUser';
 
 type TokenType = 'access';
 
+type DefaultJwtPaylad = { development?: boolean } & jwt.JwtPayload;
+
 interface TokenPayload {
-  access: { sub: string; role: UserRole } & jwt.JwtPayload;
+  access: { sub: string; role: UserRole } & DefaultJwtPaylad;
 }
 
 const tokenAssigntures: Record<TokenType, { secretKey: string; expiresIn: string }> = {
@@ -24,10 +26,16 @@ type InvalidOrExpiredVerifyPayload<TPayload extends object> = {
 
 type VerifyPayload<TPayload extends object> = ValidVerifyPayload<TPayload> | InvalidOrExpiredVerifyPayload<TPayload>;
 
+type TokenCustomSettings = {
+  expiresIn?: string;
+  developmentMode?: boolean;
+};
+
 export default class TokenService {
   async sign<TTokenType extends TokenType, TPayload extends TokenPayload[TTokenType]>(
     secret: TTokenType,
     payload: TPayload,
+    customSettings?: TokenCustomSettings,
   ) {
     const tokenAssignture = tokenAssigntures[secret];
 
@@ -37,7 +45,13 @@ export default class TokenService {
 
     const { secretKey, expiresIn } = tokenAssignture;
 
-    return jwt.sign(payload, secretKey, { expiresIn });
+    const finalPayload = payload;
+
+    if (customSettings?.developmentMode) {
+      finalPayload.development = true;
+    }
+
+    return jwt.sign(finalPayload, secretKey, { expiresIn: customSettings?.expiresIn || expiresIn });
   }
 
   async verify<TTokenType extends TokenType>(
