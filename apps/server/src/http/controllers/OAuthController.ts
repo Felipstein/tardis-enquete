@@ -1,4 +1,4 @@
-import { discordCallbackQueryRequest } from '@tardis-enquete/contracts';
+import { DiscordCallbackResponse, discordCallbackQueryRequest } from '@tardis-enquete/contracts';
 import chalk from 'chalk';
 import { Request, Response } from 'express';
 
@@ -31,7 +31,9 @@ export default class OAuthController {
 
       const user = await this.userService.upsert(tokenInfo);
 
-      return res.json(user.toObject());
+      const response: DiscordCallbackResponse = user.toObject();
+
+      return res.json(response);
     } catch (error: unknown) {
       let errorInstance: Error;
 
