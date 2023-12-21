@@ -1,0 +1,23 @@
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit",
+    "source.fixAll.eslint": "always"
+  },
+  "[prisma]": {
+    "editor.formatOnSave": true
+  },
+  "rest-client.environmentVariables": {
+    "local": {
+      "baseURL": "http://localhost:3333",
+      "userAccessToken": "TEST_USER_ACCESS_TOKEN",
+      "adminAccessToken": "TEST_ADMIN_ACCESS_TOKEN",
+      "developerAccessToken": "TEST_DEVELOPER_ACCESS_TOKEN"
+    },
+    "production": {
+      "baseURL": "https://",
+      "userAccessToken": "TEST_USER_ACCESS_TOKEN",
+      "adminAccessToken": "TEST_ADMIN_ACCESS_TOKEN",
+      "developerAccessToken": "TEST_DEVELOPER_ACCESS_TOKEN"
+    }
+  }
+}
