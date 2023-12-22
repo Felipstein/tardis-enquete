@@ -6,7 +6,7 @@ export interface CreateStoredUserDTO {
   role?: UserRole;
   accessToken: string;
   refreshToken: string;
-  expiresIn: number;
+  expiresIn: Date;
 }
 
 export type UpdateStoredUserDTO = Partial<OmitTyped<StoredUser, 'id'>>;

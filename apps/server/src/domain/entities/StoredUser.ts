@@ -9,7 +9,7 @@ interface StoredUserProps {
   role: UserRole;
   accessToken: string;
   refreshToken: string;
-  expiresIn: number;
+  expiresIn: Date;
 }
 
 export default class StoredUser extends Entity<StoredUserProps> {
@@ -45,7 +45,7 @@ export default class StoredUser extends Entity<StoredUserProps> {
     return this.attributes.expiresIn;
   }
 
-  set expiresIn(expiresIn: number) {
+  set expiresIn(expiresIn: Date) {
     this.attributes.expiresIn = expiresIn;
   }
 }

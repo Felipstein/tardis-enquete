@@ -13,6 +13,6 @@ export interface User {
     role: UserRole;
     accessToken: string;
     refreshToken: string;
-    expiresIn: number;
+    expiresIn: Date;
   };
 }

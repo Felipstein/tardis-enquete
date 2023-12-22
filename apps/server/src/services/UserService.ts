@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 import StoredUser from '../domain/entities/StoredUser';
 import User from '../domain/entities/User';
 import IStoredUsersRepository from '../domain/repositories/StoredUsersStoredRepository';
@@ -36,19 +38,21 @@ export default class UserService {
 
     let storedUser: StoredUser;
 
+    const expiresInToDate = moment(new Date()).add(tokenInfo.expires_in, 'seconds').toDate();
+
     const userAlreadyStored = await this.storedUsersRepository.exists(userInfo.id);
     if (userAlreadyStored) {
       storedUser = await this.storedUsersRepository.update(userInfo.id, {
         accessToken: tokenInfo.access_token,
         refreshToken: tokenInfo.refresh_token,
-        expiresIn: tokenInfo.expires_in,
+        expiresIn: expiresInToDate,
       });
     } else {
       storedUser = await this.storedUsersRepository.create({
         discordUserId: userInfo.id,
         accessToken: tokenInfo.access_token,
         refreshToken: tokenInfo.refresh_token,
-        expiresIn: tokenInfo.expires_in,
+        expiresIn: expiresInToDate,
       });
     }
 

@@ -9,7 +9,7 @@ export default class PrismaStoredUserMapper {
       role: this.rolePrismaToDomain(prismaStoredUser.role),
       accessToken: prismaStoredUser.accessToken,
       refreshToken: prismaStoredUser.refreshToken,
-      expiresIn: prismaStoredUser.expiresIn.toNumber(),
+      expiresIn: prismaStoredUser.expiresIn,
     });
   }
 

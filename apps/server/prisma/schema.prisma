@@ -20,7 +20,7 @@ model User {
   role         UserRole @default(COMMON)
   accessToken  String   @map("access_token")
   refreshToken String   @map("refresh_token")
-  expiresIn    Decimal  @map("expires_in")
+  expiresIn    DateTime @map("expires_in")
 
   pollsCreated Poll[]
   votes        Vote[]
