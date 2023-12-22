@@ -5,6 +5,7 @@ import { ZodError } from 'zod';
 
 import InternalServerError from '../../domain/errors/InternalServerError';
 import DiscordService from '../../services/DiscordService';
+import TokenService from '../../services/TokenService';
 import UserService from '../../services/UserService';
 import { getHostURLInRequest } from '../../utils/getHostURLInRequest';
 
@@ -12,6 +13,7 @@ export default class OAuthController {
   constructor(
     private readonly userService: UserService,
     private readonly discordService: DiscordService,
+    private readonly tokenService: TokenService,
   ) {}
 
   async redirectToDiscordOAuthURL(req: Request, res: Response) {
@@ -32,7 +34,12 @@ export default class OAuthController {
 
       const user = await this.userService.upsert(tokenInfo);
 
-      const response: DiscordCallbackResponse = user.toObject();
+      const token = await this.tokenService.sign('access', { role: user.role, sub: user.id });
+
+      const response: DiscordCallbackResponse = {
+        user: user.toObject(),
+        token,
+      };
 
       return res.json(response);
     } catch (error: unknown) {

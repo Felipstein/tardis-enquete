@@ -8,4 +8,7 @@ export const discordCallbackQueryRequest = z.object({
 
 export type DiscordCallbackQueryRequest = z.infer<typeof discordCallbackQueryRequest>;
 
-export type DiscordCallbackResponse = User;
+export type DiscordCallbackResponse = {
+  user: User;
+  token: string;
+};
