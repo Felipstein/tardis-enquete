@@ -4,6 +4,7 @@ POST {{baseURL}}/dev/generate-token
 Content-Type: application/json
 
 {
-  "discordUserId": "fake-discord-user-id",
-  "role": "developer"
+  "discordUserId": "987105916803514428",
+  "role": "common",
+  "expiresIn": "99d"
 }
