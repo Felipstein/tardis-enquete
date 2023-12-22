@@ -3,5 +3,6 @@ export const RouteModels = {
   devGetDiscordUserInfo: '/dev/discord-user-info/:discordToken',
   authDiscordLogin: '/auth/discord/login',
   authDiscordCallback: '/auth/discord/callback',
+  getPolls: '/polls',
   createPoll: '/polls',
 };

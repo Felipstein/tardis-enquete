@@ -54,6 +54,12 @@ export default class PrismaPollsRepository implements IPollsRepository {
     return pollsPopuled;
   }
 
+  async countTotalPollsOfUserId(userId: string): Promise<number> {
+    const totalPolls = await this.prismaClient.poll.count({ where: { authorId: userId } });
+
+    return totalPolls;
+  }
+
   async create(data: CreatePollDTO): Promise<Poll> {
     const poll = await this.prismaClient.poll.create({
       data: {

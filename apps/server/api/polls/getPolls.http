@@ -1,0 +1,4 @@
+# @name getPolls
+
+GET {{baseURL}}/polls
+Authorization: Bearer {{$dotenv %userAccessToken}}
