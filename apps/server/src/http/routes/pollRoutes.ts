@@ -12,4 +12,6 @@ route.get(RouteModels.getPolls, ensureAuth(), controller.findPolls.bind(controll
 
 route.post(RouteModels.createPoll, ensureAuth('admin', 'developer'), controller.createPoll.bind(controller));
 
+route.delete(RouteModels.deletePoll, ensureAuth('admin', 'developer'), controller.deletePoll.bind(controller));
+
 export { route as pollRoutes };

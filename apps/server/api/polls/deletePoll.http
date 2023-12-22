@@ -1,0 +1,4 @@
+# @name deletePoll
+
+DELETE {{baseURL}}/polls/clqfwp8460001pqcxcjde1ncz
+Authorization: Bearer {{$dotenv %adminAccessToken}}

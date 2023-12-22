@@ -4,7 +4,7 @@ import PollController from '../../http/controllers/PollController';
 
 import { factoryDiscordService, factoryUserService } from './services';
 import { factoryGenerateAccessTokenUseCase, factoryGetDiscordUserInfoUseCase } from './useCases/devToolsUseCase';
-import { factoryCreatePollUseCase, factoryFindPollsUseCase } from './useCases/pollsUseCase';
+import { factoryCreatePollUseCase, factoryDeletePollUseCase, factoryFindPollsUseCase } from './useCases/pollsUseCase';
 
 const devToolsController = new DevToolsController(
   factoryGenerateAccessTokenUseCase(),
@@ -21,7 +21,11 @@ export function factoryOAuthController() {
   return oAuthController;
 }
 
-const pollController = new PollController(factoryFindPollsUseCase(), factoryCreatePollUseCase());
+const pollController = new PollController(
+  factoryFindPollsUseCase(),
+  factoryCreatePollUseCase(),
+  factoryDeletePollUseCase(),
+);
 
 export function factoryPollController() {
   return pollController;
