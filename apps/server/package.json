@@ -7,7 +7,10 @@
     "test:watch": "jest --watch",
     "dev": "cross-env NODE_ENV=development tsx watch src/http/server.ts",
     "build": "tsup src",
-    "start": "cross-env NODE_ENV=production tsx watch dist/http/server.js"
+    "start": "cross-env NODE_ENV=production tsx watch dist/http/server.js",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint --ext .ts src",
+    "lint:fix": "eslint --ext .ts src --fix"
   },
   "dependencies": {
     "@prisma/client": "^5.7.1",
