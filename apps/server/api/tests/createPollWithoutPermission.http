@@ -1,0 +1,17 @@
+# @name commonTokenGenerate
+
+POST {{baseURL}}/dev/generate-token
+Content-Type: application/json
+
+{
+  "discordUserId": "fake-user",
+  "role": "common"
+}
+
+################
+
+# @name tryCreatePoll
+
+POST {{baseURL}}/polls
+Content-Type: application/json
+Authorization: Bearer {{commonTokenGenerate.response.body.token}}
