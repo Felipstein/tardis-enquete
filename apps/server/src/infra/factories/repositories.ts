@@ -1,7 +1,11 @@
+import IOptionsRepository from '../../domain/repositories/OptionsRepository';
 import IPollsRepository from '../../domain/repositories/PollsRepository';
 import IStoredUsersRepository from '../../domain/repositories/StoredUsersStoredRepository';
+import IVotesRepository from '../../domain/repositories/VotesRepository';
+import PrismaOptionsRepository from '../repositories/options/PrismaOptionsRepository';
 import PrismaPollsRepository from '../repositories/polls/PrismaPollsRepository';
 import PrismaStoredUsersRepository from '../repositories/storedUsers/PrismaStoredUsersRepository';
+import PrismaVotesRepository from '../repositories/votes/PrismaVotesRepository.';
 
 import { factoryPrismaClient } from './prismaClient';
 
@@ -15,4 +19,16 @@ const pollsRepository: IPollsRepository = new PrismaPollsRepository(factoryPrism
 
 export function factoryPollsRepository() {
   return pollsRepository;
+}
+
+const optionsRepository: IOptionsRepository = new PrismaOptionsRepository(factoryPrismaClient());
+
+export function factoryOptionsRepository() {
+  return optionsRepository;
+}
+
+const votesRepository: IVotesRepository = new PrismaVotesRepository(factoryPrismaClient());
+
+export function factoryVotesRepository() {
+  return votesRepository;
 }

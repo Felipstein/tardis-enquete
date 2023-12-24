@@ -54,6 +54,16 @@ export default class PrismaPollsRepository implements IPollsRepository {
     return pollsPopuled;
   }
 
+  async findPollThatContainsOption(optionId: string): Promise<Poll | null> {
+    const poll = await this.prismaClient.poll.findFirst({ where: { options: { some: { id: optionId } } } });
+
+    if (!poll) {
+      return null;
+    }
+
+    return PrismaPollsMapper.toDomain(poll);
+  }
+
   async countTotalPollsOfUserId(userId: string): Promise<number> {
     const totalPolls = await this.prismaClient.poll.count({ where: { authorId: userId } });
 

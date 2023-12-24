@@ -1,10 +1,12 @@
 import DevToolsController from '../../http/controllers/DevToolsController';
 import OAuthController from '../../http/controllers/OAuthController';
 import PollController from '../../http/controllers/PollController';
+import VoteController from '../../http/controllers/VoteController';
 
 import { factoryDiscordService, factoryTokenService, factoryUserService } from './services';
 import { factoryGenerateAccessTokenUseCase, factoryGetDiscordUserInfoUseCase } from './useCases/devToolsUseCase';
 import { factoryCreatePollUseCase, factoryDeletePollUseCase, factoryFindPollsUseCase } from './useCases/pollsUseCase';
+import { factoryUnvoteUseCase, factoryVoteUseCase } from './useCases/votesUseCase';
 
 const devToolsController = new DevToolsController(
   factoryGenerateAccessTokenUseCase(),
@@ -29,4 +31,10 @@ const pollController = new PollController(
 
 export function factoryPollController() {
   return pollController;
+}
+
+const voteController = new VoteController(factoryVoteUseCase(), factoryUnvoteUseCase());
+
+export function factoryVoteController() {
+  return voteController;
 }

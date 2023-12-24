@@ -6,4 +6,6 @@ export const RouteModels = {
   getPolls: '/polls',
   createPoll: '/polls',
   deletePoll: '/polls/:pollId',
+  vote: '/options/:optionId/votes',
+  unvote: '/votes/:voteId',
 };
