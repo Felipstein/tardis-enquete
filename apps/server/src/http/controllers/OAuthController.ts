@@ -1,9 +1,15 @@
-import { DiscordCallbackResponse, discordCallbackQueryRequest } from '@tardis-enquete/contracts';
+import {
+  DiscordCallbackResponse,
+  VerifyTokenResponse,
+  discordCallbackQueryRequest,
+  verifyTokenQueryRequest,
+} from '@tardis-enquete/contracts';
 import chalk from 'chalk';
 import { Request, Response } from 'express';
 import { ZodError } from 'zod';
 
 import InternalServerError from '../../domain/errors/InternalServerError';
+import Unauthorized from '../../domain/errors/Unauthorized';
 import DiscordService from '../../services/DiscordService';
 import TokenService from '../../services/TokenService';
 import UserService from '../../services/UserService';
@@ -65,5 +71,37 @@ export default class OAuthController {
         errorInstance,
       );
     }
+  }
+
+  async verifyToken(req: Request, res: Response) {
+    const { t: token } = verifyTokenQueryRequest.parse(req.query);
+
+    const { status, payload } = await this.tokenService.verify('access', token);
+
+    if (status === 'expired') {
+      throw new Unauthorized('Não autenticado: sua sessão expirou.');
+    }
+
+    if (status === 'invalid' || status !== 'valid') {
+      throw new Unauthorized('Não autenticado: informações inválidas.');
+    }
+
+    if (payload.development && process.env.NODE_ENV !== 'development') {
+      throw new Unauthorized();
+    }
+
+    const { sub: userId } = payload;
+
+    const user = await this.userService.findById(userId);
+
+    if (!user) {
+      throw new Unauthorized('Usuário não encontrado');
+    }
+
+    const response: VerifyTokenResponse = {
+      user: user.toObject(),
+    };
+
+    return res.json(response);
   }
 }

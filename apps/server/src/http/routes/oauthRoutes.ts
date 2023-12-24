@@ -11,4 +11,6 @@ route.get(RouteModels.authDiscordLogin, controller.redirectToDiscordOAuthURL.bin
 
 route.get(RouteModels.authDiscordCallback, controller.handleDiscordCallback.bind(controller));
 
+route.get(RouteModels.authVerifyToken, controller.verifyToken.bind(controller));
+
 export { route as oauthRoutes };
