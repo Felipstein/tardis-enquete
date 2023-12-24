@@ -1,0 +1,4 @@
+# @name vote
+
+POST {{baseURL}}/options/clqjwcy1o00045uylld1vdrmy/votes
+Authorization: Bearer {{$dotenv %userAccessToken}}

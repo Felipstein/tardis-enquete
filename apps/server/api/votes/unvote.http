@@ -1,0 +1,4 @@
+# @name unvote
+
+DELETE {{baseURL}}/votes/clqjwge6r00085uylpv76x8d4
+Authorization: Bearer {{$dotenv %userAccessToken}}
