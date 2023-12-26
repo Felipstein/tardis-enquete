@@ -12,6 +12,7 @@
     "@hookform/resolvers": "^3.3.2",
     "@radix-ui/react-slot": "^1.0.2",
     "@tanstack/react-query": "^5.14.6",
+    "@tanstack/react-query-devtools": "^5.15.0",
     "@tardis-enquete/contracts": "*",
     "axios": "^1.6.2",
     "clsx": "^2.0.0",

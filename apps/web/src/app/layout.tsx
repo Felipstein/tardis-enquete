@@ -1,11 +1,15 @@
 import './globals.css';
 
+import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Inter } from 'next/font/google';
 
 import { Providers } from './providers';
 
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
+
+import { queryClient } from '@/libs/queryClient';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -18,9 +22,15 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body
-        className={`scrollbar-thin scrollbar-track-primary-800 scrollbar-thumb-primary-500/60 scrollbar-thumb-rounded-full bg-gradient-to-br from-[#1E293B] to-[#0F172A] bg-fixed text-white ${inter.className}`}
+        className={`bg-gradient-to-br from-[#1E293B] to-[#0F172A] bg-fixed text-white scrollbar-thin scrollbar-track-primary-800 scrollbar-thumb-primary-500/60 scrollbar-thumb-rounded-full ${inter.className}`}
       >
-        <Providers>{children}</Providers>
+        <Providers>
+          <HydrationBoundary state={dehydrate(queryClient)}>
+            {children}
+
+            <ReactQueryDevtools />
+          </HydrationBoundary>
+        </Providers>
       </body>
     </html>
   );
