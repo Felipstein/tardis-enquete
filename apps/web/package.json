@@ -10,12 +10,14 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.2",
+    "@radix-ui/react-dropdown-menu": "^2.0.6",
     "@radix-ui/react-slot": "^1.0.2",
     "@tanstack/react-query": "^5.14.6",
     "@tanstack/react-query-devtools": "^5.15.0",
     "@tardis-enquete/contracts": "*",
     "axios": "^1.6.2",
     "clsx": "^2.0.0",
+    "js-cookie": "^3.0.5",
     "lucide-react": "^0.302.0",
     "moment": "^2.29.4",
     "next": "14.0.4",
@@ -28,6 +30,7 @@
   },
   "devDependencies": {
     "@tardis-enquete/eslint-config": "*",
+    "@types/js-cookie": "^3.0.6",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
