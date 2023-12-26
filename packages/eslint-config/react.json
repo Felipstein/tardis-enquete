@@ -6,5 +6,10 @@
     "@felipstein/eslint-config-react",
     "plugin:next-recommended/recommended",
     "./base"
-  ]
+  ],
+  "rules": {
+    "next-recommended/export-server-actions-only": "off",
+
+    "jsx-a11y/control-has-associated-label": "off"
+  }
 }
