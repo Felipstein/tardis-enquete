@@ -1,7 +1,7 @@
 import {
-  DiscordCallbackResponse,
   GetDiscordOAuthURLResponse,
   VerifyTokenResponse,
+  cookieKeys,
   discordCallbackQueryRequest,
   verifyTokenQueryRequest,
 } from '@tardis-enquete/contracts';
@@ -14,6 +14,7 @@ import Unauthorized from '../../domain/errors/Unauthorized';
 import DiscordService from '../../services/DiscordService';
 import TokenService from '../../services/TokenService';
 import UserService from '../../services/UserService';
+import { getClientURLInRequest } from '../../utils/getClientURLInRequest';
 import { getHostURLInRequest } from '../../utils/getHostURLInRequest';
 
 export default class OAuthController {
@@ -40,6 +41,7 @@ export default class OAuthController {
       const { code } = discordCallbackQueryRequest.parse(req.query);
 
       const redirectBaseURL = getHostURLInRequest(req);
+      const clientBaseURL = getClientURLInRequest(req);
 
       const tokenInfo = await this.discordService.exchangeCodeForToken(code, redirectBaseURL);
 
@@ -47,12 +49,9 @@ export default class OAuthController {
 
       const token = await this.tokenService.sign('access', { role: user.role, sub: user.id });
 
-      const response: DiscordCallbackResponse = {
-        user: user.toObject(),
-        token,
-      };
+      res.cookie(cookieKeys.accessToken, token, { httpOnly: true, secure: true });
 
-      return res.json(response);
+      return res.redirect(`${clientBaseURL}/`);
     } catch (error: unknown) {
       if (error instanceof ZodError) {
         throw error;
