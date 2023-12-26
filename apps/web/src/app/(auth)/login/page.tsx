@@ -5,7 +5,7 @@ import { DiscordLoginButton } from './components/DiscordLoginButton';
 import { Footer } from '@/app/components/Footer';
 import { LogoImage } from '@/app/components/LogoImage';
 
-export default function LoginPage() {
+export default async function LoginPage() {
   return (
     <div className="flex h-full flex-col">
       <main className="flex flex-1 flex-col items-center justify-center gap-16">
@@ -28,7 +28,7 @@ export default function LoginPage() {
           <p className="block sm:hidden">Conecte-se pelo Discord.</p>
           <p className="hidden sm:block">Conecte-se com sua conta do Discord para continuar.</p>
 
-          <DiscordLoginButton className="mt-2 w-[90vw] sm:w-full" />
+          <DiscordLoginButton />
         </div>
       </main>
 

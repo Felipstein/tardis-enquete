@@ -9,11 +9,11 @@ import type { OmitTyped } from '@/utils/OmitTyped';
 
 import { w } from '@/utils/w';
 
-export type ButtonVariant = 'clean' | 'primary';
+export type ButtonVariant = 'clean' | 'primary' | 'danger';
 
 export type ButtonProps = OmitTyped<ComponentProps<'button'>, 'onClick' | 'disabled'> & {
   variant?: ButtonVariant;
-  onClick?: (event: MouseEvent<HTMLButtonElement>) => Promise<void> | void;
+  onClick?: (event: MouseEvent<HTMLButtonElement>) => Promise<any> | any;
   isDisabled?: boolean;
   isLoading?: boolean;
   asChild?: boolean;
@@ -63,10 +63,12 @@ export function Button({
       type={type}
       disabled={isDisabled || isLoading}
       className={w(
-        'flex items-center justify-center gap-2 rounded-md px-3 py-2',
+        'flex cursor-pointer items-center justify-center gap-2 rounded-md px-3 py-2 disabled:pointer-events-none disabled:opacity-40',
         {
-          'bg-gradient-to-br from-blue-600 to-blue-400 text-white shadow-md shadow-blue-950 transition-all hover:shadow-lg hover:shadow-blue-700/40 hover:brightness-110':
+          'bg-gradient-to-br from-blue-500 to-blue-400 text-white shadow-md shadow-blue-950 transition-all hover:shadow-lg hover:shadow-blue-700/40 hover:brightness-110':
             variant === 'primary',
+          'bg-gradient-to-br from-red-500 to-red-400 text-white shadow-md shadow-red-950 transition-all hover:shadow-lg hover:shadow-red-700/40 hover:brightness-110':
+            variant === 'danger',
         },
         className,
       )}
@@ -75,7 +77,7 @@ export function Button({
     >
       {asChild ? (
         <Comp>
-          <div>
+          <div className={w((isDisabled || isLoading) && 'pointer-events-none opacity-40')}>
             {Icon && <Icon className="h-5 w-5" />}
 
             {children}

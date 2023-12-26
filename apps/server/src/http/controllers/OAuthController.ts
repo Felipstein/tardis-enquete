@@ -1,5 +1,6 @@
 import {
   DiscordCallbackResponse,
+  GetDiscordOAuthURLResponse,
   VerifyTokenResponse,
   discordCallbackQueryRequest,
   verifyTokenQueryRequest,
@@ -22,12 +23,16 @@ export default class OAuthController {
     private readonly tokenService: TokenService,
   ) {}
 
-  async redirectToDiscordOAuthURL(req: Request, res: Response) {
+  async getDiscordOAuthURL(req: Request, res: Response) {
     const redirectBaseURL = getHostURLInRequest(req);
 
     const url = this.discordService.getConsentOAuthURL(redirectBaseURL);
 
-    return res.redirect(url);
+    const response: GetDiscordOAuthURLResponse = {
+      redirectURL: url,
+    };
+
+    return res.json(response);
   }
 
   async handleDiscordCallback(req: Request, res: Response) {
