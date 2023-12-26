@@ -10,7 +10,7 @@ export default function HomePage() {
   }
 
   return (
-    <div>
+    <div className="flex h-full items-center justify-center">
       <h1>Home Page</h1>
     </div>
   );
