@@ -1,11 +1,19 @@
+import { redirect } from 'next/navigation';
 import Balancer from 'react-wrap-balancer';
 
 import { DiscordLoginButton } from './components/DiscordLoginButton';
 
 import { Footer } from '@/app/components/Footer';
 import { LogoImage } from '@/app/components/LogoImage';
+import { getAccessTokenServerSide } from '@/utils/getAccessTokenServerSide';
 
-export default async function LoginPage() {
+export default function LoginPage() {
+  const accessToken = getAccessTokenServerSide();
+
+  if (accessToken) {
+    return redirect('/');
+  }
+
   return (
     <div className="flex h-full flex-col">
       <main className="flex flex-1 flex-col items-center justify-center gap-16">

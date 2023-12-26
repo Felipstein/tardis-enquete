@@ -1,3 +1,3 @@
 export const cookieKeys = {
-  accessToken: 'tardis-enquete:access-token',
+  accessToken: 'tardis-enquete.access-token',
 };
