@@ -6,6 +6,8 @@ import { useMemo } from 'react';
 
 import type { User } from '@tardis-enquete/contracts';
 
+import { queryKeys } from '@/config/queryKeys';
+
 type UserPayloadAuthenticated = {
   status: 'authenticated';
   user: User;
@@ -32,7 +34,7 @@ export function useUser<TRequireAuthenticated extends boolean>(requireAuthentica
   const { push } = useRouter();
 
   const { data: user = null, isLoading } = useQuery<User | null>({
-    queryKey: ['me'],
+    queryKey: queryKeys.me(),
     queryFn: () =>
       fetch('/api/me')
         .then((response) => response.json())

@@ -6,6 +6,7 @@ import { useMemo } from 'react';
 
 import { Button } from '@/app/components/common/Button';
 import { Discord } from '@/app/components/icons/Discord';
+import { queryKeys } from '@/config/queryKeys';
 import { authService } from '@/services/api/authService';
 
 export function DiscordLoginButton() {
@@ -15,7 +16,7 @@ export function DiscordLoginButton() {
     error: errorOnLoadRedirectURL,
     refetch: refetchRedirectURL,
   } = useQuery({
-    queryKey: ['discordOAuthURL'],
+    queryKey: queryKeys.discordOAuthURL(),
     queryFn: authService.getDiscordOAuthURL,
   });
 
