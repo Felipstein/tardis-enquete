@@ -7,7 +7,7 @@ const route = Router();
 
 const controller = factoryOAuthController();
 
-route.get(RouteModels.authDiscordLogin, controller.redirectToDiscordOAuthURL.bind(controller));
+route.get(RouteModels.authDiscordLogin, controller.getDiscordOAuthURL.bind(controller));
 
 route.get(RouteModels.authDiscordCallback, controller.handleDiscordCallback.bind(controller));
 

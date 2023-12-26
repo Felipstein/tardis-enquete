@@ -40,7 +40,7 @@ export function DiscordLoginButton() {
           icon={RefreshCw}
           variant="danger"
           className="mt-1 w-[90vw] sm:w-full"
-          onClick={() => refetchRedirectURL}
+          onClick={() => refetchRedirectURL()}
         >
           Tentar Novamente
         </Button>

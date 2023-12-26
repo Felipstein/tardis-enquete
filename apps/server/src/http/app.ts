@@ -1,5 +1,6 @@
 import 'express-async-errors';
 
+import { apiErrorHeader } from '@tardis-enquete/contracts';
 import compression from 'compression';
 import cors from 'cors';
 import express from 'express';
@@ -22,6 +23,7 @@ app.use(helmet());
 
 app.use(
   cors({
+    exposedHeaders: [apiErrorHeader],
     origin: process.env.ORIGIN,
   }),
 );

@@ -1,4 +1,4 @@
-import { APIErrorResponse } from '@tardis-enquete/contracts';
+import { APIErrorResponse, apiErrorHeader } from '@tardis-enquete/contracts';
 import { AxiosError } from 'axios';
 import chalk from 'chalk';
 import { NextFunction, Request, Response } from 'express';
@@ -62,6 +62,8 @@ export function errorHandler(error: Error, req: Request, res: Response, next: Ne
   }
 
   const showDebug = process.env.NODE_ENV !== 'production' || req.user?.role === 'developer';
+
+  res.setHeader(apiErrorHeader, 'true');
 
   return res.status(statusCode).json({
     name,
