@@ -19,7 +19,7 @@
     "clsx": "^2.0.0",
     "js-cookie": "^3.0.5",
     "lucide-react": "^0.302.0",
-    "moment": "^2.29.4",
+    "moment": "^2.30.0",
     "next": "14.0.4",
     "react": "^18",
     "react-dom": "^18",
@@ -31,6 +31,7 @@
   "devDependencies": {
     "@tardis-enquete/eslint-config": "*",
     "@types/js-cookie": "^3.0.6",
+    "@types/moment": "^2.13.0",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

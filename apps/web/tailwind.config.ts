@@ -21,6 +21,14 @@ const config: Config = {
           900: '#152029',
         },
       },
+      backgroundImage: {
+        'selected-gradient-progress-bar': 'linear-gradient(to bottom right, #80B7FB, #5EEAD4)',
+        'selected-gradient-progress-background': 'linear-gradient(to bottom right, #264264, #115E59)',
+        'selected-gradient-background': 'linear-gradient(to right, #4674B7, #063131)',
+      },
+      boxShadow: {
+        selected: '0 4px 6px rgba(57, 165, 152, 0.25)',
+      },
     },
   },
   plugins: [require('tailwind-scrollbar')({ nocompatible: true })],
