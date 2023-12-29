@@ -22,6 +22,7 @@ const config: Config = {
         },
       },
       backgroundImage: {
+        'app-background': 'linear-gradient(to bottom right, #1E293B, #0F172A)',
         'selected-gradient-progress-bar': 'linear-gradient(to bottom right, #80B7FB, #5EEAD4)',
         'selected-gradient-progress-background': 'linear-gradient(to bottom right, #264264, #115E59)',
         'selected-gradient-background': 'linear-gradient(to right, #4674B7, #063131)',
