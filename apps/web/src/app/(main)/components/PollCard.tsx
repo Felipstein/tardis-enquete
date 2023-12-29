@@ -3,6 +3,7 @@
 import { PollTimeline } from '@tardis-enquete/contracts';
 import { Clock10 } from 'lucide-react';
 import { useMemo } from 'react';
+import Balancer from 'react-wrap-balancer';
 
 import { Option } from './Option';
 
@@ -60,6 +61,10 @@ export function PollCard({ poll }: PollCardProps) {
           </div>
         </div>
       </header>
+
+      <p className="text-sm leading-relaxed tracking-wide text-primary-300">
+        <Balancer>{poll.description}</Balancer>
+      </p>
 
       <ul className="space-y-3.5">
         {poll.options.map((option) => {
