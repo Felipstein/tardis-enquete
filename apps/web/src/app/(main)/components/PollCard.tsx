@@ -30,7 +30,7 @@ export function PollCard({ poll }: PollCardProps) {
   // const canEdit = isAuthor || user?.role !== 'common';
 
   return (
-    <div className="w-full space-y-8">
+    <div className="w-full space-y-6">
       <header className="w-full">
         <h2 className="truncate text-xl font-semibold tracking-wide">{poll.title}</h2>
 

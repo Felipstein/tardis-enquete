@@ -59,12 +59,24 @@ export function PollsList() {
   }
 
   return (
-    <ul className="mx-4 flex w-full flex-col gap-16 sm:mx-auto sm:w-[471px]">
-      {polls.map((poll) => (
-        <li key={poll.id} className="w-full">
-          <PollCard poll={poll} />
-        </li>
-      ))}
+    <ul className="mx-4 flex w-full flex-col gap-12 sm:mx-auto sm:w-[471px]">
+      {polls.map((poll, index) => {
+        const isLast = index === polls.length - 1;
+
+        return (
+          <>
+            <li key={poll.id} className="w-full">
+              <PollCard poll={poll} />
+            </li>
+
+            {!isLast && (
+              <li key={poll.id} className="w-full">
+                <div className="h-px rounded-full bg-primary-700/50" />
+              </li>
+            )}
+          </>
+        );
+      })}
     </ul>
   );
 }
