@@ -5,8 +5,8 @@ Content-Type: application/json
 Authorization: Bearer {{$dotenv %developerAccessToken}}
 
 {
-  "title": "Enquete Teste",
-  "description": "Apenas uma enquete teste",
-  "expireAt": "2023-12-26T12:00:00Z",
-  "options": ["Começar os jogos amanhã", "Começar os jogos depois de amanhã", "Nunca começar os jogos"]
+  "title": "TTA: Pior membro do Servidor",
+  "description": "A The TARDIS Awards começou, você está preparado? Vote abaixo para a categoria \"Pior membro do Servidor\"",
+  "expireAt": "2024-04-26T12:00:00Z",
+  "options": ["Far", "FarRed", "FarBlue", "Sergio", "Todas as opções acima"]
 }
