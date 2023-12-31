@@ -1,5 +1,6 @@
 import { UserInfo } from '../UserInfo';
 
+import { SearchInput } from '@/app/components/common/SearchInput';
 import { LogoImage } from '@/app/components/LogoImage';
 
 export function HeaderContent() {
@@ -9,6 +10,10 @@ export function HeaderContent() {
         <LogoImage width={42} height={42} />
 
         <h1 className="text-xl font-bold uppercase tracking-wide text-primary-50">TARDIS</h1>
+      </div>
+
+      <div className="hidden w-full max-w-[400px] sm:absolute sm:left-1/2 sm:block sm:-translate-x-1/2">
+        <SearchInput shortcut />
       </div>
 
       <UserInfo />
