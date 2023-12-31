@@ -40,6 +40,10 @@ export function AllSocketsInfo() {
 
                   <span className="text-[10px] text-primary-300">{session.socketId}</span>
                 </div>
+
+                {session.mousePosition && (
+                  <pre className="font-mono text-xs text-primary-300">{JSON.stringify(session.mousePosition)}</pre>
+                )}
               </div>
             </li>
           );

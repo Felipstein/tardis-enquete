@@ -5,8 +5,10 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Inter } from 'next/font/google';
 
 import { AllSocketsInfo } from './components/_debug/AllSocketsInfo';
+import { RenderMousePositions } from './components/_debug/RenderMousePositions';
 import { SocketInfo } from './components/_debug/SocketInfo';
 import { DebugEnvironment } from './components/DebugEnvironment';
+import { TrackMousePosition } from './components/TrackMousePosition';
 import { Providers } from './providers';
 
 import type { Metadata } from 'next';
@@ -29,17 +31,21 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       >
         <Providers>
           <HydrationBoundary state={dehydrate(queryClient)}>
-            {children}
+            <TrackMousePosition>
+              {children}
 
-            <DebugEnvironment>
-              <ReactQueryDevtools />
+              <DebugEnvironment>
+                <ReactQueryDevtools />
 
-              <div className="absolute bottom-6 left-6 z-40 flex flex-col gap-4">
-                <AllSocketsInfo />
+                <RenderMousePositions />
 
-                <SocketInfo />
-              </div>
-            </DebugEnvironment>
+                <div className="absolute bottom-6 left-6 z-40 flex flex-col gap-4">
+                  <AllSocketsInfo />
+
+                  <SocketInfo />
+                </div>
+              </DebugEnvironment>
+            </TrackMousePosition>
           </HydrationBoundary>
         </Providers>
       </body>

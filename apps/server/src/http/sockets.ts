@@ -18,6 +18,36 @@ export function setupSockets(io: Server) {
 
       io.emit('refreshSessions', { sessions } as SocketEventPayload<'refreshSessions'>);
 
+      socket.on('userMouseMove', ({ mousePosition }: SocketEventPayload<'userMouseMove'>) => {
+        sessions = sessions.map((s) => {
+          if (s.socketId === session.socketId) {
+            return {
+              ...s,
+              mousePosition,
+            };
+          }
+
+          return s;
+        });
+
+        io.emit('refreshSessions', { sessions } as SocketEventPayload<'refreshSessions'>);
+      });
+
+      socket.on('userMouseLeave', () => {
+        sessions = sessions.map((s) => {
+          if (s.socketId === session.socketId) {
+            return {
+              ...s,
+              mousePosition: undefined,
+            };
+          }
+
+          return s;
+        });
+
+        io.emit('refreshSessions', { sessions } as SocketEventPayload<'refreshSessions'>);
+      });
+
       socket.on('disconnect', () => {
         console.info(socket.id, 'user disconnected');
 
