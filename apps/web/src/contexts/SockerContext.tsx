@@ -46,15 +46,11 @@ export function SocketProvider({ children }: SocketProviderProps) {
     const socketInstance = io(getServerURL());
 
     socketInstance.on('connect', () => {
-      console.info('User connected', socketInstance.id);
-
       setSocket(socketInstance);
       setIsConnecting(false);
     });
 
     socketInstance.on('disconnect', () => {
-      console.info('User disconnected', socketInstance.id);
-
       setSocket(null);
     });
 
