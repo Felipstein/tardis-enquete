@@ -4,6 +4,8 @@ import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Inter } from 'next/font/google';
 
+import { SocketInfo } from './components/_debug/SocketInfo';
+import { DebugEnvironment } from './components/DebugEnvironment';
 import { Providers } from './providers';
 
 import type { Metadata } from 'next';
@@ -28,7 +30,11 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <HydrationBoundary state={dehydrate(queryClient)}>
             {children}
 
-            <ReactQueryDevtools />
+            <DebugEnvironment>
+              <ReactQueryDevtools />
+
+              <SocketInfo />
+            </DebugEnvironment>
           </HydrationBoundary>
         </Providers>
       </body>
