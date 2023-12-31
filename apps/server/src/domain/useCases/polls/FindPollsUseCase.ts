@@ -14,11 +14,6 @@ export default class FindPollsUseCase {
     const polls = await this.pollsRepository.findAllWithOptionsAndVotes();
 
     const pollsPopuledPromises = polls.map(async ({ poll, options }) => {
-      const [authorInfo, totalPolls] = await Promise.all([
-        this._findUserInfo(poll.authorId),
-        this.pollsRepository.countTotalPollsOfUserId(poll.authorId),
-      ]);
-
       type Vote = FindPollsUseCaseReturn[number]['options'][number]['votes'][number];
 
       const optionsPromises = options.map(async (option) => {
@@ -45,7 +40,11 @@ export default class FindPollsUseCase {
         };
       });
 
-      const optionsResolved = await Promise.all(optionsPromises);
+      const [authorInfo, totalPolls, ...optionsResolved] = await Promise.all([
+        this._findUserInfo(poll.authorId),
+        this.pollsRepository.countTotalPollsOfUserId(poll.authorId),
+        ...optionsPromises,
+      ]);
 
       return {
         id: poll.id,
