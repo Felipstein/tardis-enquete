@@ -17,6 +17,7 @@ import { errorHandler } from './middlewares/errorHandlerMiddleware';
 import { handleZodError } from './middlewares/handleZodErrorMiddleware';
 import { omitPrismaErrors } from './middlewares/omitPrismaErrorsMiddleware';
 import { routes } from './routes';
+import { setupSockets } from './sockets';
 
 const app = express();
 const server = createServer(app);
@@ -27,13 +28,7 @@ const io = new SocketServer(server, {
   },
 });
 
-io.on('connection', (socket) => {
-  console.info(socket.id, 'user connected');
-
-  socket.on('disconnect', () => {
-    console.info(socket.id, 'user disconnected');
-  });
-});
+setupSockets(io);
 
 app.use(express.json());
 app.use(compression());
