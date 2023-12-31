@@ -36,7 +36,7 @@ export function UserInfo() {
 
       <DropdownMenu.Portal>
         <DropdownMenu.Content
-          className="min-w-40 rounded-md bg-gradient-to-br from-black/50 to-gray-900/60 p-2 shadow-md backdrop-blur-sm"
+          className="z-40 min-w-40 rounded-md bg-gradient-to-br from-black/50 to-gray-900/60 p-2 shadow-md backdrop-blur-sm"
           sideOffset={5}
         >
           <DropdownMenu.Arrow className="fill-black/50" />
