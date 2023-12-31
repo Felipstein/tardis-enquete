@@ -4,6 +4,7 @@ import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Inter } from 'next/font/google';
 
+import { AllSocketsInfo } from './components/_debug/AllSocketsInfo';
 import { SocketInfo } from './components/_debug/SocketInfo';
 import { DebugEnvironment } from './components/DebugEnvironment';
 import { Providers } from './providers';
@@ -33,7 +34,11 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <DebugEnvironment>
               <ReactQueryDevtools />
 
-              <SocketInfo />
+              <div className="absolute bottom-6 left-6 z-40 flex flex-col gap-4">
+                <AllSocketsInfo />
+
+                <SocketInfo />
+              </div>
             </DebugEnvironment>
           </HydrationBoundary>
         </Providers>
