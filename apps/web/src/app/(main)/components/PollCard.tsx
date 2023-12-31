@@ -36,19 +36,19 @@ export function PollCard({ poll }: PollCardProps) {
 
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="text-sm text-primary-500">Iniciado por</span>
+            <span className="text-xs text-primary-500 sm:text-sm">Iniciado por</span>
 
             <div className="flex items-center gap-1.5">
               <UserAvatar userId={poll.author.id} avatar={poll.author.avatar} width={28} height={28} />
 
               {isAuthor ? (
-                <strong className="text-sm text-cyan-400">VOCÊ</strong>
+                <strong className="text-xs text-cyan-400 sm:text-sm">VOCÊ</strong>
               ) : (
-                <strong className="text-sm text-primary-300">{poll.author.username}</strong>
+                <strong className="text-xs text-primary-300 sm:text-sm">{poll.author.username}</strong>
               )}
             </div>
 
-            <span className="text-xs text-primary-500">{moment(poll.createdAt).fromNow()}</span>
+            <span className="text-[10px] text-primary-500 sm:text-xs">{moment(poll.createdAt).fromNow()}</span>
           </div>
 
           <div
@@ -57,7 +57,9 @@ export function PollCard({ poll }: PollCardProps) {
           >
             <Clock10 className="h-3.5 w-3.5" />
 
-            <span className="text-sm">{isExpired ? 'expirado' : `expira ${moment(poll.expireAt).fromNow()}`}</span>
+            <span className="text-xs sm:text-sm">
+              {isExpired ? 'expirado' : `expira ${moment(poll.expireAt).fromNow()}`}
+            </span>
           </div>
         </div>
       </header>
