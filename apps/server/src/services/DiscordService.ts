@@ -33,17 +33,11 @@ export default class DefaultService {
       (error) => {
         if (error instanceof AxiosError) {
           console.error(chalk.red('Discord Request throwed an error:'));
-          console.error(
-            JSON.stringify(
-              {
-                headers: error.response?.headers,
-                body: error.response?.data,
-                response: error.response,
-              },
-              null,
-              2,
-            ),
-          );
+          console.error({
+            headers: error.response?.headers,
+            body: error.response?.data,
+            response: error.response,
+          });
 
           const responseData = error.response?.data;
 
