@@ -3,5 +3,5 @@
     "jest": true
   },
   "extends": "@tardis-enquete/eslint-config/node",
-  "ignorePatterns": ["dist"]
+  "ignorePatterns": ["dist", "node_modules"]
 }
