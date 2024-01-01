@@ -16,7 +16,7 @@
     "build": "yarn build:packages && yarn build:apps",
     "start:web": "yarn workspace @tardis-enquete/web start",
     "start:server": "yarn workspace @tardis-enquete/server start",
-    "start": "concurrently \"yarn start:web\" \"yarn start:server\"",
+    "start": "yarn workspace @tardis-enquete/server start",
     "preinstall": "npx only-allow yarn",
     "prepare": "husky install"
   },
