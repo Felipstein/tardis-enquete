@@ -2,6 +2,8 @@
 
 import { UserAvatar } from '../UserAvatar';
 
+import { DebugContainer } from './DebugContainer';
+
 import { useSocket } from '@/hooks/useSocket';
 import { useUser } from '@/hooks/useUser';
 
@@ -14,10 +16,13 @@ export function AllSocketsInfo() {
     return null;
   }
 
-  return (
-    <div className="space-y-3.5 rounded-md border-gray-700 bg-black/80 px-4 py-2.5 backdrop-blur-sm">
-      <p className="text-xs text-primary-500">{sessions.length} usuário(s) conectado(s)</p>
+  const isPlural = sessions.length !== 1;
 
+  return (
+    <DebugContainer className="space-y-3.5">
+      <p className="text-xs text-primary-500">
+        {sessions.length} sess{isPlural ? 'ões' : 'ão'} conectada{isPlural ? 's' : ''}
+      </p>
       <ul className="space-y-3">
         {sessions.map((session) => {
           const isMe = session.user.id === authUser?.id;
@@ -49,6 +54,6 @@ export function AllSocketsInfo() {
           );
         })}
       </ul>
-    </div>
+    </DebugContainer>
   );
 }

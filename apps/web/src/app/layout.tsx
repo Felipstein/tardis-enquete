@@ -39,10 +39,14 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 
                 <RenderMousePositions />
 
-                <div className="absolute bottom-6 left-6 z-40 flex flex-col gap-4">
+                <div className="fixed bottom-6 left-6 z-40 flex flex-col gap-4">
                   <AllSocketsInfo />
 
                   <SocketInfo />
+
+                  <span className="select-none text-xs text-primary-300">
+                    seu curioso do caralho | build 0.1.0 alpha (web) | build 0.1.1 alpha (server){' '}
+                  </span>
                 </div>
               </DebugEnvironment>
             </TrackMousePosition>

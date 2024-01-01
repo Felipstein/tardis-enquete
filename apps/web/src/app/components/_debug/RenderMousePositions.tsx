@@ -1,8 +1,10 @@
 'use client';
 
 import { useSocket } from '@/hooks/useSocket';
+import { useUser } from '@/hooks/useUser';
 
 export function RenderMousePositions() {
+  const { user: authUser } = useUser();
   const { sessions, status } = useSocket();
 
   if (status !== 'connected') {
@@ -10,9 +12,9 @@ export function RenderMousePositions() {
   }
 
   return (
-    <div className="z-60 pointer-events-none absolute inset-0 overflow-hidden">
+    <div className="pointer-events-none absolute inset-0 z-50 overflow-hidden">
       {sessions
-        .filter((session) => session.mousePosition)
+        .filter((session) => session.mousePosition && session.user.id !== authUser?.id)
         .map((session) => (
           <div
             className="pointer-events-none relative"

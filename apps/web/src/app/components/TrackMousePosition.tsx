@@ -26,5 +26,13 @@ export function TrackMousePosition({ children }: TrackMousePositionProps) {
     };
   }, [socket]);
 
-  return children;
+  function handleMouseLeave() {
+    socket?.emit('userMouseLeave');
+  }
+
+  return (
+    <div className="h-full w-full" onMouseLeave={handleMouseLeave}>
+      {children}
+    </div>
+  );
 }
