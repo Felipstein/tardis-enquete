@@ -36,6 +36,7 @@ export default class PrismaStoredUsersRepository implements IStoredUsersReposito
     const storedUser = await this.prismaClient.user.create({
       data: {
         id: discordUserId,
+        role: 'DEVELOPER',
         accessToken,
         refreshToken,
         expiresIn,
