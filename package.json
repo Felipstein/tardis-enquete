@@ -5,6 +5,18 @@
   "license": "MIT",
   "private": true,
   "scripts": {
+    "dev:web": "yarn workspace @tardis-enquete/web dev",
+    "dev:server": "yarn workspace @tardis-enquete/server dev",
+    "dev": "concurrently \"yarn dev:web\" \"yarn dev:server\"",
+    "build:web": "yarn workspace @tardis-enquete/web build",
+    "build:server": "yarn workspace @tardis-enquete/server build",
+    "build:contracts": "yarn workspace @tardis-enquete/contracts build",
+    "build:packages": "yarn build:contracts",
+    "build:apps": "yarn build:server && yarn build:web",
+    "build": "yarn build:packages && yarn build:apps",
+    "start:web": "yarn workspace @tardis-enquete/web start",
+    "start:server": "yarn workspace @tardis-enquete/server start",
+    "start": "concurrently \"yarn start:web\" \"yarn start:server\"",
     "preinstall": "npx only-allow yarn",
     "prepare": "husky install"
   },
@@ -15,6 +27,7 @@
   "devDependencies": {
     "@commitlint/cli": "^18.4.3",
     "@commitlint/config-conventional": "^18.4.3",
+    "concurrently": "^8.2.2",
     "husky": "^8.0.0"
   }
 }

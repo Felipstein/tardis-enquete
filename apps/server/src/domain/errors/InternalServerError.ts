@@ -9,6 +9,7 @@ export default class InternalServerError extends APIError {
     message = 'Erro interno do servidor',
     statusCode = 500,
     public originalError: Error | undefined = undefined,
+    public httpResponsePayload: Record<string, any> | undefined = undefined,
   ) {
     super(message, statusCode);
   }

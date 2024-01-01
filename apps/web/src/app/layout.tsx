@@ -45,7 +45,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                   <SocketInfo />
 
                   <span className="select-none text-xs text-primary-300">
-                    seu curioso do caralho | build 0.1.0 alpha (web) | build 0.1.1 alpha (server){' '}
+                    seu curioso do caralho | build 0.1.0 (web) | build 0.1.1 (server){' '}
                   </span>
                 </div>
               </DebugEnvironment>

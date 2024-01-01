@@ -31,11 +31,19 @@ export function errorHandler(error: Error, req: Request, res: Response, next: Ne
         };
       }
 
+      if (error.httpResponsePayload) {
+        debug.internalHTTPResponsePayload = error.httpResponsePayload;
+      }
+
       console.error('');
       console.error(chalk.red(line, 'INTERNAL SERVER ERROR', line));
       console.error(error.originalError ?? error);
       console.error('');
       console.error(chalk.red('Caused on route'), req.path);
+      if (error.httpResponsePayload) {
+        console.error(chalk.red('HTTP Response payload:'), JSON.stringify(error.httpResponsePayload, null, 2));
+        console.error('');
+      }
       console.error(chalk.red(line, 'INTERNAL SERVER ERROR', line));
       console.error('');
     } else if (process.env.NODE_ENV === 'development') {

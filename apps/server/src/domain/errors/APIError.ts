@@ -6,6 +6,8 @@ export default class APIError extends Error {
   constructor(
     message: string,
     public statusCode: number,
+    public headers?: Record<string, any>,
+    public body?: unknown,
   ) {
     super(message);
   }

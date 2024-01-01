@@ -1,6 +1,8 @@
 import querystring from 'querystring';
+import util from 'util';
 
 import axios, { AxiosError, AxiosInstance } from 'axios';
+import chalk from 'chalk';
 import { z } from 'zod';
 
 import APIError from '../domain/errors/APIError';
@@ -30,6 +32,9 @@ export default class DefaultService {
     this.discordAPI.interceptors.response.use(
       (response) => response,
       (error) => {
+        console.error(chalk.red('Discord Request throwed an error:'));
+        console.error(util.inspect(error, true, null, true));
+
         if (error instanceof AxiosError) {
           const responseData = error.response?.data;
 

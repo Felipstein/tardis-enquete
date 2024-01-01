@@ -7,5 +7,6 @@ export interface APIErrorResponse<T extends Error = Error> {
   debug?: {
     stack: string;
     internalServerError?: T;
+    internalHTTPResponsePayload?: Record<string, unknown>;
   };
 }
