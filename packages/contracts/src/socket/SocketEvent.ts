@@ -5,6 +5,7 @@ export interface SocketEventsWithPayloads {
   refreshSessions: { sessions: Session[] };
   userMouseMove: { mousePosition: { x: number; y: number } };
   userMouseLeave: void;
+  userMouseClick: { userId: string; mousePosition: { x: number; y: number } };
 }
 
 export type SocketEvent = keyof SocketEventsWithPayloads;

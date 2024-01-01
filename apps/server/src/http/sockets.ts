@@ -48,6 +48,10 @@ export function setupSockets(io: Server) {
         io.emit('refreshSessions', { sessions } as SocketEventPayload<'refreshSessions'>);
       });
 
+      socket.on('userMouseClick', ({ userId, mousePosition }: SocketEventPayload<'userMouseClick'>) => {
+        io.emit('userMouseClick', { userId, mousePosition } as SocketEventPayload<'userMouseClick'>);
+      });
+
       socket.on('disconnect', () => {
         console.info(socket.id, 'user disconnected');
 

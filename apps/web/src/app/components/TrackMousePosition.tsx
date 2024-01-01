@@ -4,12 +4,14 @@ import { SocketEventPayload } from '@tardis-enquete/contracts';
 import { ReactNode, useEffect } from 'react';
 
 import { useSocket } from '@/hooks/useSocket';
+import { useUser } from '@/hooks/useUser';
 
 export type TrackMousePositionProps = {
   children: ReactNode;
 };
 
 export function TrackMousePosition({ children }: TrackMousePositionProps) {
+  const { user } = useUser();
   const { socket } = useSocket();
 
   useEffect(() => {
@@ -19,12 +21,25 @@ export function TrackMousePosition({ children }: TrackMousePositionProps) {
       } as SocketEventPayload<'userMouseMove'>);
     }
 
+    function handleMouseClick(event: MouseEvent) {
+      if (!user) {
+        return;
+      }
+
+      socket?.emit('userMouseClick', {
+        userId: user.id,
+        mousePosition: { x: event.clientX, y: event.clientY },
+      } as SocketEventPayload<'userMouseClick'>);
+    }
+
     window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mousedown', handleMouseClick);
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mousedown', handleMouseClick);
     };
-  }, [socket]);
+  }, [user, socket]);
 
   function handleMouseLeave() {
     socket?.emit('userMouseLeave');
