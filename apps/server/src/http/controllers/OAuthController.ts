@@ -102,8 +102,13 @@ export default class OAuthController {
       throw new Unauthorized('Usuário não encontrado');
     }
 
+    const userObject = user.toObject();
+
+    // @ts-expect-error
+    delete userObject.auth;
+
     const response: VerifyTokenResponse = {
-      user: user.toObject(),
+      user: userObject,
     };
 
     return res.json(response);

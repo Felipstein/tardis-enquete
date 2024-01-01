@@ -9,5 +9,5 @@ export const verifyTokenQueryRequest = z.object({
 export type VerifyTokenQueryRequest = z.infer<typeof verifyTokenQueryRequest>;
 
 export type VerifyTokenResponse = {
-  user: User;
+  user: Omit<User, 'auth'>;
 };
