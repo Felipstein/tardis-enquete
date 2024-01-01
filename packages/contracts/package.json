@@ -1,9 +1,14 @@
 {
   "name": "@tardis-enquete/contracts",
   "version": "0.1.0",
-  "main": "index.ts",
+  "main": "lib/index",
+  "types": "lib/index",
   "license": "MIT",
+  "scripts": {
+    "build": "rm -rf lib && tsup src --out-dir lib && tsc"
+  },
   "dependencies": {
+    "tsup": "^8.0.1",
     "zod": "^3.22.4"
   },
   "devDependencies": {
