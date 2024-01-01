@@ -104,11 +104,12 @@ export default class OAuthController {
 
     const userObject = user.toObject();
 
-    // @ts-expect-error
-    delete userObject.auth;
-
     const response: VerifyTokenResponse = {
-      user: userObject,
+      user: {
+        ...userObject,
+        // @ts-expect-error
+        auth: undefined,
+      },
     };
 
     return res.json(response);
