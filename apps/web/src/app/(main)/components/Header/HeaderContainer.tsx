@@ -35,7 +35,7 @@ export function HeaderContainer({ children }: HeaderContainerProps) {
       <div className="w-full" style={{ height: `${headerHeight}px` }} />
 
       <header ref={headerRef} className="fixed top-0 z-20 w-full overflow-hidden backdrop-blur-sm">
-        <div className="bg-app-background absolute inset-0 h-screen opacity-80" />
+        <div className="absolute inset-0 h-screen bg-app-background opacity-80" />
 
         <Slot className="relative z-30">{children}</Slot>
       </header>

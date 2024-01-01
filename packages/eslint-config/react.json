@@ -10,6 +10,22 @@
   "rules": {
     "next-recommended/export-server-actions-only": "off",
 
-    "jsx-a11y/control-has-associated-label": "off"
+    "jsx-a11y/control-has-associated-label": "off",
+
+    "import/order": [
+      "error",
+      {
+        "groups": [
+          "builtin",
+          "external",
+          "parent",
+          "sibling",
+          "index",
+          "type",
+          "object",
+          "internal"
+        ]
+      }
+    ]
   }
 }

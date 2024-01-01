@@ -38,7 +38,7 @@ export function RenderMousePositions() {
     return () => {
       clicks.forEach((click) => clearTimeout(click.timer));
     };
-  }, [clicks, socket]);
+  }, [clicks, socket, authUser?.id]);
 
   if (status !== 'connected') {
     return null;

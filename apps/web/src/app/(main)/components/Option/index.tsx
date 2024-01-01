@@ -21,7 +21,7 @@ export function Option({ option, progress, isSelected = false, isDisabled = fals
         {
           'border-primary-500 bg-gradient-to-r from-[#334155] to-[#1E293B] hover:border-primary-300 hover:from-[#44546C] hover:to-[#1E293B]':
             !isSelected,
-          'bg-selected-gradient-background shadow-selected border-[#21b9eb] hover:brightness-110': isSelected,
+          'border-[#21b9eb] bg-selected-gradient-background shadow-selected hover:brightness-110': isSelected,
         },
       )}
       disabled={isDisabled}

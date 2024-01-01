@@ -22,17 +22,17 @@ export default function LoginPage() {
             <LogoImage />
 
             <div className="-space-y-1">
-              <h3 className="text-primary-300 text-sm uppercase tracking-wide">Democracia da</h3>
-              <h1 className="text-primary-50 text-3xl font-bold uppercase tracking-widest">TARDIS</h1>
+              <h3 className="text-sm uppercase tracking-wide text-primary-300">Democracia da</h3>
+              <h1 className="text-3xl font-bold uppercase tracking-widest text-primary-50">TARDIS</h1>
             </div>
           </main>
 
-          <p className="text-primary-100 text-center tracking-tight">
+          <p className="text-center tracking-tight text-primary-100">
             <Balancer>Voz unida, força vivida – Juntos contra a tirania, a democracia guia.</Balancer>
           </p>
         </header>
 
-        <div className="text-primary-50 text-center text-sm font-medium">
+        <div className="text-center text-sm font-medium text-primary-50">
           <p className="block sm:hidden">Conecte-se pelo Discord.</p>
           <p className="hidden sm:block">Conecte-se com sua conta do Discord para continuar.</p>
 
