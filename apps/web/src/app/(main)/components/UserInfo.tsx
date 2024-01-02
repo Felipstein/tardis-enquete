@@ -53,7 +53,7 @@ export function UserInfo() {
             className="flex w-full items-center rounded px-3 py-1.5 text-sm font-normal leading-none text-red-400 transition-colors hover:bg-red-400/10 active:bg-red-400/20"
             asChild
           >
-            <a href="/api/logout" rel="noreferrer">
+            <a href="/api/auth/logout" rel="noreferrer">
               Sair
             </a>
           </DropdownMenu.Item>

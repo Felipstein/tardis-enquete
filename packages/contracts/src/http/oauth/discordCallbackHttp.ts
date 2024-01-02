@@ -5,3 +5,7 @@ export const discordCallbackQueryRequest = z.object({
 });
 
 export type DiscordCallbackQueryRequest = z.infer<typeof discordCallbackQueryRequest>;
+
+export type DiscordCallbackResponse = {
+  accessToken: string;
+};
