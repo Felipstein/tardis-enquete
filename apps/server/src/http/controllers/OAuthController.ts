@@ -17,6 +17,7 @@ import TokenService from '../../services/TokenService';
 import UserService from '../../services/UserService';
 import { getClientURLInRequest } from '../../utils/getClientURLInRequest';
 import { getHostURLInRequest } from '../../utils/getHostURLInRequest';
+import { origin } from '../../utils/getOriginDomain';
 
 const log = Logger.start('OAUTH CONTROLLER');
 
@@ -71,12 +72,14 @@ export default class OAuthController {
       log.verbose.success('Token signed:', token);
       log.verbose.success('Token payload:', { role: user.role, sub: user.id });
 
+      const { domain: originDomain } = origin();
+
       res.cookie(cookieKeys.accessToken, token, {
         httpOnly: true,
-        secure: true,
+        secure: false,
         sameSite: 'none',
         path: '/',
-        domain: process.env.ORIGIN,
+        domain: originDomain,
       });
 
       log.verbose.success(`Token setted in cookie and redirecting the request to ${clientBaseURL}/`);
