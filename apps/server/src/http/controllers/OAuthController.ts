@@ -79,15 +79,11 @@ export default class OAuthController {
         `Setting token in cookie and redirecting the request to ${clientBaseURL}/. Origin domain: ${originDomain}`,
       );
 
-      return res
-        .cookie(cookieKeys.accessToken, token, {
-          httpOnly: true,
-          secure: false,
-          sameSite: 'none',
-          path: '/',
-          domain: originDomain,
-        })
-        .redirect(`${clientBaseURL}/`);
+      const cookieString = `${cookieKeys.accessToken}=${token}; Path=/; HttpOnly; SameSite=None; Domain=${originDomain}`;
+
+      res.setHeader('Set-Cookie', cookieString);
+
+      return res.redirect(`${clientBaseURL}/`);
     } catch (error: unknown) {
       if (error instanceof ZodError) {
         throw error;
