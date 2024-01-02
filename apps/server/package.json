@@ -5,7 +5,7 @@
   "scripts": {
     "test": "cross-env NODE_ENV=test jest",
     "test:watch": "jest --watch",
-    "dev": "cross-env NODE_ENV=development tsx watch src/http/server.ts",
+    "dev": "cross-env NODE_ENV=development cross-env VERBOSE=true tsx watch src/http/server.ts",
     "build": "rm -rf dist && tsup src",
     "start": "cross-env NODE_ENV=production node dist/http/server.js",
     "typecheck": "tsc --noEmit",

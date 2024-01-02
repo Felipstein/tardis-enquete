@@ -5,22 +5,25 @@ import chalk from 'chalk';
 import { z } from 'zod';
 
 import APIError from '../domain/errors/APIError';
+import Logger from '../infra/logger';
 
 import { ExchangeCodeForTokenResponse, GetUserInfoResponse } from './DiscordServiceDTO';
 
-const defaultServiceBuilder = z.object({
+const log = Logger.start('DISCORD SERVICE');
+
+const discordServiceBuilder = z.object({
   clientId: z.string().optional(),
   secretKey: z.string().optional(),
 });
 
-export default class DefaultService {
+export default class DiscordService {
   private readonly discordAPI: AxiosInstance;
 
   private readonly clientId: string;
 
   private readonly secretKey: string;
 
-  constructor(builder?: z.infer<typeof defaultServiceBuilder>) {
+  constructor(builder?: z.infer<typeof discordServiceBuilder>) {
     this.clientId = builder?.clientId ?? process.env.DISCORD_CLIENT_ID;
     this.secretKey = builder?.secretKey ?? process.env.DISCORD_SECRET_KEY;
 
@@ -32,8 +35,8 @@ export default class DefaultService {
       (response) => response,
       (error) => {
         if (error instanceof AxiosError) {
-          console.error(chalk.red('Discord Request throwed an error:'));
-          console.error({
+          log.error(chalk.red('Discord Request throwed an error:'));
+          log.error({
             headers: error.response?.headers,
             body: error.response?.data,
             response: error.response,
@@ -44,7 +47,12 @@ export default class DefaultService {
           if (responseData?.error && responseData?.error_description) {
             const { error: error_name, error_description } = responseData;
 
-            const errorInstance = new Error(error_description);
+            const errorInstance = new APIError(
+              error_description,
+              error.response!.status,
+              error.response!.headers,
+              error.response!.data,
+            );
 
             errorInstance.name = `[Discord Error] ${error_name}`;
 
@@ -52,11 +60,25 @@ export default class DefaultService {
           } else if (responseData?.message) {
             const { message } = responseData;
 
-            const errorInstance = new APIError(message, error.response!.status);
+            const errorInstance = new APIError(
+              message,
+              error.response!.status,
+              error.response!.headers,
+              error.response!.data,
+            );
 
             errorInstance.name = `[Discord Error] ${error.response!.statusText}`;
 
             throw errorInstance;
+          }
+
+          if (error.response) {
+            throw new APIError(
+              'An unknown error detected',
+              error.response.status,
+              error.response.headers,
+              error.response.data,
+            );
           }
         }
 

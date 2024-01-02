@@ -1,14 +1,18 @@
 import { Session, SocketEventPayload } from '@tardis-enquete/contracts';
 import { Server } from 'socket.io';
 
+import Logger from '../infra/logger';
+
+const log = Logger.start('SOCKETS');
+
 export function setupSockets(io: Server) {
   let sessions: Session[] = [];
 
   io.on('connection', (socket) => {
-    console.info(socket.id, 'Initial connection detected.');
+    log.verbose.info(socket.id, 'Initial connection detected.');
 
     socket.on('userConnected', ({ session }: SocketEventPayload<'userConnected'>) => {
-      console.info(session.socketId, `User session initialized (${session.user.username}/${session.user.id})`);
+      log.verbose.info(session.socketId, `User session initialized (${session.user.username}/${session.user.id})`);
 
       if (sessions.some((s) => s.user.id === session.user.id)) {
         sessions = sessions.filter((s) => s.user.id !== session.user.id);
@@ -53,7 +57,7 @@ export function setupSockets(io: Server) {
       });
 
       socket.on('disconnect', () => {
-        console.info(socket.id, 'user disconnected');
+        log.verbose.info(socket.id, 'user disconnected');
 
         sessions = sessions.filter((s) => s.user.id !== session.user.id);
 

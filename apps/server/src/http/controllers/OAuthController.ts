@@ -11,11 +11,14 @@ import { ZodError } from 'zod';
 
 import InternalServerError from '../../domain/errors/InternalServerError';
 import Unauthorized from '../../domain/errors/Unauthorized';
+import Logger from '../../infra/logger';
 import DiscordService from '../../services/DiscordService';
 import TokenService from '../../services/TokenService';
 import UserService from '../../services/UserService';
 import { getClientURLInRequest } from '../../utils/getClientURLInRequest';
 import { getHostURLInRequest } from '../../utils/getHostURLInRequest';
+
+const log = Logger.start('OAUTH CONTROLLER');
 
 export default class OAuthController {
   constructor(
@@ -27,7 +30,11 @@ export default class OAuthController {
   async getDiscordOAuthURL(req: Request, res: Response) {
     const redirectBaseURL = getHostURLInRequest(req);
 
+    log.verbose.info('Getting Discord OAuth URL');
+
     const url = this.discordService.getConsentOAuthURL(redirectBaseURL);
+
+    log.verbose.success('URL:', url);
 
     const response: GetDiscordOAuthURLResponse = {
       redirectURL: url,
@@ -38,18 +45,34 @@ export default class OAuthController {
 
   async handleDiscordCallback(req: Request, res: Response) {
     try {
+      log.verbose.info('Discord Callback Handler');
+
       const { code } = discordCallbackQueryRequest.parse(req.query);
+
+      log.verbose.info('Code parsed:', code);
 
       const redirectBaseURL = getHostURLInRequest(req);
       const clientBaseURL = getClientURLInRequest(req);
 
+      log.verbose.info('Redirect Base URL:', redirectBaseURL);
+      log.verbose.info('Client Base URL:', clientBaseURL);
+
       const tokenInfo = await this.discordService.exchangeCodeForToken(code, redirectBaseURL);
+
+      log.verbose.success('Code exchanged per token successfully:', tokenInfo);
 
       const user = await this.userService.upsert(tokenInfo);
 
+      log.verbose.success('User updated/created.');
+
       const token = await this.tokenService.sign('access', { role: user.role, sub: user.id });
 
+      log.verbose.success('Token signed:', token);
+      log.verbose.success('Token payload:', { role: user.role, sub: user.id });
+
       res.cookie(cookieKeys.accessToken, token, { httpOnly: true, secure: true });
+
+      log.verbose.success(`Token setted in cookie and redirecting the request to ${clientBaseURL}/`);
 
       return res.redirect(`${clientBaseURL}/`);
     } catch (error: unknown) {
@@ -67,7 +90,7 @@ export default class OAuthController {
         errorInstance = new Error('Erro desconhecido');
       }
 
-      console.error(chalk.red('An error occorrured in Discord OAuth Callback Handler:', errorInstance.message));
+      log.error(chalk.red('An error occorrured in Discord OAuth Callback Handler:', errorInstance.message));
 
       throw new InternalServerError(
         'Ocorreu um erro na finalização da sua autenticação com o Discord',
@@ -78,9 +101,16 @@ export default class OAuthController {
   }
 
   async verifyToken(req: Request, res: Response) {
+    log.verbose.info('Verify Token');
+
     const { t: token } = verifyTokenQueryRequest.parse(req.query);
 
+    log.verbose.info('Token parsed:', token);
+
     const { status, payload } = await this.tokenService.verify('access', token);
+
+    log.verbose.info('Token status:', status);
+    log.verbose.info('Token payload:', payload);
 
     if (status === 'expired') {
       throw new Unauthorized('Não autenticado: sua sessão expirou.');
@@ -101,6 +131,11 @@ export default class OAuthController {
     if (!user) {
       throw new Unauthorized('Usuário não encontrado');
     }
+
+    log.verbose.success('User of token found.');
+    log.verbose.success('User ID:', user.id);
+    log.verbose.success('Username:', user.username);
+    log.verbose.success('User global name:', user.globalName);
 
     const userObject = user.toObject();
 

@@ -3,6 +3,10 @@
 
 import { ZodError, z } from 'zod';
 
+import Logger from './infra/logger';
+
+const log = Logger.start('ENV');
+
 const envVariablesSchema = z.object({
   NODE_ENV: z.enum(['development', 'production', 'test']),
 
@@ -19,6 +23,8 @@ const envVariablesSchema = z.object({
   ACCESS_TOKEN_EXPIRES_IN: z.string(),
 
   HTTPS: z.coerce.boolean(),
+
+  VERBOSE: z.coerce.boolean().default(false),
 });
 
 try {
@@ -30,7 +36,7 @@ try {
     ...parsed,
   };
 
-  console.info('Environment variables loaded.');
+  log.info('Environment variables loaded');
 } catch (err: Error | unknown) {
   if (err instanceof ZodError) {
     const variables: { env: string; message: string }[] = err.issues.map((issue) => ({
@@ -38,10 +44,10 @@ try {
       message: issue.message,
     }));
 
-    console.error('\nWrong environment variables:');
+    log.error('\nWrong environment variables:');
 
     variables.forEach((variable) => {
-      console.error(`- ${variable.env}: ${variable.message}`);
+      log.error(`- ${variable.env}: ${variable.message}`);
     });
 
     process.exit(-1);

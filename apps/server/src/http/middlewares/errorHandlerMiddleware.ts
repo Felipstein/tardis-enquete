@@ -22,6 +22,19 @@ export function errorHandler(error: Error, req: Request, res: Response, next: Ne
   if (error instanceof APIError) {
     statusCode = error.statusCode;
 
+    if (error.headers) {
+      debug.internalHTTPResponsePayload = {
+        headers: error.headers,
+      };
+    }
+
+    if (error.body) {
+      debug.internalHTTPResponsePayload = {
+        ...debug.internalHTTPResponsePayload,
+        body: error.body,
+      };
+    }
+
     if (error instanceof InternalServerError) {
       if (error.originalError) {
         debug.internalServerError = {
