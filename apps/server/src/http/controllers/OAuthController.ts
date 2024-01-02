@@ -66,7 +66,7 @@ export default class OAuthController {
       const user = await this.userService.upsert(tokenInfo);
 
       log.verbose.success('User updated/created.');
-      log.verbose.success('User info:', user);
+      log.verbose.success('User info:', JSON.stringify(user.toObject(), null, 2));
 
       const token = await this.tokenService.sign('access', { role: user.role, sub: user.id });
 
@@ -75,17 +75,19 @@ export default class OAuthController {
 
       const { domain: originDomain } = origin();
 
-      res.cookie(cookieKeys.accessToken, token, {
-        httpOnly: true,
-        secure: false,
-        sameSite: 'none',
-        path: '/',
-        domain: originDomain,
-      });
+      log.verbose.success(
+        `Setting token in cookie and redirecting the request to ${clientBaseURL}/. Origin domain: ${originDomain}`,
+      );
 
-      log.verbose.success(`Token setted in cookie and redirecting the request to ${clientBaseURL}/`);
-
-      return res.redirect(`${clientBaseURL}/`);
+      return res
+        .cookie(cookieKeys.accessToken, token, {
+          httpOnly: true,
+          secure: false,
+          sameSite: 'none',
+          path: '/',
+          domain: originDomain,
+        })
+        .redirect(`${clientBaseURL}/`);
     } catch (error: unknown) {
       if (error instanceof ZodError) {
         throw error;
