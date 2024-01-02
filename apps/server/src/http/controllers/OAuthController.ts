@@ -43,6 +43,7 @@ export default class OAuthController {
     return res.json(response);
   }
 
+  // Terás que setar withCredentials no frontend para o cookie ser setado com êxito, o useja, não é por meio de redirect que as coisas vao funcioanr
   async handleDiscordCallback(req: Request, res: Response) {
     try {
       log.verbose.info('Discord Callback Handler');
@@ -70,7 +71,13 @@ export default class OAuthController {
       log.verbose.success('Token signed:', token);
       log.verbose.success('Token payload:', { role: user.role, sub: user.id });
 
-      res.cookie(cookieKeys.accessToken, token, { httpOnly: true, secure: true, sameSite: 'none', path: '/' });
+      res.cookie(cookieKeys.accessToken, token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'none',
+        path: '/',
+        domain: process.env.ORIGIN,
+      });
 
       log.verbose.success(`Token setted in cookie and redirecting the request to ${clientBaseURL}/`);
 
