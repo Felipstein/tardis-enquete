@@ -38,6 +38,7 @@ app.use(
   cors({
     exposedHeaders: [apiErrorHeader],
     origin: process.env.ORIGIN,
+    credentials: true,
   }),
 );
 

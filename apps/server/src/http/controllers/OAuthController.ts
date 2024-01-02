@@ -70,7 +70,7 @@ export default class OAuthController {
       log.verbose.success('Token signed:', token);
       log.verbose.success('Token payload:', { role: user.role, sub: user.id });
 
-      res.cookie(cookieKeys.accessToken, token, { httpOnly: false, secure: false });
+      res.cookie(cookieKeys.accessToken, token, { httpOnly: true, secure: true, sameSite: 'none', path: '/' });
 
       log.verbose.success(`Token setted in cookie and redirecting the request to ${clientBaseURL}/`);
 
