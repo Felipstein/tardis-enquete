@@ -1,5 +1,6 @@
 import {
   DiscordCallbackQueryRequest,
+  DiscordCallbackResponse,
   GetDiscordOAuthURLResponse,
   RouteModels,
   VerifyTokenQueryRequest,
@@ -16,9 +17,9 @@ export default class AuthService {
   }
 
   async handleDiscordCallback(query: DiscordCallbackQueryRequest) {
-    const response = await api.get(RouteModels.authDiscordCallback, { params: query });
+    const response = await api.get<DiscordCallbackResponse>(RouteModels.authDiscordCallback, { params: query });
 
-    console.log(response.headers, response.data);
+    return response.data.accessToken;
   }
 
   async verifyToken(query: VerifyTokenQueryRequest) {

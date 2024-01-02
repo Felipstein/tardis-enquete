@@ -1,9 +1,9 @@
 import {
   GetDiscordOAuthURLResponse,
   VerifyTokenResponse,
-  cookieKeys,
   discordCallbackQueryRequest,
   verifyTokenQueryRequest,
+  DiscordCallbackResponse,
 } from '@tardis-enquete/contracts';
 import chalk from 'chalk';
 import { Request, Response } from 'express';
@@ -16,7 +16,6 @@ import DiscordService from '../../services/DiscordService';
 import TokenService from '../../services/TokenService';
 import UserService from '../../services/UserService';
 import { getClientURLInRequest } from '../../utils/getClientURLInRequest';
-import { origin } from '../../utils/getOriginDomain';
 
 const log = Logger.start('OAUTH CONTROLLER');
 
@@ -77,21 +76,11 @@ export default class OAuthController {
       log.verbose.success('Token signed:', token);
       log.verbose.success('Token payload:', { role: user.role, sub: user.id });
 
-      const { domain: originDomain } = origin();
+      const response: DiscordCallbackResponse = {
+        accessToken: token,
+      };
 
-      log.verbose.success(
-        `Setting token in cookie and redirecting the request to ${redirectURI}. Origin domain: ${originDomain}`,
-      );
-
-      return res
-        .cookie(cookieKeys.accessToken, token, {
-          httpOnly: true,
-          secure: false,
-          sameSite: 'none',
-          path: '/',
-          domain: originDomain,
-        })
-        .redirect(redirectURI);
+      return res.json(response);
     } catch (error: unknown) {
       if (error instanceof ZodError) {
         throw error;
