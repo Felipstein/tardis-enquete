@@ -22,7 +22,7 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.redirect(redirectURL, {
       headers: {
-        'Set-Cookie': `${cookieKeys.accessToken}=${accessToken};`,
+        'Set-Cookie': `${cookieKeys.accessToken}=${accessToken}; Path=/;`,
       },
     });
   } catch (error: unknown) {

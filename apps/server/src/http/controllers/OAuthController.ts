@@ -20,7 +20,7 @@ import { getClientURLInRequest } from '../../utils/getClientURLInRequest';
 const log = Logger.start('OAUTH CONTROLLER');
 
 export default class OAuthController {
-  private readonly OAUTH_CALLBACK_ENDPOINT = '/oauth-callback';
+  private readonly OAUTH_CALLBACK_ENDPOINT = '/api/auth/callback';
 
   constructor(
     private readonly userService: UserService,
