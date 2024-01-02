@@ -16,12 +16,13 @@ import DiscordService from '../../services/DiscordService';
 import TokenService from '../../services/TokenService';
 import UserService from '../../services/UserService';
 import { getClientURLInRequest } from '../../utils/getClientURLInRequest';
-import { getHostURLInRequest } from '../../utils/getHostURLInRequest';
 import { origin } from '../../utils/getOriginDomain';
 
 const log = Logger.start('OAUTH CONTROLLER');
 
 export default class OAuthController {
+  private readonly OAUTH_CALLBACK_ENDPOINT = '/oauth-callback';
+
   constructor(
     private readonly userService: UserService,
     private readonly discordService: DiscordService,
@@ -29,11 +30,14 @@ export default class OAuthController {
   ) {}
 
   async getDiscordOAuthURL(req: Request, res: Response) {
-    const redirectBaseURL = getHostURLInRequest(req);
+    const redirectBaseURL = getClientURLInRequest(req);
+    const redirectURI = `${redirectBaseURL}${this.OAUTH_CALLBACK_ENDPOINT}`;
 
     log.verbose.info('Getting Discord OAuth URL');
+    log.verbose.info('Redirect Base URL:', redirectBaseURL);
+    log.verbose.info('Redirect URI:', redirectURI);
 
-    const url = this.discordService.getConsentOAuthURL(redirectBaseURL);
+    const url = this.discordService.getConsentOAuthURL(redirectURI);
 
     log.verbose.success('URL:', url);
 
@@ -44,7 +48,6 @@ export default class OAuthController {
     return res.json(response);
   }
 
-  // Terás que setar withCredentials no frontend para o cookie ser setado com êxito, o useja, não é por meio de redirect que as coisas vao funcioanr
   async handleDiscordCallback(req: Request, res: Response) {
     try {
       log.verbose.info('Discord Callback Handler');
@@ -53,13 +56,14 @@ export default class OAuthController {
 
       log.verbose.info('Code parsed:', code);
 
-      const redirectBaseURL = getHostURLInRequest(req);
-      const clientBaseURL = getClientURLInRequest(req);
+      const redirectBaseURL = getClientURLInRequest(req);
+
+      const redirectURI = `${redirectBaseURL}${this.OAUTH_CALLBACK_ENDPOINT}`;
 
       log.verbose.info('Redirect Base URL:', redirectBaseURL);
-      log.verbose.info('Client Base URL:', clientBaseURL);
+      log.verbose.info('Redirect URI:', redirectURI);
 
-      const tokenInfo = await this.discordService.exchangeCodeForToken(code, redirectBaseURL);
+      const tokenInfo = await this.discordService.exchangeCodeForToken(code, redirectURI);
 
       log.verbose.success('Code exchanged per token successfully:', tokenInfo);
 
@@ -76,7 +80,7 @@ export default class OAuthController {
       const { domain: originDomain } = origin();
 
       log.verbose.success(
-        `Setting token in cookie and redirecting the request to ${clientBaseURL}/. Origin domain: ${originDomain}`,
+        `Setting token in cookie and redirecting the request to ${redirectURI}. Origin domain: ${originDomain}`,
       );
 
       return res
@@ -87,7 +91,7 @@ export default class OAuthController {
           path: '/',
           domain: originDomain,
         })
-        .redirect(`${clientBaseURL}/`);
+        .redirect(redirectURI);
     } catch (error: unknown) {
       if (error instanceof ZodError) {
         throw error;

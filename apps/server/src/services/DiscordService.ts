@@ -87,19 +87,19 @@ export default class DiscordService {
     );
   }
 
-  getConsentOAuthURL(redirectBaseURL: string) {
-    const url = `https://discord.com/api/oauth2/authorize?client_id=${this.clientId}&response_type=code&redirect_uri=${redirectBaseURL}/auth/discord/callback&scope=identify+email`;
+  getConsentOAuthURL(redirectURI: string) {
+    const url = `https://discord.com/api/oauth2/authorize?client_id=${this.clientId}&response_type=code&redirect_uri=${redirectURI}&scope=identify+email`;
 
     return url;
   }
 
-  async exchangeCodeForToken(code: string, redirectBaseURL: string) {
+  async exchangeCodeForToken(code: string, redirectURI: string) {
     const payload = {
       client_id: this.clientId,
       client_secret: this.secretKey,
       grant_type: 'authorization_code',
       code,
-      redirect_uri: `${redirectBaseURL}/auth/discord/callback`,
+      redirect_uri: redirectURI,
     };
 
     const response = await this.discordAPI.post<ExchangeCodeForTokenResponse>(
