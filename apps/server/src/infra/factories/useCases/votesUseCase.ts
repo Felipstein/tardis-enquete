@@ -6,19 +6,25 @@ import {
   factoryStoredUsersRepository,
   factoryVotesRepository,
 } from '../repositories';
+import { factoryPolulatePollService } from '../services';
 
 const voteUseCase = new VoteUseCase(
   factoryVotesRepository(),
   factoryOptionsRepository(),
   factoryPollsRepository(),
   factoryStoredUsersRepository(),
+  factoryPolulatePollService(),
 );
 
 export function factoryVoteUseCase() {
   return voteUseCase;
 }
 
-const unvoteUseCase = new UnvoteUseCase(factoryVotesRepository(), factoryPollsRepository());
+const unvoteUseCase = new UnvoteUseCase(
+  factoryVotesRepository(),
+  factoryPollsRepository(),
+  factoryPolulatePollService(),
+);
 
 export function factoryUnvoteUseCase() {
   return unvoteUseCase;

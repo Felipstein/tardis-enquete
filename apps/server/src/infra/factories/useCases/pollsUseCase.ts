@@ -2,9 +2,9 @@ import CreatePollUseCase from '../../../domain/useCases/polls/CreatePollUseCase'
 import DeletePollUseCase from '../../../domain/useCases/polls/DeletePollUseCase';
 import FindPollsUseCase from '../../../domain/useCases/polls/FindPollsUseCase';
 import { factoryPollsRepository, factoryStoredUsersRepository } from '../repositories';
-import { factoryUserService } from '../services';
+import { factoryPolulatePollService } from '../services';
 
-const findPollsUseCase = new FindPollsUseCase(factoryPollsRepository(), factoryUserService());
+const findPollsUseCase = new FindPollsUseCase(factoryPollsRepository(), factoryPolulatePollService());
 
 export function factoryFindPollsUseCase() {
   return findPollsUseCase;

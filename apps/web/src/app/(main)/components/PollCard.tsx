@@ -13,8 +13,6 @@ import { UserAvatar } from '@/app/components/UserAvatar';
 import { useUser } from '@/hooks/useUser';
 import { moment } from '@/utils/moment';
 import { voteService } from '@/services/api/voteService';
-import { queryClient } from '@/libs/queryClient';
-import { queryKeys } from '@/config/queryKeys';
 
 export type PollCardProps = {
   poll: PollTimeline;
@@ -55,9 +53,7 @@ export function PollCard({ poll }: PollCardProps) {
     makeVoteRequest(
       { optionId },
       {
-        async onSuccess(data) {
-          await queryClient.invalidateQueries({ queryKey: queryKeys.polls() });
-
+        onSuccess(data) {
           console.info('Successful vote', data);
         },
         onError(error) {
@@ -80,9 +76,7 @@ export function PollCard({ poll }: PollCardProps) {
     makeUnvoteRequest(
       { voteId },
       {
-        async onSuccess(data) {
-          await queryClient.invalidateQueries({ queryKey: queryKeys.polls() });
-
+        onSuccess(data) {
           console.info('Successful unvote', data);
         },
         onError(error) {

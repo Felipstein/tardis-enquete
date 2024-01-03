@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { RefreshCw } from 'lucide-react';
 import { useMemo } from 'react';
 
+import { PollTimeline } from '@tardis-enquete/contracts';
 import { PollCard } from './PollCard';
 
 import { Button } from '@/app/components/common/Button';
@@ -11,6 +12,8 @@ import { LoaderIcon } from '@/app/components/common/LoaderIcon';
 import { queryKeys } from '@/config/queryKeys';
 import { pollService } from '@/services/api/pollService';
 import { usePollsSearchStore } from '@/stores/PollsSearchStore';
+import { useSocketEvent } from '@/hooks/useSocketEvent';
+import { queryClient } from '@/libs/queryClient';
 
 export function PollsList() {
   const {
@@ -24,6 +27,17 @@ export function PollsList() {
   });
 
   const searchInput = usePollsSearchStore((s) => s.searchInput);
+
+  useSocketEvent('pollVotesChanges', ({ poll: pollUpdated }) => {
+    console.info('A poll has updated, poll:', pollUpdated);
+
+    const polls = queryClient.getQueryData<PollTimeline[]>(queryKeys.polls()) || [];
+
+    queryClient.setQueryData<PollTimeline[]>(
+      queryKeys.polls(),
+      polls.map((poll) => (poll.id === pollUpdated.id ? pollUpdated : poll)),
+    );
+  });
 
   const pollsFiltered = useMemo(() => {
     if (!searchInput) {

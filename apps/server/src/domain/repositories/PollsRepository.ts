@@ -7,6 +7,8 @@ export default interface IPollsRepository {
 
   findAllWithOptionsAndVotes(): Promise<PollWithOptionsAndVotes[]>;
 
+  findByIdWithOptionsAndVotes(id: string): Promise<PollWithOptionsAndVotes | null>;
+
   findPollThatContainsOption(optionId: string): Promise<Poll | null>;
 
   countTotalPollsOfUserId(userId: string): Promise<number>;
