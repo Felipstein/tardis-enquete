@@ -1,21 +1,34 @@
+'use client';
+
 import { PollTimeline } from '@tardis-enquete/contracts';
 
 import { OptionProgressBar } from './OptionProgressBar';
 
 import { w } from '@/utils/w';
+import { LoaderIcon } from '@/app/components/common/LoaderIcon';
 
 export type OptionProps = {
   option: PollTimeline['options'][number];
   progress: number;
+  isLoading?: boolean;
   isSelected?: boolean;
   isDisabled?: boolean;
+  onClick?: () => void;
 };
 
-export function Option({ option, progress, isSelected = false, isDisabled = false }: OptionProps) {
+export function Option({
+  option,
+  progress,
+  isLoading = false,
+  isSelected = false,
+  isDisabled = false,
+  onClick,
+}: OptionProps) {
   return (
     <button
-      data-onlydisabled={isDisabled && !isSelected}
+      data-onlydisabled={(isDisabled && !isSelected) || isLoading}
       type="button"
+      onClick={onClick}
       className={w(
         'group relative z-10 flex w-full flex-col items-stretch overflow-hidden rounded-lg border transition-all data-[onlydisabled=true]:opacity-40 disabled:pointer-events-none',
         {
@@ -24,7 +37,7 @@ export function Option({ option, progress, isSelected = false, isDisabled = fals
           'border-[#21b9eb] bg-selected-gradient-background shadow-selected hover:brightness-110': isSelected,
         },
       )}
-      disabled={isDisabled}
+      disabled={isDisabled || isLoading}
     >
       <div className="flex w-full items-center justify-between p-4">
         <h3
@@ -33,12 +46,18 @@ export function Option({ option, progress, isSelected = false, isDisabled = fals
         >
           {option.text}
         </h3>
-        <h4
-          data-selected={isSelected}
-          className="text-xs font-medium text-primary-50 data-[selected=true]:font-bold data-[selected=true]:text-teal-400"
-        >
-          {progress}%
-        </h4>
+        <div className="flex items-center gap-2">
+          {isLoading && (
+            <LoaderIcon data-selected={isSelected} className="h-5 w-5 text-white data-[selected=true]:text-teal-400" />
+          )}
+
+          <h4
+            data-selected={isSelected}
+            className="text-xs font-medium text-primary-50 data-[selected=true]:font-bold data-[selected=true]:text-teal-400"
+          >
+            {progress}%
+          </h4>
+        </div>
       </div>
 
       <OptionProgressBar progress={progress} isSelected={isSelected} />

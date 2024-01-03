@@ -1,8 +1,9 @@
 import DiscordService from '../../services/DiscordService';
+import PolulatePollService from '../../services/PopulatePollService';
 import TokenService from '../../services/TokenService';
 import UserService from '../../services/UserService';
 
-import { factoryStoredUsersRepository } from './repositories';
+import { factoryPollsRepository, factoryStoredUsersRepository } from './repositories';
 
 const discordService = new DiscordService();
 
@@ -20,4 +21,10 @@ const tokenService = new TokenService();
 
 export function factoryTokenService() {
   return tokenService;
+}
+
+const polulatePollService = new PolulatePollService(factoryPollsRepository(), factoryUserService());
+
+export function factoryPolulatePollService() {
+  return polulatePollService;
 }

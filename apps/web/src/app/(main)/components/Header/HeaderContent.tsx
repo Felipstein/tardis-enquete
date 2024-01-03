@@ -1,6 +1,6 @@
 import { UserInfo } from '../UserInfo';
 
-import { SearchInput } from '@/app/components/common/SearchInput';
+import { PollsSearchInput } from './PollsSearchInput';
 import { LogoImage } from '@/app/components/LogoImage';
 
 export function HeaderContent() {
@@ -13,7 +13,7 @@ export function HeaderContent() {
       </div>
 
       <div className="hidden w-full max-w-[400px] sm:absolute sm:left-1/2 sm:block sm:-translate-x-1/2">
-        <SearchInput shortcut />
+        <PollsSearchInput />
       </div>
 
       <UserInfo />

@@ -22,8 +22,6 @@ const envVariablesSchema = z.object({
   ACCESS_TOKEN_SECRET_KEY: z.string(),
   ACCESS_TOKEN_EXPIRES_IN: z.string(),
 
-  HTTPS: z.coerce.boolean(),
-
   VERBOSE: z.coerce.boolean().default(false),
 });
 

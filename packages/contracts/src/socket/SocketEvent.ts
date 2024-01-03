@@ -1,3 +1,5 @@
+import { PollTimeline } from 'types';
+
 import type { Session } from './Session';
 
 export interface SocketEventsWithPayloads {
@@ -6,6 +8,7 @@ export interface SocketEventsWithPayloads {
   userMouseMove: { mousePosition: { x: number; y: number } };
   userMouseLeave: void;
   userMouseClick: { userId: string; mousePosition: { x: number; y: number } };
+  pollVotesChanges: { poll: PollTimeline };
 }
 
 export type SocketEvent = keyof SocketEventsWithPayloads;
