@@ -16,10 +16,6 @@ server.listen(port, () => {
     log.info('Development Mode');
   }
 
-  if (process.env.HTTPS) {
-    log.info('Force HTTPS protocol enabled');
-  }
-
   if (process.env.VERBOSE) {
     log.info('Verbose enabled');
   }
