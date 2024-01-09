@@ -12,7 +12,9 @@ export default class FindPollsUseCase {
   async execute(): Promise<FindPollsUseCaseReturn> {
     const polls = await this.pollsRepository.findAllWithOptionsAndVotes();
 
-    const pollsPopuledPromises = polls.map(this.populatePollService.populate);
+    const populate = this.populatePollService.populate.bind(this.populatePollService);
+
+    const pollsPopuledPromises = polls.map(populate);
 
     const pollsPopuled = await Promise.all(pollsPopuledPromises);
 
