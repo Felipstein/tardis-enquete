@@ -6,7 +6,16 @@
   "private": true,
   "scripts": {
     "preinstall": "npx only-allow yarn",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "dev:server": "yarn workspace @tardis-enquete/server dev",
+    "test:server": "yarn workspace @tardis-enquete/server test",
+    "test:watch:server": "yarn workspace @tardis-enquete/server test:watch",
+    "build:server": "yarn workspace @tardis-enquete/server build",
+    "start:server": "yarn workspace @tardis-enquete/server start",
+    "dev:web": "yarn workspace @tardis-enquete/web dev",
+    "build:web": "yarn workspace @tardis-enquete/web build",
+    "start:web": "yarn workspace @tardis-enquete/web start",
+    "build:contracts": "yarn workspace @tardis-enquete/contracts build"
   },
   "workspaces": [
     "apps/*",
