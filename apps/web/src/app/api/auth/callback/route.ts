@@ -1,6 +1,7 @@
 import { cookieKeys } from '@tardis-enquete/contracts';
 import { NextRequest, NextResponse } from 'next/server';
 import { authService } from '@/services/api/authService';
+import { infoTokenService } from '@/services/infoTokenService';
 
 export async function GET(req: NextRequest) {
   try {
@@ -27,6 +28,14 @@ export async function GET(req: NextRequest) {
     });
   } catch (error: unknown) {
     console.error('[OAuth Callback Router] An error occurred during OAuth callback:', error);
+
+    if (typeof error === 'object') {
+      const objectParsed = JSON.stringify(error);
+
+      const infoToken = infoTokenService.sign(objectParsed);
+
+      return NextResponse.redirect(new URL(`/login?t=${infoToken}`, req.url));
+    }
 
     return NextResponse.redirect(new URL('/login', req.url));
   }
