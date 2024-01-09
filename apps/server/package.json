@@ -10,7 +10,8 @@
     "start": "cross-env NODE_ENV=production node dist/http/server.js",
     "typecheck": "tsc --noEmit",
     "lint": "eslint --ext .ts src",
-    "lint:fix": "eslint --ext .ts src --fix"
+    "lint:fix": "eslint --ext .ts src --fix",
+    "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
     "@prisma/client": "^5.7.1",
