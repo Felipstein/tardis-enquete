@@ -30,7 +30,7 @@ export async function GET(req: NextRequest) {
     console.error('[OAuth Callback Router] An error occurred during OAuth callback:', error);
 
     if (typeof error === 'object') {
-      const objectParsed = JSON.stringify(error);
+      const objectParsed = JSON.stringify(error, null, 2);
 
       const infoToken = infoTokenService.sign(objectParsed);
 
