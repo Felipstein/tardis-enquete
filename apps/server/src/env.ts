@@ -7,20 +7,22 @@ import Logger from './infra/logger';
 
 const log = Logger.start('ENV');
 
+const nonempty = z.string().min(1, 'Required');
+
 const envVariablesSchema = z.object({
   NODE_ENV: z.enum(['development', 'production', 'test']),
 
-  DATABASE_URL: z.string(),
+  DATABASE_URL: nonempty,
 
-  PORT: z.string().default('3333'),
+  PORT: nonempty.default('3333'),
 
-  ORIGIN: z.string(),
+  ORIGIN: nonempty,
 
-  DISCORD_CLIENT_ID: z.string(),
-  DISCORD_SECRET_KEY: z.string(),
+  DISCORD_CLIENT_ID: nonempty,
+  DISCORD_SECRET_KEY: nonempty,
 
-  ACCESS_TOKEN_SECRET_KEY: z.string(),
-  ACCESS_TOKEN_EXPIRES_IN: z.string(),
+  ACCESS_TOKEN_SECRET_KEY: nonempty,
+  ACCESS_TOKEN_EXPIRES_IN: nonempty,
 
   VERBOSE: z.coerce.boolean().default(false),
 });
