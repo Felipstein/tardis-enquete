@@ -1,7 +1,11 @@
 import moment from 'moment';
 
 import MockPollsRepository from '../../../../__tests__/mocks/MockPollsRepository';
+import MockStoredUsersRepository from '../../../../__tests__/mocks/MockStoredUsersRepository';
 import MockVotesRepository from '../../../../__tests__/mocks/MockVotesRepository';
+import DiscordService from '../../../services/DiscordService';
+import PopulatePollService from '../../../services/PopulatePollService';
+import UserService from '../../../services/UserService';
 import Poll from '../../entities/Poll';
 import Vote from '../../entities/Vote';
 import Forbidden from '../../errors/Forbidden';
@@ -14,14 +18,22 @@ import { UnvoteDTO } from './UnvoteUseCaseDTO';
 describe('UnvoteUseCase', () => {
   let votesRepository: MockVotesRepository;
   let pollsRepository: MockPollsRepository;
+  let storedUsersRepository: MockStoredUsersRepository;
+  let userService: UserService;
+  let discordService: DiscordService;
+  let populatePollService: PopulatePollService;
 
   let useCase: UnvoteUseCase;
 
   beforeEach(() => {
     votesRepository = new MockVotesRepository();
     pollsRepository = new MockPollsRepository();
+    storedUsersRepository = new MockStoredUsersRepository();
+    discordService = new DiscordService();
+    userService = new UserService(storedUsersRepository, discordService);
+    populatePollService = new PopulatePollService(pollsRepository, userService);
 
-    useCase = new UnvoteUseCase(votesRepository, pollsRepository);
+    useCase = new UnvoteUseCase(votesRepository, pollsRepository, populatePollService);
   });
 
   it('should unvote successfully', async () => {

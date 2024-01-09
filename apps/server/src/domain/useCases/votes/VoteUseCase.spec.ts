@@ -2,6 +2,9 @@ import MockOptionsRepository from '../../../../__tests__/mocks/MockOptionsReposi
 import MockPollsRepository from '../../../../__tests__/mocks/MockPollsRepository';
 import MockStoredUsersRepository from '../../../../__tests__/mocks/MockStoredUsersRepository';
 import MockVotesRepository from '../../../../__tests__/mocks/MockVotesRepository';
+import DiscordService from '../../../services/DiscordService';
+import PopulatePollService from '../../../services/PopulatePollService';
+import UserService from '../../../services/UserService';
 import Conflict from '../../errors/Conflict';
 import PollAlreadyExpired from '../../errors/PollAlreadyExpired';
 import PollNotExists from '../../errors/PollNotExists';
@@ -15,6 +18,9 @@ describe('VoteUseCase', () => {
   let optionsRepository: MockOptionsRepository;
   let pollsRepository: MockPollsRepository;
   let storedUsersRepository: MockStoredUsersRepository;
+  let populatePollService: PopulatePollService;
+  let discordService: DiscordService;
+  let userService: UserService;
 
   let useCase: VoteUseCase;
 
@@ -23,8 +29,17 @@ describe('VoteUseCase', () => {
     optionsRepository = new MockOptionsRepository();
     pollsRepository = new MockPollsRepository();
     storedUsersRepository = new MockStoredUsersRepository();
+    discordService = new DiscordService();
+    userService = new UserService(storedUsersRepository, discordService);
+    populatePollService = new PopulatePollService(pollsRepository, userService);
 
-    useCase = new VoteUseCase(votesRepository, optionsRepository, pollsRepository, storedUsersRepository);
+    useCase = new VoteUseCase(
+      votesRepository,
+      optionsRepository,
+      pollsRepository,
+      storedUsersRepository,
+      populatePollService,
+    );
   });
 
   it('should vote successfully', async () => {
