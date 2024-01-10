@@ -26,5 +26,5 @@ export function useSocketEvent<TSocketEvent extends SocketEvent>(
       socket?.removeListener(event, callback);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, deps);
+  }, [socket, ...deps]);
 }
