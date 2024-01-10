@@ -9,6 +9,7 @@ import { useMutation } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import { Option } from './Option';
 
+import { PollOptions } from './PollOptions';
 import { UserAvatar } from '@/app/components/UserAvatar';
 import { useUser } from '@/hooks/useUser';
 import { moment } from '@/utils/moment';
@@ -35,7 +36,7 @@ export function PollCard({ poll }: PollCardProps) {
 
   const isAuthor = poll.author.id === user?.id;
 
-  // const canEdit = isAuthor || user?.role !== 'common';
+  const canEdit = isAuthor || user?.role !== 'common';
 
   const { mutate: makeVoteRequest, isPending: isVoting } = useMutation({
     mutationFn: (data: VoteParamsRequest) => voteService.vote(data, voteAbortController.current.signal),
@@ -106,7 +107,9 @@ export function PollCard({ poll }: PollCardProps) {
   }
 
   return (
-    <div className="w-full space-y-6">
+    <div className="group/poll relative w-full space-y-6">
+      {canEdit && <PollOptions />}
+
       <header className="w-full">
         <h2 className="truncate text-xl font-semibold tracking-wide">{poll.title}</h2>
 

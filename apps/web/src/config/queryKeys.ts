@@ -3,4 +3,5 @@ export const queryKeys = {
   me: () => ['me'],
   discordOAuthURL: () => ['discordOAuthURL'],
   polls: () => ['polls'],
+  poll: (pollId: string) => ['poll', pollId],
 } as const;

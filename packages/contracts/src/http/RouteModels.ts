@@ -5,6 +5,7 @@ export const RouteModels = {
   authDiscordCallback: '/auth/discord/callback',
   authVerifyToken: '/auth/verify',
   getPolls: '/polls',
+  getPoll: '/polls/:pollId',
   createPoll: '/polls',
   deletePoll: '/polls/:pollId',
   vote: '/options/:optionId/votes',
