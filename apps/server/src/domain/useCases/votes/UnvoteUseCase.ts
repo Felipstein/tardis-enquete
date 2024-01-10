@@ -45,6 +45,8 @@ export default class UnvoteUseCase {
       }
     }
 
+    await this.votesRepository.delete(voteId);
+
     if (process.env.NODE_ENV !== 'test') {
       const pollUpdated = await this.pollsRepository.findByIdWithOptionsAndVotes(poll.id);
 
@@ -58,7 +60,5 @@ export default class UnvoteUseCase {
         log.warn('Poll not found to emit socket event, original poll info:', JSON.stringify(poll, null, 2));
       }
     }
-
-    await this.votesRepository.delete(voteId);
   }
 }
