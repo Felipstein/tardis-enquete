@@ -51,10 +51,12 @@ export default class VoteUseCase {
      */
     const optionVotedInPoll = await this.optionsRepository.findOptionVotedByUserInPoll(userId, poll.id);
     if (optionVotedInPoll) {
-      const optionVote = await this.votesRepository.findByOptionId(optionVotedInPoll.id);
+      const optionVotes = await this.votesRepository.findAllVotesOfOptionId(optionVotedInPoll.id);
 
-      if (optionVote) {
-        await this.votesRepository.delete(optionVote?.id);
+      const optionVotedByUser = optionVotes.find((option) => option.userId === userId);
+
+      if (optionVotedByUser) {
+        await this.votesRepository.delete(optionVotedByUser.id);
       }
     }
 

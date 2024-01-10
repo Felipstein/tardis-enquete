@@ -25,14 +25,10 @@ export default class PrismaVotesRepository implements IVotesRepository {
     return PrismaVotesMapper.toDomain(vote);
   }
 
-  async findByOptionId(optionId: string): Promise<Vote | null> {
-    const vote = await this.prismaClient.vote.findFirst({ where: { optionId } });
+  async findAllVotesOfOptionId(optionId: string): Promise<Vote[]> {
+    const vote = await this.prismaClient.vote.findMany({ where: { optionId } });
 
-    if (!vote) {
-      return null;
-    }
-
-    return PrismaVotesMapper.toDomain(vote);
+    return vote.map(PrismaVotesMapper.toDomain);
   }
 
   async create({ optionId, userId }: CreateVoteDTO): Promise<Vote> {

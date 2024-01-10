@@ -5,7 +5,7 @@ export default class MockVotesRepository implements IVotesRepository {
 
   findById = jest.fn();
 
-  findByOptionId = jest.fn();
+  findAllVotesOfOptionId = jest.fn();
 
   create = jest.fn();
 

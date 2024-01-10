@@ -7,7 +7,7 @@ export default interface IVotesRepository {
 
   findById(id: string): Promise<Vote | null>;
 
-  findByOptionId(optionId: string): Promise<Vote | null>;
+  findAllVotesOfOptionId(optionId: string): Promise<Vote[]>;
 
   create(data: CreateVoteDTO): Promise<Vote>;
 
