@@ -8,6 +8,8 @@ export default class InfoTokenService {
     const secretKey = process.env.INFO_TOKEN_SECRET_KEY;
 
     if (!secretKey) {
+      console.error('env INFO_TOKEN_SECRET_KEY is not defined');
+
       throw new ClientError(
         'Ocorreu um erro no cliente, por favor, entre em contato urgentemente comigo!!!',
         'env INFO_TOKEN_SECRET_KEY is not defined',
