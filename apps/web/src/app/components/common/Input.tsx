@@ -48,11 +48,13 @@ const InputBox = forwardRef<HTMLDivElement, InputBoxProps>(
 
 export type InputInputProps = OmitTyped<ComponentProps<'input'>, 'disabled'> & InputContainerProps;
 
-const InputInput = forwardRef<HTMLInputElement, InputInputProps>(({ fullRounded, isFocused, ...props }, ref) => (
-  <InputContainer fullRounded={fullRounded} isFocused={isFocused}>
-    <input ref={ref} {...props} />
-  </InputContainer>
-));
+const InputInput = forwardRef<HTMLInputElement, InputInputProps>(
+  ({ fullRounded, isFocused, disabled, ...props }, ref) => (
+    <InputContainer fullRounded={fullRounded} isFocused={isFocused} disabled={disabled}>
+      <input ref={ref} disabled={disabled} {...props} />
+    </InputContainer>
+  ),
+);
 
 // -----------
 

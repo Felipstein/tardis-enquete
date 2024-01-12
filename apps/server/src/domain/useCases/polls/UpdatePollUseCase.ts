@@ -1,30 +1,39 @@
 import UserService from '../../../services/UserService';
+import PollNotExists from '../../errors/PollNotExists';
 import StoredUserNotExists from '../../errors/StoredUserNotExists';
 import UnprocessableEntity from '../../errors/UnprocessableEntity';
+import IOptionsRepository from '../../repositories/OptionsRepository';
 import IPollsRepository from '../../repositories/PollsRepository';
-import IStoredUsersRepository from '../../repositories/StoredUsersStoredRepository';
 
-import { CreatePollUseCaseDTO, CreatePollUseCaseReturn } from './CreatePollUseCaseDTO';
+import { UpdatePollUseCaseDTO, UpdatePollUseCaseReturn } from './UpdatePollUseCaseDTO';
 
-export default class CreatePollUseCase {
+export default class UpdatePollUseCase {
   constructor(
     private readonly pollsRepository: IPollsRepository,
-    private readonly storedUsersRepository: IStoredUsersRepository,
+    private readonly optionsRepository: IOptionsRepository,
     private readonly usersService: UserService,
   ) {}
 
-  async execute(data: CreatePollUseCaseDTO): Promise<CreatePollUseCaseReturn> {
-    if (data.expireAt <= new Date()) {
-      throw new UnprocessableEntity('A data de expiração deve ser posterior a data de criação');
+  async execute({ id, options: optionsToUpdate, ...data }: UpdatePollUseCaseDTO): Promise<UpdatePollUseCaseReturn> {
+    if (data.expireAt) {
+      if (data.expireAt <= new Date()) {
+        throw new UnprocessableEntity('A data de expiração deve ser posterior a data de criação');
+      }
     }
 
-    const storedUsersExists = await this.storedUsersRepository.exists(data.authorId);
-
-    if (!storedUsersExists) {
-      throw new StoredUserNotExists(`Não há informações do usuário ${data.authorId} cadastradas ainda`);
+    const pollExists = await this.pollsRepository.exists(id);
+    if (!pollExists) {
+      throw new PollNotExists();
     }
 
-    const { poll, options } = await this.pollsRepository.create(data);
+    if (optionsToUpdate) {
+      await Promise.all([
+        this.optionsRepository.deleteOptionsOfPoll(id),
+        this.optionsRepository.createMany(id, optionsToUpdate),
+      ]);
+    }
+
+    const { poll, options } = await this.pollsRepository.update(id, data);
 
     const [authorInfo, totalPolls] = await Promise.all([
       this._findUserInfo(poll.authorId),

@@ -150,8 +150,8 @@ export default class PrismaPollsRepository implements IPollsRepository {
     return totalPolls;
   }
 
-  async create(data: CreatePollDTO): Promise<Poll> {
-    const poll = await this.prismaClient.poll.create({
+  async create(data: CreatePollDTO): Promise<PollWithOptions> {
+    const pollCreated = await this.prismaClient.poll.create({
       data: {
         title: data.title,
         description: data.description,
@@ -165,18 +165,62 @@ export default class PrismaPollsRepository implements IPollsRepository {
           },
         },
       },
+      include: {
+        options: {
+          select: {
+            id: true,
+            text: true,
+            _count: {
+              select: {
+                votes: true,
+              },
+            },
+          },
+        },
+      },
     });
 
-    return PrismaPollsMapper.toDomain(poll);
+    const { options, ...poll } = pollCreated;
+
+    return {
+      poll: PrismaPollsMapper.toDomain(poll),
+      options: options.map((option) => ({
+        ...option,
+        _count: undefined,
+        totalVotes: option._count.votes,
+      })),
+    };
   }
 
-  async update(id: string, data: UpdatePollDTO): Promise<Poll> {
-    const poll = await this.prismaClient.poll.update({
+  async update(id: string, data: UpdatePollDTO): Promise<PollWithOptions> {
+    const pollUpdated = await this.prismaClient.poll.update({
       where: { id },
       data,
+      include: {
+        options: {
+          select: {
+            id: true,
+            text: true,
+            _count: {
+              select: {
+                votes: true,
+              },
+            },
+          },
+        },
+      },
     });
 
-    return PrismaPollsMapper.toDomain(poll);
+    const { options, ...poll } = pollUpdated;
+
+    return {
+      poll: PrismaPollsMapper.toDomain(poll),
+      options: options.map((option) => ({
+        ...option,
+        _count: undefined,
+        totalVotes: option._count.votes,
+      })),
+    };
   }
 
   async updateByInstance(data: Poll): Promise<void> {

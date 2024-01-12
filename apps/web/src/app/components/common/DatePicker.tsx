@@ -21,9 +21,11 @@ export type DatePickerProps = OmitTyped<
 export function DatePicker({ value, onChange, errorFeedback, showExpireAt = false, ...props }: DatePickerProps) {
   const [isOpen, setIsOpen] = useState(false);
 
+  const isExpired = value && value < new Date();
+
   return (
     <Popover.Root open={isOpen} onOpenChange={setIsOpen}>
-      <Popover.Trigger>
+      <Popover.Trigger disabled={props.disabled}>
         <Input.Root>
           <Input.Box left>
             <Calendar className="h-5 w-5 text-primary-300" />
@@ -39,9 +41,14 @@ export function DatePicker({ value, onChange, errorFeedback, showExpireAt = fals
           />
 
           {showExpireAt && value && (
-            <Input.Box right className="text-sm text-primary-500">
+            <Input.Box
+              right
+              data-expired={isExpired}
+              className="text-sm text-primary-500 data-[expired=true]:text-red-500/60"
+            >
               <Clock10 className="mr-1.5 h-3.5 w-3.5" />
-              expira {moment(value).fromNow()}
+
+              {isExpired ? `expirado ${moment(value).fromNow()}` : `expira ${moment(value).fromNow()}`}
             </Input.Box>
           )}
         </Input.Root>

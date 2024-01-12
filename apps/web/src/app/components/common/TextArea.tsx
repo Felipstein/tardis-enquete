@@ -49,10 +49,11 @@ const TextAreaBox = forwardRef<HTMLDivElement, TextAreaBoxProps>(
 type TextAreaInputProps = OmitTyped<ComponentProps<'textarea'>, 'disabled'> & InputContainerProps;
 
 const TextAreaInput = forwardRef<HTMLTextAreaElement, TextAreaInputProps>(
-  ({ fullRounded, isFocused, className, ...props }, ref) => (
-    <InputContainer fullRounded={fullRounded} isFocused={isFocused}>
+  ({ fullRounded, isFocused, className, disabled, ...props }, ref) => (
+    <InputContainer fullRounded={fullRounded} disabled={disabled} isFocused={isFocused}>
       <textarea
         ref={ref}
+        disabled={disabled}
         className={w('min-h-[42px] scrollbar-thin scrollbar-track-primary-800 scrollbar-thumb-primary-500', className)}
         {...props}
       />

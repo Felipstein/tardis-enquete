@@ -35,13 +35,14 @@ const pollFormSchema = z.object({
     .min(2, 'Deve haver pelo menos 2 opções'),
 });
 
-type PollFormData = z.infer<typeof pollFormSchema>;
+export type PollFormData = z.infer<typeof pollFormSchema>;
 
 export type PollFormProps = {
   defaultPoll?: Poll;
   onSubmit: (data: PollFormData) => Promise<void> | void;
   onChangeForm?: (isChanged: boolean) => void;
   onIsValid?: (isValid: boolean) => void;
+  disableFields?: boolean;
   children: ReactNode;
 };
 
@@ -50,7 +51,7 @@ export type PollFormComponent = {
 };
 
 const PollForm = forwardRef<PollFormComponent, PollFormProps>(
-  ({ defaultPoll, onSubmit, onChangeForm, onIsValid, children }, ref) => {
+  ({ defaultPoll, onSubmit, onChangeForm, onIsValid, disableFields = false, children }, ref) => {
     const {
       control,
       handleSubmit,
@@ -110,7 +111,13 @@ const PollForm = forwardRef<PollFormComponent, PollFormProps>(
             <Label htmlFor="title">Título</Label>
 
             <Input.Root>
-              <Input.Input type="text" placeholder="Título" id="title" {...register('title')} />
+              <Input.Input
+                type="text"
+                placeholder="Título"
+                id="title"
+                disabled={disableFields}
+                {...register('title')}
+              />
 
               {errors.title?.message && <Input.ErrorFeedback>{errors.title.message}</Input.ErrorFeedback>}
             </Input.Root>
@@ -120,7 +127,12 @@ const PollForm = forwardRef<PollFormComponent, PollFormProps>(
             <Label htmlFor="description">Descrição</Label>
 
             <TextArea.Root>
-              <TextArea.Input placeholder="Descrição" id="description" {...register('description')} />
+              <TextArea.Input
+                placeholder="Descrição"
+                id="description"
+                disabled={disableFields}
+                {...register('description')}
+              />
 
               <div
                 data-error={!!errors.description?.message}
@@ -151,6 +163,7 @@ const PollForm = forwardRef<PollFormComponent, PollFormProps>(
                   onChange={onChange}
                   placeholder="Data de expiração"
                   errorFeedback={errors.expireAt?.message}
+                  disabled={disableFields}
                   showExpireAt
                 />
               )}
@@ -161,7 +174,7 @@ const PollForm = forwardRef<PollFormComponent, PollFormProps>(
             <header className="flex w-full items-center justify-between">
               <Label>Opções</Label>
 
-              <Button variant="thematic" className="h-[42px]" onClick={() => append('')}>
+              <Button variant="thematic" className="h-[42px]" isDisabled={disableFields} onClick={() => append('')}>
                 <Plus className="h-4 w-4" />
               </Button>
             </header>
@@ -178,6 +191,7 @@ const PollForm = forwardRef<PollFormComponent, PollFormProps>(
                               <Button
                                 variant="thematic"
                                 className="max-h-[42px] cursor-grab"
+                                isDisabled={disableFields}
                                 {...provided.dragHandleProps}
                               >
                                 <List className="h-4 w-4" />
@@ -187,6 +201,7 @@ const PollForm = forwardRef<PollFormComponent, PollFormProps>(
                                 <Input.Input
                                   type="text"
                                   placeholder="Descreva sua opção"
+                                  disabled={disableFields}
                                   {...register(`options.${index}`)}
                                 />
 
@@ -195,7 +210,12 @@ const PollForm = forwardRef<PollFormComponent, PollFormProps>(
                                 )}
                               </Input.Root>
 
-                              <Button variant="thematic-danger" className="max-h-[42px]" onClick={() => remove(index)}>
+                              <Button
+                                variant="thematic-danger"
+                                className="max-h-[42px]"
+                                isDisabled={disableFields}
+                                onClick={() => remove(index)}
+                              >
                                 <Trash2 className="h-4 w-4" />
                               </Button>
                             </li>

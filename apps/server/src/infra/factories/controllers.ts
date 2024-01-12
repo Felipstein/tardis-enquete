@@ -10,6 +10,7 @@ import {
   factoryDeletePollUseCase,
   factoryFindPollByIdUseCase,
   factoryFindPollsUseCase,
+  factoryUpdatePollUseCase,
 } from './useCases/pollsUseCase';
 import { factoryUnvoteUseCase, factoryVoteUseCase } from './useCases/votesUseCase';
 
@@ -32,6 +33,7 @@ const pollController = new PollController(
   factoryFindPollsUseCase(),
   factoryFindPollByIdUseCase(),
   factoryCreatePollUseCase(),
+  factoryUpdatePollUseCase(),
   factoryDeletePollUseCase(),
 );
 

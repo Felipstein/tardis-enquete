@@ -1,14 +1,17 @@
 'use client';
 
 import { Poll } from '@tardis-enquete/contracts';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
-import PollForm, { PollFormComponent } from '@/app/components/forms/PollForm';
+import { toast } from 'react-toastify';
+import { AlertCircle } from 'lucide-react';
+import PollForm, { PollFormComponent, PollFormData } from '@/app/components/forms/PollForm';
 import { Button } from '@/app/components/common/Button';
 import { queryKeys } from '@/config/queryKeys';
 import { pollService } from '@/services/api/pollService';
 import { LoaderIcon } from '@/app/components/common/LoaderIcon';
+import { queryClient } from '@/libs/queryClient';
 
 export type EditPollFormProps = {
   pollId: string;
@@ -33,6 +36,24 @@ export default function EditPollForm({ pollId, defaultPollFetched }: EditPollFor
     initialData: defaultPollFetched,
   });
 
+  const { mutate: updatePollRequest, isPending: isUpdatingPoll } = useMutation({
+    mutationFn: pollService.update,
+  });
+
+  function updatePoll({ title, description, expireAt, options }: PollFormData) {
+    updatePollRequest(
+      { pollId, title, description, expireAt, options },
+      {
+        onSuccess(data) {
+          queryClient.setQueryData<Poll>(queryKeys.poll(pollId), data);
+        },
+        onError(error) {
+          toast.error(error.message);
+        },
+      },
+    );
+  }
+
   if (isLoadingPoll) {
     return (
       <div className="flex w-full items-center justify-center">
@@ -42,10 +63,16 @@ export default function EditPollForm({ pollId, defaultPollFetched }: EditPollFor
   }
 
   if (errorOnFetchPoll || !poll) {
+    if (errorOnFetchPoll) {
+      toast.error(errorOnFetchPoll.message);
+    }
+
     router.push('/');
 
     return null;
   }
+
+  const isExpired = !isValid && new Date() > new Date(poll.expireAt);
 
   return (
     <div className="space-y-6">
@@ -58,19 +85,41 @@ export default function EditPollForm({ pollId, defaultPollFetched }: EditPollFor
       <PollForm
         ref={pollFormRef}
         defaultPoll={poll}
-        onSubmit={console.log}
+        onSubmit={updatePoll}
         onChangeForm={setHasChanges}
         onIsValid={setIsValid}
+        disableFields={isUpdatingPoll}
       >
-        <div className="flex items-center justify-end gap-4">
-          <Button variant="ghost" isDisabled={!hasChanges} onClick={() => pollFormRef.current?.resetFields()}>
-            Cancelar
-          </Button>
+        <footer className="flex items-center justify-between gap-4">
+          {hasChanges && (
+            <div
+              data-expired={isExpired}
+              className="flex items-center gap-1.5 text-primary-500 data-[expired=true]:text-red-500"
+            >
+              <AlertCircle className="h-3.5 w-3.5 flex-shrink-0" />
 
-          <Button type="submit" largePaddingX isDisabled={!hasChanges || !isValid}>
-            Editar
-          </Button>
-        </div>
+              <span className="inline-block w-fit text-sm">
+                {isExpired
+                  ? 'Você não pode salvar as alterações pois a data escolhida já está expirada'
+                  : 'Há alterações não salvas'}
+              </span>
+            </div>
+          )}
+
+          <div className="flex w-full items-center justify-end gap-4">
+            <Button
+              variant="ghost"
+              isDisabled={!hasChanges || isUpdatingPoll}
+              onClick={() => pollFormRef.current?.resetFields()}
+            >
+              Cancelar
+            </Button>
+
+            <Button type="submit" largePaddingX isDisabled={!hasChanges || !isValid} isLoading={isUpdatingPoll}>
+              Editar
+            </Button>
+          </div>
+        </footer>
       </PollForm>
     </div>
   );

@@ -13,6 +13,8 @@ route.get(RouteModels.getPoll, ensureAuth(), controller.findPollById.bind(contro
 
 route.post(RouteModels.createPoll, ensureAuth('admin', 'developer'), controller.createPoll.bind(controller));
 
+route.put(RouteModels.updatePoll, ensureAuth('admin', 'developer'), controller.updatePoll.bind(controller));
+
 route.delete(RouteModels.deletePoll, ensureAuth('admin', 'developer'), controller.deletePoll.bind(controller));
 
 export { route as pollRoutes };

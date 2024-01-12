@@ -1,5 +1,6 @@
-import { Poll } from 'types/Poll';
 import { z } from 'zod';
+
+import { Poll } from '../../types';
 
 export const getPollByIdParamsRequest = z.object({
   pollId: z.string({

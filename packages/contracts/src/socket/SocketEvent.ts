@@ -1,4 +1,4 @@
-import { PollTimeline } from 'types';
+import { PollTimeline } from '../types';
 
 import type { Session } from './Session';
 

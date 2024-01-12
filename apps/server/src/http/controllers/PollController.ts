@@ -2,9 +2,12 @@ import {
   CreatePollResponse,
   GetPollByIdResponse,
   GetPollsResponse,
+  UpdatePollResponse,
   createPollBodyRequest,
   deletePollParamsRequest,
   getPollByIdParamsRequest,
+  updatePollBodyRequest,
+  updatePollParamsRequest,
 } from '@tardis-enquete/contracts';
 import { Request, Response } from 'express';
 
@@ -12,12 +15,14 @@ import CreatePollUseCase from '../../domain/useCases/polls/CreatePollUseCase';
 import DeletePollUseCase from '../../domain/useCases/polls/DeletePollUseCase';
 import FindPollByIdUseCase from '../../domain/useCases/polls/FindPollByIdUseCase';
 import FindPollsUseCase from '../../domain/useCases/polls/FindPollsUseCase';
+import UpdatePollUseCase from '../../domain/useCases/polls/UpdatePollUseCase';
 
 export default class PollController {
   constructor(
     private readonly findPollsUseCase: FindPollsUseCase,
     private readonly findPollByIdUseCase: FindPollByIdUseCase,
     private readonly createPollUseCase: CreatePollUseCase,
+    private readonly updatePollUseCase: UpdatePollUseCase,
     private readonly deletePollUseCase: DeletePollUseCase,
   ) {}
 
@@ -54,10 +59,23 @@ export default class PollController {
     });
 
     const response: CreatePollResponse = {
-      pollId: poll.id,
+      poll,
     };
 
     return res.status(201).json(response);
+  }
+
+  async updatePoll(req: Request, res: Response) {
+    const { pollId } = updatePollParamsRequest.parse(req.params);
+    const data = updatePollBodyRequest.parse(req.body);
+
+    const poll = await this.updatePollUseCase.execute({ id: pollId, ...data });
+
+    const response: UpdatePollResponse = {
+      poll,
+    };
+
+    return res.json(response);
   }
 
   async deletePoll(req: Request, res: Response) {

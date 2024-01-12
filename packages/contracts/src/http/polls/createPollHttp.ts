@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+import { Poll } from '../../types';
+
 export const createPollBodyRequest = z.object({
   title: z.string({ required_error: 'Título é obrigatório', invalid_type_error: 'Título deve ser um texto' }),
   description: z.string({
@@ -24,5 +26,5 @@ export const createPollBodyRequest = z.object({
 export type CreatePollBodyRequest = z.infer<typeof createPollBodyRequest>;
 
 export type CreatePollResponse = {
-  pollId: string;
+  poll: Poll;
 };

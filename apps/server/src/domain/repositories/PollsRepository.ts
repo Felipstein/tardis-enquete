@@ -15,9 +15,9 @@ export default interface IPollsRepository {
 
   countTotalPollsOfUserId(userId: string): Promise<number>;
 
-  create(data: CreatePollDTO): Promise<Poll>;
+  create(data: CreatePollDTO): Promise<PollWithOptions>;
 
-  update(id: string, data: UpdatePollDTO): Promise<Poll>;
+  update(id: string, data: UpdatePollDTO): Promise<PollWithOptions>;
 
   updateByInstance(data: Poll): Promise<void>;
 
