@@ -6,6 +6,7 @@ import { convertDateStringsToDates } from '@/utils/convertDateStringsToDates';
 import { environment } from '@/utils/environment';
 import { getAccessTokenClientSide } from '@/utils/getAccessTokenClientSide';
 import { getServerURL } from '@/utils/getServerURL';
+import { fetchToken } from '@/app/actions';
 
 export const api = axios.create({
   baseURL: getServerURL(),
@@ -16,6 +17,8 @@ api.interceptors.request.use(async (config) => {
 
   if (environment() === 'client') {
     token = await getAccessTokenClientSide();
+  } else {
+    token = await fetchToken();
   }
 
   if (token) {
@@ -56,9 +59,29 @@ api.interceptors.response.use(
         throw new APIError(apiErrorResponse);
       }
 
-      const { name, message, response } = error;
+      let message: string;
+      let statusCode: number;
 
-      const statusCode = response?.status || 500;
+      if (error.response) {
+        if (error.response.data) {
+          if (typeof error.response.data === 'string') {
+            message = error.response.data;
+          } else if (typeof error.response.data === 'object') {
+            message = JSON.stringify(error.response.data, null, 2);
+          } else {
+            message = error.response.statusText;
+          }
+        } else {
+          message = error.response.statusText;
+        }
+
+        statusCode = error.response.status;
+      } else {
+        message = error.message;
+        statusCode = 500;
+      }
+
+      const { name } = error;
 
       throw new APIError({ name, message, statusCode });
     }

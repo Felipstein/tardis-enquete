@@ -1,27 +1,19 @@
-export interface PollTimeline {
-  id: string;
-  title: string;
-  description: string;
-  expireAt: Date;
-  createdAt: Date;
-  author: {
+import { Poll } from './Poll';
+
+type Option = Poll['options'][number];
+
+type OptionWithVotes = Omit<Option, 'totalVotes'> & {
+  votes: Array<{
     id: string;
-    username: string;
-    globalName: string;
-    avatar: string;
-    totalPolls: number;
-  };
-  options: Array<{
-    id: string;
-    text: string;
-    votes: Array<{
+    user: {
       id: string;
-      user: {
-        id: string;
-        username: string;
-        globlaName: string;
-        avatar: string;
-      };
-    }>;
+      username: string;
+      globalName: string;
+      avatar: string;
+    };
   }>;
-}
+};
+
+export type PollTimeline = Omit<Poll, 'options'> & {
+  options: OptionWithVotes[];
+};

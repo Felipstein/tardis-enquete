@@ -1,18 +1,22 @@
 import {
   CreatePollResponse,
+  GetPollByIdResponse,
   GetPollsResponse,
   createPollBodyRequest,
   deletePollParamsRequest,
+  getPollByIdParamsRequest,
 } from '@tardis-enquete/contracts';
 import { Request, Response } from 'express';
 
 import CreatePollUseCase from '../../domain/useCases/polls/CreatePollUseCase';
 import DeletePollUseCase from '../../domain/useCases/polls/DeletePollUseCase';
+import FindPollByIdUseCase from '../../domain/useCases/polls/FindPollByIdUseCase';
 import FindPollsUseCase from '../../domain/useCases/polls/FindPollsUseCase';
 
 export default class PollController {
   constructor(
     private readonly findPollsUseCase: FindPollsUseCase,
+    private readonly findPollByIdUseCase: FindPollByIdUseCase,
     private readonly createPollUseCase: CreatePollUseCase,
     private readonly deletePollUseCase: DeletePollUseCase,
   ) {}
@@ -22,6 +26,18 @@ export default class PollController {
 
     const response: GetPollsResponse = {
       polls,
+    };
+
+    return res.json(response);
+  }
+
+  async findPollById(req: Request, res: Response) {
+    const { pollId } = getPollByIdParamsRequest.parse(req.params);
+
+    const poll = await this.findPollByIdUseCase.execute({ pollId });
+
+    const response: GetPollByIdResponse = {
+      poll,
     };
 
     return res.json(response);

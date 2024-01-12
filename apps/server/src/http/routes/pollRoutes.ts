@@ -9,6 +9,7 @@ const route = Router();
 const controller = factoryPollController();
 
 route.get(RouteModels.getPolls, ensureAuth(), controller.findPolls.bind(controller));
+route.get(RouteModels.getPoll, ensureAuth(), controller.findPollById.bind(controller));
 
 route.post(RouteModels.createPoll, ensureAuth('admin', 'developer'), controller.createPoll.bind(controller));
 

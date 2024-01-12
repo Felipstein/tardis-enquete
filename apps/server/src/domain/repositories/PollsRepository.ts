@@ -1,6 +1,6 @@
 import Poll from '../entities/Poll';
 
-import { CreatePollDTO, PollWithOptionsAndVotes, UpdatePollDTO } from './PollsRepositoryDTO';
+import { CreatePollDTO, PollWithOptions, PollWithOptionsAndVotes, UpdatePollDTO } from './PollsRepositoryDTO';
 
 export default interface IPollsRepository {
   exists(id: string): Promise<boolean>;
@@ -8,6 +8,8 @@ export default interface IPollsRepository {
   findAllWithOptionsAndVotes(): Promise<PollWithOptionsAndVotes[]>;
 
   findByIdWithOptionsAndVotes(id: string): Promise<PollWithOptionsAndVotes | null>;
+
+  findByIdWithOptions(id: string): Promise<PollWithOptions | null>;
 
   findPollThatContainsOption(optionId: string): Promise<Poll | null>;
 

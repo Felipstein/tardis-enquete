@@ -24,7 +24,7 @@ export default class PopulatePollService {
           user: {
             id: user.id,
             username: user.username,
-            globlaName: user.globalName,
+            globalName: user.globalName,
             avatar: user.avatar,
           },
         } satisfies Vote;

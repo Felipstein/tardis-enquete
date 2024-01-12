@@ -12,6 +12,15 @@ export interface CreatePollDTO {
 
 export type UpdatePollDTO = Partial<OmitTyped<EntityProps<Poll>, 'id' | 'createdAt' | 'authorId'>>;
 
+export interface PollWithOptions {
+  poll: Poll;
+  options: Array<{
+    id: string;
+    text: string;
+    totalVotes: number;
+  }>;
+}
+
 export interface PollWithOptionsAndVotes {
   poll: Poll;
   options: Array<{

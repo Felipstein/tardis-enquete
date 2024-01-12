@@ -1,3 +1,5 @@
+'use client';
+
 import { Poll } from '@tardis-enquete/contracts';
 import PollForm from '@/app/components/forms/PollForm';
 import { Button } from '@/app/components/common/Button';

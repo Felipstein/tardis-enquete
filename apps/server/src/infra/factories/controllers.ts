@@ -5,7 +5,12 @@ import VoteController from '../../http/controllers/VoteController';
 
 import { factoryDiscordService, factoryTokenService, factoryUserService } from './services';
 import { factoryGenerateAccessTokenUseCase, factoryGetDiscordUserInfoUseCase } from './useCases/devToolsUseCase';
-import { factoryCreatePollUseCase, factoryDeletePollUseCase, factoryFindPollsUseCase } from './useCases/pollsUseCase';
+import {
+  factoryCreatePollUseCase,
+  factoryDeletePollUseCase,
+  factoryFindPollByIdUseCase,
+  factoryFindPollsUseCase,
+} from './useCases/pollsUseCase';
 import { factoryUnvoteUseCase, factoryVoteUseCase } from './useCases/votesUseCase';
 
 const devToolsController = new DevToolsController(
@@ -25,6 +30,7 @@ export function factoryOAuthController() {
 
 const pollController = new PollController(
   factoryFindPollsUseCase(),
+  factoryFindPollByIdUseCase(),
   factoryCreatePollUseCase(),
   factoryDeletePollUseCase(),
 );

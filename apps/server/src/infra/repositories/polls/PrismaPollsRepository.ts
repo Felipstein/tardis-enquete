@@ -2,7 +2,12 @@ import { PrismaClient } from '@prisma/client';
 
 import Poll from '../../../domain/entities/Poll';
 import IPollsRepository from '../../../domain/repositories/PollsRepository';
-import { PollWithOptionsAndVotes, CreatePollDTO, UpdatePollDTO } from '../../../domain/repositories/PollsRepositoryDTO';
+import {
+  PollWithOptionsAndVotes,
+  CreatePollDTO,
+  UpdatePollDTO,
+  PollWithOptions,
+} from '../../../domain/repositories/PollsRepositoryDTO';
 
 import PrismaPollsMapper from './PrismaPollsMapper';
 
@@ -52,6 +57,40 @@ export default class PrismaPollsRepository implements IPollsRepository {
     }));
 
     return pollsPopuled;
+  }
+
+  async findByIdWithOptions(id: string): Promise<PollWithOptions | null> {
+    const poll = await this.prismaClient.poll.findUnique({
+      where: { id },
+      include: {
+        options: {
+          select: {
+            id: true,
+            text: true,
+            _count: {
+              select: {
+                votes: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (!poll) {
+      return null;
+    }
+
+    const { options, ...pollWithoutOptions } = poll;
+
+    return {
+      poll: PrismaPollsMapper.toDomain(pollWithoutOptions),
+      options: options.map((option) => ({
+        ...option,
+        _count: undefined,
+        totalVotes: option._count.votes,
+      })),
+    };
   }
 
   async findByIdWithOptionsAndVotes(id: string): Promise<PollWithOptionsAndVotes | null> {

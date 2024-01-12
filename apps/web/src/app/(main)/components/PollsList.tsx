@@ -15,7 +15,12 @@ import { usePollsSearchStore } from '@/stores/PollsSearchStore';
 import { useSocketEvent } from '@/hooks/useSocketEvent';
 import { queryClient } from '@/libs/queryClient';
 
-export function PollsList() {
+export type PollsListProps = {
+  pollsAlreadyFetched?: PollTimeline[];
+  errorOnInitialFetch?: unknown | null;
+};
+
+export function PollsList({ pollsAlreadyFetched, errorOnInitialFetch }: PollsListProps) {
   const {
     data: polls = [],
     isLoading: isLoadingPolls,
@@ -24,6 +29,7 @@ export function PollsList() {
   } = useQuery({
     queryKey: queryKeys.polls(),
     queryFn: pollService.getPolls,
+    initialData: pollsAlreadyFetched,
   });
 
   const searchInput = usePollsSearchStore((s) => s.searchInput);
@@ -56,20 +62,22 @@ export function PollsList() {
   }, [polls, searchInput]);
 
   const errorMessage = useMemo(() => {
-    if (!errorOnLoadPolls) {
+    const error = errorOnLoadPolls || errorOnInitialFetch;
+
+    if (!error) {
       return null;
     }
 
-    if (errorOnLoadPolls instanceof Error) {
-      return errorOnLoadPolls.message;
+    if (error instanceof Error) {
+      return error.message;
     }
 
-    if (typeof errorOnLoadPolls === 'string') {
-      return errorOnLoadPolls;
+    if (typeof error === 'string') {
+      return error;
     }
 
     return 'Ocorreu um erro desconhecido ao tentar carregar as enquetes.';
-  }, [errorOnLoadPolls]);
+  }, [errorOnLoadPolls, errorOnInitialFetch]);
 
   if (isLoadingPolls) {
     return (

@@ -5,6 +5,8 @@ export default class MockPollsRepository implements IPollsRepository {
 
   findAllWithOptionsAndVotes = jest.fn();
 
+  findByIdWithOptions = jest.fn();
+
   findByIdWithOptionsAndVotes = jest.fn();
 
   findPollThatContainsOption = jest.fn();
