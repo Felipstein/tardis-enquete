@@ -44,8 +44,13 @@ export default function EditPollForm({ pollId, defaultPollFetched }: EditPollFor
     updatePollRequest(
       { pollId, title, description, expireAt, options },
       {
-        onSuccess(data) {
+        async onSuccess(data) {
           queryClient.setQueryData<Poll>(queryKeys.poll(pollId), data);
+          queryClient.invalidateQueries({ queryKey: queryKeys.polls() });
+
+          toast.success('Enquete atualizada com êxito');
+
+          router.push('/');
         },
         onError(error) {
           toast.error(error.message);
