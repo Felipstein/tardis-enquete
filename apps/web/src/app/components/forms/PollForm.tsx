@@ -9,10 +9,20 @@ import moment from 'moment';
 import { Input } from '../common/Input';
 import { Label } from '../common/Label';
 import { DatePicker } from '../common/DatePicker';
+import { TextArea } from '../common/TextArea';
+
+const DESCRIPTION_LENGTH_LIMIT = 600;
 
 const pollFormSchema = z.object({
-  title: z.string().min(3, 'O título deve possuir pelo menos 3 caracteres'),
-  description: z.string().optional(),
+  title: z
+    .string()
+    .min(3, 'O título deve possuir pelo menos 3 caracteres')
+    .max(64, 'O título deve possuir no máximo 64 caracteres'),
+  description: z
+    .string()
+    .max(DESCRIPTION_LENGTH_LIMIT, 'Mah rapaz, aí você foi longe pra burro')
+    .optional()
+    .transform((description) => (description === '' ? undefined : description)),
   expireAt: z.date().refine((date) => date.getTime() > Date.now(), { message: 'Escolha uma data futura, tongo' }),
   options: z
     .array(z.string().min(3, 'A opção deve possuir pelo menos 3 caracteres'))
@@ -39,6 +49,7 @@ const PollForm = forwardRef<PollFormComponent, PollFormProps>(
       control,
       handleSubmit,
       register,
+      watch,
       reset: resetFields,
       formState: { errors, isDirty, isValid },
     } = useForm<PollFormData>({
@@ -68,6 +79,10 @@ const PollForm = forwardRef<PollFormComponent, PollFormProps>(
       onIsValid?.(isValid);
     }, [onIsValid, isValid]);
 
+    const descriptionLength = watch('description')?.length || 0;
+
+    const showDescriptionLength = descriptionLength > (descriptionLength > 0 ? DESCRIPTION_LENGTH_LIMIT / 2 : 0);
+
     return (
       <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-4">
         <div className="space-y-3">
@@ -84,11 +99,24 @@ const PollForm = forwardRef<PollFormComponent, PollFormProps>(
           <div className="flex flex-col gap-1">
             <Label htmlFor="description">Descrição</Label>
 
-            <Input.Root>
-              <Input.Input type="text" placeholder="Descrição" id="description" {...register('description')} />
+            <TextArea.Root>
+              <TextArea.Input placeholder="Descrição" id="description" {...register('description')} />
 
-              {errors.description?.message && <Input.ErrorFeedback>{errors.description.message}</Input.ErrorFeedback>}
-            </Input.Root>
+              <div
+                data-error={!!errors.description?.message}
+                className="flex items-center justify-end gap-4 truncate data-[error=true]:justify-between"
+              >
+                {errors.description?.message && (
+                  <TextArea.ErrorFeedback>{errors.description.message}</TextArea.ErrorFeedback>
+                )}
+
+                {showDescriptionLength && (
+                  <div className="text-xs text-primary-300">
+                    {descriptionLength}/{DESCRIPTION_LENGTH_LIMIT}
+                  </div>
+                )}
+              </div>
+            </TextArea.Root>
           </div>
 
           <div className="flex flex-col gap-1">

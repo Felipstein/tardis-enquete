@@ -60,7 +60,7 @@ type InputErrorFeedbackProps = ComponentProps<'span'>;
 
 const InputErrorFeedback = forwardRef<HTMLSpanElement, InputErrorFeedbackProps>(
   ({ className, children, ...props }, ref) => (
-    <span ref={ref} className={w('mt-1 flex items-center gap-1.5 text-sm text-red-500', className)} {...props}>
+    <span ref={ref} className={w('mt-1 flex items-center gap-1.5 text-sm text-red-500 truncate', className)} {...props}>
       <AlertCircle className="h-3.5 w-3.5 flex-shrink-0" />
 
       {children}
