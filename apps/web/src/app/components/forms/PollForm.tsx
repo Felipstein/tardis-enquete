@@ -7,11 +7,13 @@ import { ReactNode, forwardRef, useEffect, useImperativeHandle } from 'react';
 import { Poll } from '@tardis-enquete/contracts';
 import moment from 'moment';
 import { List, Plus, Trash2 } from 'lucide-react';
+import { DragDropContext, Draggable, OnDragEndResponder } from 'react-beautiful-dnd';
 import { Input } from '../common/Input';
 import { Label } from '../common/Label';
 import { DatePicker } from '../common/DatePicker';
 import { TextArea } from '../common/TextArea';
 import { Button } from '../common/Button';
+import { StrictModeDroppable } from '../StrictModeDroppable';
 
 const DESCRIPTION_LENGTH_LIMIT = 600;
 
@@ -67,7 +69,7 @@ const PollForm = forwardRef<PollFormComponent, PollFormProps>(
       },
     });
 
-    const { fields, append, remove } = useFieldArray({
+    const { fields, append, remove, move } = useFieldArray({
       // @ts-ignore
       name: 'options',
       control,
@@ -88,6 +90,14 @@ const PollForm = forwardRef<PollFormComponent, PollFormProps>(
     useEffect(() => {
       onIsValid?.(isValid);
     }, [onIsValid, isValid]);
+
+    const handleDragEnd: OnDragEndResponder = (result) => {
+      if (!result.destination) {
+        return;
+      }
+
+      move(result.source.index, result.destination.index);
+    };
 
     const descriptionLength = watch('description')?.length || 0;
 
@@ -156,27 +166,49 @@ const PollForm = forwardRef<PollFormComponent, PollFormProps>(
               </Button>
             </header>
 
-            <ul className="space-y-2">
-              {fields.map((optionField, index) => (
-                <li key={optionField.id} className="flex items-stretch">
-                  <Button variant="thematic" className="max-h-[42px] cursor-grab">
-                    <List className="h-4 w-4" />
-                  </Button>
+            <DragDropContext onDragEnd={handleDragEnd}>
+              {typeof window !== 'undefined' && (
+                <StrictModeDroppable droppableId="options">
+                  {(provided) => (
+                    <ul ref={provided.innerRef} className="space-y-2" {...provided.droppableProps}>
+                      {fields.map((optionField, index) => (
+                        <Draggable key={optionField.id} draggableId={optionField.id} index={index}>
+                          {(provided) => (
+                            <li ref={provided.innerRef} className="flex items-stretch" {...provided.draggableProps}>
+                              <Button
+                                variant="thematic"
+                                className="max-h-[42px] cursor-grab"
+                                {...provided.dragHandleProps}
+                              >
+                                <List className="h-4 w-4" />
+                              </Button>
 
-                  <Input.Root className="ml-1 mr-2 w-full">
-                    <Input.Input type="text" placeholder="Descreva sua opção" {...register(`options.${index}`)} />
+                              <Input.Root className="ml-1 mr-2 w-full">
+                                <Input.Input
+                                  type="text"
+                                  placeholder="Descreva sua opção"
+                                  {...register(`options.${index}`)}
+                                />
 
-                    {errors.options?.[index]?.message && (
-                      <Input.ErrorFeedback>{errors.options?.[index]?.message}</Input.ErrorFeedback>
-                    )}
-                  </Input.Root>
+                                {errors.options?.[index]?.message && (
+                                  <Input.ErrorFeedback>{errors.options?.[index]?.message}</Input.ErrorFeedback>
+                                )}
+                              </Input.Root>
 
-                  <Button variant="thematic-danger" className="max-h-[42px]" onClick={() => remove(index)}>
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </li>
-              ))}
-            </ul>
+                              <Button variant="thematic-danger" className="max-h-[42px]" onClick={() => remove(index)}>
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </li>
+                          )}
+                        </Draggable>
+                      ))}
+
+                      {provided.placeholder}
+                    </ul>
+                  )}
+                </StrictModeDroppable>
+              )}
+            </DragDropContext>
 
             {errors.options?.message && <Input.ErrorFeedback>{errors.options.message}</Input.ErrorFeedback>}
           </div>
