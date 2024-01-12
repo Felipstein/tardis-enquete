@@ -3,6 +3,7 @@
 import { MoreHorizontal, PenSquare, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
+import { PollDeleteAlertDialog } from './PollDeleteAlertDialog';
 import { Dropdown } from '@/app/components/common/Dropdown';
 
 export type PollOptionsProps = {
@@ -37,13 +38,20 @@ export function PollOptions({ pollId }: PollOptionsProps) {
 
         <Dropdown.Separator />
 
-        <Dropdown.Item variant="danger" asChild className="flex items-center gap-2">
-          <Link href={`/polls/${pollId}`}>
-            <Dropdown.ItemIcon src={Trash2} />
+        <PollDeleteAlertDialog pollId={pollId}>
+          <Dropdown.Item
+            variant="danger"
+            onSelect={(event) => event.preventDefault()}
+            asChild
+            className="flex items-center gap-2"
+          >
+            <button type="button" aria-label="Deletar">
+              <Dropdown.ItemIcon src={Trash2} />
 
-            <span>Deletar</span>
-          </Link>
-        </Dropdown.Item>
+              <span>Deletar</span>
+            </button>
+          </Dropdown.Item>
+        </PollDeleteAlertDialog>
       </Dropdown.Content>
     </Dropdown.Root>
   );

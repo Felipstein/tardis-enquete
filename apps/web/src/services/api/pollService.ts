@@ -1,4 +1,5 @@
 import {
+  DeletePollParamsRequest,
   GetPollByIdParamsRequest,
   GetPollByIdResponse,
   GetPollsResponse,
@@ -13,6 +14,8 @@ import { api } from './apiService';
 export type GetPollRequest = GetPollByIdParamsRequest;
 
 export type UpdatePollRequest = UpdatePollParamsRequest & UpdatePollBodyRequest;
+
+export type DeletePollRequest = DeletePollParamsRequest;
 
 export default class PollService {
   async getPolls() {
@@ -34,6 +37,12 @@ export default class PollService {
     );
 
     return response.data.poll;
+  }
+
+  async delete({ pollId }: DeletePollRequest) {
+    const response = await api.delete<void>(RouteModels.buildRoute(RouteModels.deletePoll, { pollId }));
+
+    return response.data;
   }
 }
 
