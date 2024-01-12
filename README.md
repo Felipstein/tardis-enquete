@@ -7,4 +7,3 @@
 - Adicionar tags para as enquetes.
 - Melhorar filtragem pelas enquetes (datas, apenas expirados, apenas não expirados, etc.).
 - Enviar sockets quando alguma enquete é criada, atualizada ou delatada.
-- Corrigir quando atualizar uma enquete os campos continuarem default com os valores anteriores
