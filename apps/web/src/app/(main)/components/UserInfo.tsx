@@ -35,7 +35,6 @@ export function UserInfo() {
       </Dropdown.Trigger>
 
       <Dropdown.Content>
-        <Dropdown.Arrow />
         <Dropdown.Item variant="danger" asChild>
           <a href="/api/auth/logout" rel="noreferrer">
             Sair
