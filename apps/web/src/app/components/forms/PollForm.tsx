@@ -1,15 +1,17 @@
 'use client';
 
 import { z } from 'zod';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ReactNode, forwardRef, useEffect, useImperativeHandle } from 'react';
 import { Poll } from '@tardis-enquete/contracts';
 import moment from 'moment';
+import { List, Plus, Trash2 } from 'lucide-react';
 import { Input } from '../common/Input';
 import { Label } from '../common/Label';
 import { DatePicker } from '../common/DatePicker';
 import { TextArea } from '../common/TextArea';
+import { Button } from '../common/Button';
 
 const DESCRIPTION_LENGTH_LIMIT = 600;
 
@@ -23,7 +25,9 @@ const pollFormSchema = z.object({
     .max(DESCRIPTION_LENGTH_LIMIT, 'Mah rapaz, aí você foi longe pra burro')
     .optional()
     .transform((description) => (description === '' ? undefined : description)),
-  expireAt: z.date().refine((date) => date.getTime() > Date.now(), { message: 'Escolha uma data futura, tongo' }),
+  expireAt: z
+    .date({ required_error: 'A data de expiração é obrigatória' })
+    .refine((date) => date.getTime() > Date.now(), { message: 'Escolha uma data futura, tongo' }),
   options: z
     .array(z.string().min(3, 'A opção deve possuir pelo menos 3 caracteres'))
     .min(2, 'Deve haver pelo menos 2 opções'),
@@ -61,6 +65,12 @@ const PollForm = forwardRef<PollFormComponent, PollFormProps>(
         expireAt: defaultPoll?.expireAt || moment().add(1, 'month').toDate(),
         options: defaultPoll?.options.map((option) => option.text),
       },
+    });
+
+    const { fields, append, remove } = useFieldArray({
+      // @ts-ignore
+      name: 'options',
+      control,
     });
 
     useImperativeHandle(
@@ -126,9 +136,49 @@ const PollForm = forwardRef<PollFormComponent, PollFormProps>(
               control={control}
               name="expireAt"
               render={({ field: { value, onChange } }) => (
-                <DatePicker value={value} onChange={onChange} errorFeedback={errors.expireAt?.message} />
+                <DatePicker
+                  value={value}
+                  onChange={onChange}
+                  placeholder="Data de expiração"
+                  errorFeedback={errors.expireAt?.message}
+                  showExpireAt
+                />
               )}
             />
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <header className="flex w-full items-center justify-between">
+              <Label>Opções</Label>
+
+              <Button variant="thematic" className="h-[42px]" onClick={() => append('')}>
+                <Plus className="h-4 w-4" />
+              </Button>
+            </header>
+
+            <ul className="space-y-2">
+              {fields.map((optionField, index) => (
+                <li key={optionField.id} className="flex items-stretch">
+                  <Button variant="thematic" className="max-h-[42px] cursor-grab">
+                    <List className="h-4 w-4" />
+                  </Button>
+
+                  <Input.Root className="ml-1 mr-2 w-full">
+                    <Input.Input type="text" placeholder="Descreva sua opção" {...register(`options.${index}`)} />
+
+                    {errors.options?.[index]?.message && (
+                      <Input.ErrorFeedback>{errors.options?.[index]?.message}</Input.ErrorFeedback>
+                    )}
+                  </Input.Root>
+
+                  <Button variant="thematic-danger" className="max-h-[42px]" onClick={() => remove(index)}>
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </li>
+              ))}
+            </ul>
+
+            {errors.options?.message && <Input.ErrorFeedback>{errors.options.message}</Input.ErrorFeedback>}
           </div>
         </div>
 

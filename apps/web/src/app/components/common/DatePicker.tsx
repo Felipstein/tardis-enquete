@@ -3,32 +3,50 @@
 import { DayPicker } from 'react-day-picker';
 import * as Popover from '@radix-ui/react-popover';
 import { useState } from 'react';
-import moment from 'moment';
-import { Input } from './Input';
+import { Calendar, Clock10 } from 'lucide-react';
+import { Input, InputInputProps } from './Input';
+import { OmitTyped } from '@/utils/OmitTyped';
+import { moment } from '@/utils/moment';
 
-export type DatePickerProps = {
+export type DatePickerProps = OmitTyped<
+  InputInputProps,
+  'readOnly' | 'isFocused' | 'type' | 'value' | 'onChange' | 'className' | 'ref'
+> & {
   value?: Date;
   onChange?: (date?: Date) => void;
   errorFeedback?: string;
+  showExpireAt?: boolean;
 };
 
-export function DatePicker({ value, onChange, errorFeedback }: DatePickerProps) {
+export function DatePicker({ value, onChange, errorFeedback, showExpireAt = false, ...props }: DatePickerProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <Popover.Root open={isOpen} onOpenChange={setIsOpen}>
-      <Popover.Trigger asChild>
+      <Popover.Trigger>
         <Input.Root>
+          <Input.Box left>
+            <Calendar className="h-5 w-5 text-primary-300" />
+          </Input.Box>
+
           <Input.Input
             readOnly
             isFocused={isOpen}
             type="text"
-            placeholder="Data de expiração"
             value={moment(value).format('DD/MM/YYYY') ?? ''}
+            className="pl-10"
+            {...props}
           />
 
-          {errorFeedback && <Input.ErrorFeedback>{errorFeedback}</Input.ErrorFeedback>}
+          {showExpireAt && value && (
+            <Input.Box right className="text-sm text-primary-500">
+              <Clock10 className="mr-1.5 h-3.5 w-3.5" />
+              expira {moment(value).fromNow()}
+            </Input.Box>
+          )}
         </Input.Root>
+
+        {errorFeedback && <Input.ErrorFeedback>{errorFeedback}</Input.ErrorFeedback>}
       </Popover.Trigger>
 
       <Popover.Portal>
@@ -54,7 +72,7 @@ export function DatePicker({ value, onChange, errorFeedback }: DatePickerProps) 
               table: 'w-full border-collapse space-y-1',
               head_row: 'flex',
               head_cell: 'text-primary-300 rounded-md w-8 font-normal text-[0.8rem]',
-              row: 'flex w-full mt-2',
+              row: 'flex w-full mt-2 first:justify-end',
               cell: 'relative p-0 text-center text-sm focus-within:relative focus-within:z-20 [&:has([aria-selected])]:bg-primary-800/10 [&:has([aria-selected].day-outside)]:bg-primary-800/50 [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected])]:rounded-md',
               day: 'h-8 w-8 p-0 font-normal aria-selected:opacity-100',
               day_selected: 'bg-primary-500/40 text-white font-semibold hover:bg-primary-800/80',

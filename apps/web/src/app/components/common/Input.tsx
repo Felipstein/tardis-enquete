@@ -7,7 +7,7 @@ import { w } from '@/utils/w';
 
 // -----------
 
-type InputRootProps = ComponentProps<'div'> & {
+export type InputRootProps = ComponentProps<'div'> & {
   isDisabled?: boolean;
   isLoading?: boolean;
 };
@@ -18,7 +18,7 @@ const InputRoot = forwardRef<HTMLDivElement, InputRootProps>(({ className, ...pr
 
 // -----------
 
-type InputBoxProps = ComponentProps<'div'> & {
+export type InputBoxProps = ComponentProps<'div'> & {
   left?: boolean;
   right?: boolean;
 };
@@ -46,7 +46,7 @@ const InputBox = forwardRef<HTMLDivElement, InputBoxProps>(
 
 // -----------
 
-type InputInputProps = OmitTyped<ComponentProps<'input'>, 'disabled'> & InputContainerProps;
+export type InputInputProps = OmitTyped<ComponentProps<'input'>, 'disabled'> & InputContainerProps;
 
 const InputInput = forwardRef<HTMLInputElement, InputInputProps>(({ fullRounded, isFocused, ...props }, ref) => (
   <InputContainer fullRounded={fullRounded} isFocused={isFocused}>
@@ -56,11 +56,11 @@ const InputInput = forwardRef<HTMLInputElement, InputInputProps>(({ fullRounded,
 
 // -----------
 
-type InputErrorFeedbackProps = ComponentProps<'span'>;
+export type InputErrorFeedbackProps = ComponentProps<'span'>;
 
 const InputErrorFeedback = forwardRef<HTMLSpanElement, InputErrorFeedbackProps>(
   ({ className, children, ...props }, ref) => (
-    <span ref={ref} className={w('mt-1 flex items-center gap-1.5 text-sm text-red-500 truncate', className)} {...props}>
+    <span ref={ref} className={w('mt-1 flex items-center gap-1.5 truncate text-sm text-red-500', className)} {...props}>
       <AlertCircle className="h-3.5 w-3.5 flex-shrink-0" />
 
       {children}

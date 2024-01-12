@@ -82,7 +82,7 @@ export function Button({
           'bg-gradient-to-br from-red-500 to-red-400 text-white shadow-md shadow-red-950 transition-all hover:shadow-lg hover:shadow-red-700/40 hover:brightness-110':
             variant === 'danger',
           'bg-transparent text-primary-100 transition-all hover:text-white': variant === 'ghost',
-          'border border-transparent bg-black/20 transition-colors hover:bg-black/30 hover:duration-75 active:border-primary-500 active:bg-primary-800/80 active:text-primary-500 active:shadow-sm active:shadow-primary-700':
+          'border border-transparent bg-black/20 transition-colors hover:bg-black/30 hover:duration-75 active:border-primary-500 active:bg-primary-800/80 active:text-white active:shadow-sm active:shadow-primary-700':
             variant === 'thematic',
           'border border-transparent bg-black/20 transition-colors hover:bg-black/30 hover:text-red-400 hover:duration-75 active:border-red-500 active:bg-red-500/10 active:text-red-500 active:shadow-sm active:shadow-red-700':
             variant === 'thematic-danger',
