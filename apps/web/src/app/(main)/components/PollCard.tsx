@@ -58,6 +58,10 @@ export function PollCard({ poll }: PollCardProps) {
           console.info('Successful vote', data);
         },
         onError(error) {
+          if (error.message === 'canceled') {
+            return;
+          }
+
           toast.error(error.message);
 
           console.error(error);
