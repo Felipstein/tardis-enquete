@@ -14,7 +14,11 @@ export default async function PollPage({ params }: NextPage<{ pollId: string }>)
       queryFn: () => pollService.getPoll({ pollId }),
     });
 
-    return <EditPollForm poll={poll} />;
+    return (
+      <main className="mx-2 mt-16 w-full min-w-0 sm:mx-auto sm:max-w-2xl">
+        <EditPollForm pollId={pollId} defaultPollFetched={poll} />
+      </main>
+    );
   } catch (error: unknown) {
     console.error(error);
 

@@ -12,6 +12,7 @@ import morgan from 'morgan';
 import { Server as SocketServer } from 'socket.io';
 
 import TooManyRequests from '../domain/errors/TooManyRequests';
+import { envParsed } from '../env';
 
 import { errorHandler } from './middlewares/errorHandlerMiddleware';
 import { handleZodError } from './middlewares/handleZodErrorMiddleware';
@@ -24,7 +25,19 @@ const server = createServer(app);
 
 const io = new SocketServer(server, {
   cors: {
-    origin: process.env.ORIGIN,
+    origin(requestOrigin, callback) {
+      if (!requestOrigin) {
+        return callback(null, true);
+      }
+
+      const { ORIGINS } = envParsed();
+
+      if (!ORIGINS.includes(requestOrigin)) {
+        return callback(new Error('Origin not allowed'), false);
+      }
+
+      return callback(null, requestOrigin);
+    },
   },
 });
 
@@ -37,8 +50,20 @@ app.use(helmet());
 app.use(
   cors({
     exposedHeaders: [apiErrorHeader],
-    origin: process.env.ORIGIN,
     credentials: true,
+    origin(requestOrigin, callback) {
+      if (!requestOrigin) {
+        return callback(null, true);
+      }
+
+      const { ORIGINS } = envParsed();
+
+      if (!ORIGINS.includes(requestOrigin)) {
+        return callback(new Error('Origin not allowed'), false);
+      }
+
+      return callback(null, requestOrigin);
+    },
   }),
 );
 

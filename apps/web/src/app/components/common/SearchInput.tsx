@@ -53,6 +53,7 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
           ref={inputRef}
           type="text"
           placeholder="Pesquisar por enquete..."
+          fullRounded
           className="pl-[38px] group-data-[typed=false]:pr-14"
           value={valueByProp ?? value}
           onChange={onChangeByProp ?? handleChange}

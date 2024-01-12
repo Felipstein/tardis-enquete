@@ -16,7 +16,7 @@ const envVariablesSchema = z.object({
 
   PORT: nonempty.default('3333'),
 
-  ORIGIN: nonempty,
+  ORIGINS: nonempty.transform((origins) => origins.split(',')),
 
   DISCORD_CLIENT_ID: nonempty,
   DISCORD_SECRET_KEY: nonempty,
@@ -27,14 +27,16 @@ const envVariablesSchema = z.object({
   VERBOSE: z.coerce.boolean().default(false),
 });
 
+let envValuesParsed: z.infer<typeof envVariablesSchema>;
+
+export function envParsed() {
+  return envValuesParsed;
+}
+
 try {
   const parsed = envVariablesSchema.parse(process.env);
 
-  // @ts-expect-error
-  process.env = {
-    ...process.env,
-    ...parsed,
-  };
+  envValuesParsed = parsed;
 
   log.info('Environment variables loaded');
 } catch (err: Error | unknown) {

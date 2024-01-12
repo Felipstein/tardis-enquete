@@ -9,13 +9,14 @@ import type { OmitTyped } from '@/utils/OmitTyped';
 
 import { w } from '@/utils/w';
 
-export type ButtonVariant = 'clean' | 'primary' | 'danger';
+export type ButtonVariant = 'clean' | 'primary' | 'danger' | 'ghost';
 
 export type ButtonSize = 'md' | 'sm';
 
 export type ButtonProps = OmitTyped<ComponentProps<'button'>, 'onClick' | 'disabled'> & {
   variant?: ButtonVariant;
   size?: ButtonSize;
+  largePaddingX?: boolean;
   onClick?: (event: MouseEvent<HTMLButtonElement>) => Promise<any> | any;
   isDisabled?: boolean;
   isLoading?: boolean;
@@ -27,6 +28,7 @@ export type ButtonProps = OmitTyped<ComponentProps<'button'>, 'onClick' | 'disab
 export function Button({
   variant = 'primary',
   size = 'md',
+  largePaddingX = false,
   type = 'button',
   onClick,
   isDisabled = false,
@@ -62,6 +64,12 @@ export function Button({
 
   const Icon = isLoading ? LoaderIcon : DefaultIcon;
 
+  function padding(defaultPadding?: string) {
+    const largePaddingXValue = 'px-6';
+
+    return largePaddingX ? largePaddingXValue : defaultPadding ?? largePaddingXValue;
+  }
+
   return (
     <Comp
       type={type}
@@ -73,10 +81,11 @@ export function Button({
             variant === 'primary',
           'bg-gradient-to-br from-red-500 to-red-400 text-white shadow-md shadow-red-950 transition-all hover:shadow-lg hover:shadow-red-700/40 hover:brightness-110':
             variant === 'danger',
+          'bg-transparent text-primary-100 transition-all hover:text-white': variant === 'ghost',
         },
         {
-          'gap-2 rounded-md px-3 py-2': size === 'md',
-          'gap-2 rounded-md px-2.5 py-2 text-sm': size === 'sm',
+          [`gap-2 rounded-md ${padding('px-3')} py-2`]: size === 'md',
+          [`gap-2 rounded-md ${padding('px-2.5')} py-2 text-sm`]: size === 'sm',
         },
         className,
       )}
