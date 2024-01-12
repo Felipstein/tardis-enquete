@@ -1,6 +1,7 @@
 import { ComponentProps, forwardRef } from 'react';
 
 import { AlertCircle } from 'lucide-react';
+import { InputContainer, InputContainerProps } from './InputContainer';
 import { OmitTyped } from '@/utils/OmitTyped';
 import { w } from '@/utils/w';
 
@@ -45,29 +46,13 @@ const InputBox = forwardRef<HTMLDivElement, InputBoxProps>(
 
 // -----------
 
-type InputInputProps = OmitTyped<ComponentProps<'input'>, 'disabled'> & {
-  fullRounded?: boolean;
-  isFocused?: boolean;
-};
+type InputInputProps = OmitTyped<ComponentProps<'input'>, 'disabled'> & InputContainerProps;
 
-const InputInput = forwardRef<HTMLInputElement, InputInputProps>(
-  ({ fullRounded = false, isFocused = false, className, ...props }, ref) => (
-    <input
-      ref={ref}
-      className={w(
-        'w-full border border-transparent bg-black/20 py-2.5 text-sm font-medium outline-none transition-colors placeholder:text-primary-700 focus:border-primary-500 focus:bg-primary-800/80 focus:shadow-sm focus:shadow-primary-700 focus:placeholder:text-primary-500',
-        {
-          'rounded-md px-3': !fullRounded,
-          'rounded-full px-4': fullRounded,
-          'hover:bg-black/30': !isFocused,
-          'border-primary-500 bg-primary-800/80 shadow-sm shadow-primary-700 placeholder:text-primary-500': isFocused,
-        },
-        className,
-      )}
-      {...props}
-    />
-  ),
-);
+const InputInput = forwardRef<HTMLInputElement, InputInputProps>(({ fullRounded, isFocused, ...props }, ref) => (
+  <InputContainer fullRounded={fullRounded} isFocused={isFocused}>
+    <input ref={ref} {...props} />
+  </InputContainer>
+));
 
 // -----------
 
