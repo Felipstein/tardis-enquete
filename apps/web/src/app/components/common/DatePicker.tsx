@@ -38,6 +38,7 @@ export function DatePicker({ value, onChange, errorFeedback }: DatePickerProps) 
           className="z-40 min-w-40 rounded-md bg-gradient-to-br from-gray-950 to-gray-900 p-2 shadow-md backdrop-blur-sm"
         >
           <DayPicker
+            disabled={{ before: moment().add(1, 'day').toDate() }}
             mode="single"
             selected={value}
             onSelect={onChange ? (date) => onChange(date) : undefined}
