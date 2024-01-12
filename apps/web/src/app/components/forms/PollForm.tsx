@@ -14,6 +14,8 @@ import { DatePicker } from '../common/DatePicker';
 import { TextArea } from '../common/TextArea';
 import { Button } from '../common/Button';
 import { StrictModeDroppable } from '../StrictModeDroppable';
+import { DebugEnvironment } from '../DebugEnvironment';
+import { IDInputCopy } from './IDInputCopy';
 
 const DESCRIPTION_LENGTH_LIMIT = 600;
 
@@ -107,6 +109,16 @@ const PollForm = forwardRef<PollFormComponent, PollFormProps>(
     return (
       <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-4">
         <div className="space-y-3">
+          {defaultPoll && (
+            <DebugEnvironment>
+              <div className="flex flex-col gap-1">
+                <Label htmlFor="id">ID</Label>
+
+                <IDInputCopy pollId={defaultPoll.id} />
+              </div>
+            </DebugEnvironment>
+          )}
+
           <div className="flex flex-col gap-1">
             <Label htmlFor="title">Título</Label>
 
