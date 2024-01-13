@@ -5,7 +5,8 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { toast } from 'react-toastify';
-import { AlertCircle } from 'lucide-react';
+import { AlertCircle, ArrowLeft } from 'lucide-react';
+import Link from 'next/link';
 import PollForm, { PollFormComponent, PollFormData } from '@/app/components/forms/PollForm';
 import { Button } from '@/app/components/common/Button';
 import { queryKeys } from '@/config/queryKeys';
@@ -81,9 +82,15 @@ export default function EditPollForm({ pollId, defaultPollFetched }: EditPollFor
 
   return (
     <div className="space-y-6">
-      <h1 className="hidden max-w-full truncate text-lg font-bold tracking-wide sm:block sm:text-xl">
-        Editar Enquete <strong className="text-blue-400">{poll.title}</strong>
-      </h1>
+      <header className="relative">
+        <Link title="Voltar para Página Inicial" href="/" className="absolute -left-8 top-px">
+          <ArrowLeft className="h-6 w-6 text-primary-100 transition-colors hover:text-white" />
+        </Link>
+
+        <h1 className="hidden max-w-full truncate text-lg font-bold tracking-wide sm:block sm:text-xl">
+          Editar Enquete <strong className="text-blue-400">{poll.title}</strong>
+        </h1>
+      </header>
 
       <h1 className="block max-w-full truncate text-lg font-bold tracking-wide sm:hidden sm:text-xl">{poll.title}</h1>
 
