@@ -14,6 +14,8 @@ import { pollService } from '@/services/api/pollService';
 import { usePollsSearchStore } from '@/stores/PollsSearchStore';
 import { useSocketEvent } from '@/hooks/useSocketEvent';
 import { queryClient } from '@/libs/queryClient';
+import { w } from '@/utils/w';
+import { usePollsListGridTemplate } from '@/stores/PollsListGridTemplate';
 
 export type PollsListProps = {
   pollsAlreadyFetched?: PollTimeline[];
@@ -21,6 +23,8 @@ export type PollsListProps = {
 };
 
 export function PollsList({ pollsAlreadyFetched, errorOnInitialFetch }: PollsListProps) {
+  const gridTemplate = usePollsListGridTemplate((s) => s.gridTemplate);
+
   const {
     data: polls = [],
     isLoading: isLoadingPolls,
@@ -122,7 +126,13 @@ export function PollsList({ pollsAlreadyFetched, errorOnInitialFetch }: PollsLis
   }
 
   return (
-    <ul className="mx-4 flex w-full flex-col gap-12 sm:mx-auto sm:w-[471px]">
+    <ul
+      className={w(
+        gridTemplate === 'row' && 'mx-4 flex w-full flex-col gap-12 sm:mx-auto sm:w-[471px]',
+        gridTemplate === 'grid' &&
+          'mx-4 flex w-full flex-wrap items-center justify-center gap-16 sm:mx-auto sm:w-[95vw]',
+      )}
+    >
       {pollsFiltered.map((poll, index) => {
         const isLast = index === pollsFiltered.length - 1;
 
@@ -130,7 +140,12 @@ export function PollsList({ pollsAlreadyFetched, errorOnInitialFetch }: PollsLis
           <li
             key={poll.id}
             data-last={isLast}
-            className="w-full data-[last=false]:border-b data-[last=false]:border-primary-700/70 data-[last=false]:pb-12 "
+            className={w(
+              gridTemplate === 'row' &&
+                'w-full data-[last=false]:border-b data-[last=false]:border-primary-700/70 data-[last=false]:pb-12',
+              gridTemplate === 'grid' &&
+                'w-full rounded-md bg-gradient-to-br from-primary-900/40 to-primary-800/60 p-12 sm:w-[520px]',
+            )}
           >
             <PollCard poll={poll} />
           </li>

@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { UserInfo } from '../UserInfo';
 
 import { PollsSearchInput } from './PollsSearchInput';
+import { HeaderSettings } from './HeaderSettings';
 import { LogoImage } from '@/app/components/LogoImage';
 
 export function HeaderContent() {
@@ -17,7 +18,13 @@ export function HeaderContent() {
         <PollsSearchInput />
       </div>
 
-      <UserInfo />
+      <div className="flex h-full items-center gap-4">
+        <HeaderSettings />
+
+        <div className="h-6 w-px bg-primary-700" />
+
+        <UserInfo />
+      </div>
     </main>
   );
 }
