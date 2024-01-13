@@ -136,7 +136,9 @@ const PollForm = forwardRef<PollFormComponent, PollFormProps>(
           </div>
 
           <div className="flex flex-col gap-1">
-            <Label htmlFor="description">Descrição</Label>
+            <Label isOptional htmlFor="description">
+              Descrição
+            </Label>
 
             <TextArea.Root>
               <TextArea.Input
