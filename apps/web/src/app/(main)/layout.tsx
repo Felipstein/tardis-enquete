@@ -3,6 +3,7 @@ import { ReactNode } from 'react';
 
 import { Footer } from '../components/Footer';
 
+import { FeedbackContainer } from '../components/FeedbackContainer';
 import { Header } from './components/Header';
 
 import { getAccessTokenServerSide } from '@/utils/getAccessTokenServerSide';
@@ -15,14 +16,18 @@ export default function MainLayout({ children }: { children: ReactNode }) {
   }
 
   return (
-    <div className="h-full">
-      <div className="h-fit min-h-[80vh]">
-        <Header />
+    <>
+      <div className="h-full">
+        <div className="h-fit min-h-[80vh]">
+          <Header />
 
-        <main className="h-fit">{children}</main>
+          <main className="h-fit">{children}</main>
+        </div>
+
+        <Footer />
       </div>
 
-      <Footer />
-    </div>
+      <FeedbackContainer />
+    </>
   );
 }
