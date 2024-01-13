@@ -11,6 +11,8 @@ export const RouteModels = {
   deletePoll: '/polls/:pollId',
   vote: '/options/:optionId/votes',
   unvote: '/votes/:voteId',
+  sendFeedback: '/feedbacks',
+  getFeedbacks: '/feedbacks',
 
   buildRoute(route: string, params: Record<string, string | number>) {
     let builtRoute = route;
