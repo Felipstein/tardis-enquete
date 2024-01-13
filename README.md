@@ -1,7 +1,6 @@
 # Pendentes
 - Verificar quais usuários estão editando/deletando os enquetes, para que sejam apenas administradores.
 - Abstrair os casos de usos criar, editar e buscar enquete (possui código repetido para buscar informações do usuário).
-- Colocar todas as enquetes alinhadas, ocupando os espaços das laterais.
 - Adicionar possibilidade de qualquer usuário criar uma enquete.
 - Adicionar sistema de feedbacks.
 - Adicionar tags para as enquetes.
