@@ -6,3 +6,6 @@
 - Adicionar tags para as enquetes.
 - Melhorar filtragem pelas enquetes (datas, apenas expirados, apenas não expirados, etc.).
 - Enviar sockets quando alguma enquete é criada, atualizada ou delatada.
+- Sistema de compartilhar enquetes
+- Adicionar links personalizados para enquetes
+- Mover a edição de enquetes para /edit/:id, pois a visualização de enquetes ficará em /polls/:id
