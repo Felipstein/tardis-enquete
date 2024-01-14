@@ -1,7 +1,9 @@
+import IFeedbacksRepository from '../../domain/repositories/FeedbacksRepository';
 import IOptionsRepository from '../../domain/repositories/OptionsRepository';
 import IPollsRepository from '../../domain/repositories/PollsRepository';
 import IStoredUsersRepository from '../../domain/repositories/StoredUsersStoredRepository';
 import IVotesRepository from '../../domain/repositories/VotesRepository';
+import PrismaFeedbacksRepository from '../repositories/feedbacks/PrismaFeedbacksRepository';
 import PrismaOptionsRepository from '../repositories/options/PrismaOptionsRepository';
 import PrismaPollsRepository from '../repositories/polls/PrismaPollsRepository';
 import PrismaStoredUsersRepository from '../repositories/storedUsers/PrismaStoredUsersRepository';
@@ -31,4 +33,10 @@ const votesRepository: IVotesRepository = new PrismaVotesRepository(factoryPrism
 
 export function factoryVotesRepository() {
   return votesRepository;
+}
+
+const feedbacksRepository: IFeedbacksRepository = new PrismaFeedbacksRepository(factoryPrismaClient());
+
+export function factoryFeedbacksRepository() {
+  return feedbacksRepository;
 }

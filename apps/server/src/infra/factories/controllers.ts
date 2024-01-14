@@ -1,10 +1,12 @@
 import DevToolsController from '../../http/controllers/DevToolsController';
+import FeedbackController from '../../http/controllers/FeedbackController';
 import OAuthController from '../../http/controllers/OAuthController';
 import PollController from '../../http/controllers/PollController';
 import VoteController from '../../http/controllers/VoteController';
 
 import { factoryDiscordService, factoryTokenService, factoryUserService } from './services';
 import { factoryGenerateAccessTokenUseCase, factoryGetDiscordUserInfoUseCase } from './useCases/devToolsUseCase';
+import { factoryListFeedbacksUseCase, factorySendFeedbackUseCase } from './useCases/feedbacksUseCase';
 import {
   factoryCreatePollUseCase,
   factoryDeletePollUseCase,
@@ -45,4 +47,10 @@ const voteController = new VoteController(factoryVoteUseCase(), factoryUnvoteUse
 
 export function factoryVoteController() {
   return voteController;
+}
+
+const feedbackController = new FeedbackController(factoryListFeedbacksUseCase(), factorySendFeedbackUseCase());
+
+export function factoryFeedbackController() {
+  return feedbackController;
 }

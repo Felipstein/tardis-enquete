@@ -24,6 +24,7 @@ model User {
 
   pollsCreated Poll[]
   votes        Vote[]
+  Feedback     Feedback[]
 
   @@map("users")
 }
@@ -64,4 +65,27 @@ model Vote {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("votes")
+}
+
+enum FeedbackType {
+  SUGGESTION
+  BUG
+  OTHER
+}
+
+enum FeedbackStatus {
+  OPEN
+  CLOSED
+}
+
+model Feedback {
+  id       String         @id @default(cuid())
+  text     String
+  type     FeedbackType
+  status   FeedbackStatus @default(OPEN)
+  authorId String         @map("author_id")
+
+  author User @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@map("feedbacks")
 }
