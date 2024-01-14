@@ -12,8 +12,8 @@ export default class PrismaFeedbacksMapper {
     return new Feedback({
       id: prismaFeedback.id,
       text: prismaFeedback.text,
-      type: this.typeToDomain(prismaFeedback.type),
-      status: this.statusToDomain(prismaFeedback.status),
+      type: PrismaFeedbacksMapper.typeToDomain(prismaFeedback.type),
+      status: PrismaFeedbacksMapper.statusToDomain(prismaFeedback.status),
       authorId: prismaFeedback.authorId,
     });
   }
