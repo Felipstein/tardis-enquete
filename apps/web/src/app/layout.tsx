@@ -5,7 +5,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Inter } from 'next/font/google';
 
 import { AllSocketsInfo } from './components/_debug/AllSocketsInfo';
-import { RenderMousePositions } from './components/_debug/RenderMousePositions';
+import { RenderMousePositions } from './components/RenderMousePositions';
 import { SocketInfo } from './components/_debug/SocketInfo';
 import { DebugEnvironment } from './components/DebugEnvironment';
 import { TrackMousePosition } from './components/TrackMousePosition';
@@ -34,10 +34,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <TrackMousePosition>
               {children}
 
+              <RenderMousePositions />
+
               <DebugEnvironment>
                 <ReactQueryDevtools />
-
-                <RenderMousePositions />
 
                 <div className="fixed bottom-6 left-6 z-40 flex flex-col items-start gap-4">
                   <AllSocketsInfo />
