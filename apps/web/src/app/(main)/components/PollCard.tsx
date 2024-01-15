@@ -112,7 +112,7 @@ export function PollCard({ poll }: PollCardProps) {
 
   return (
     <div className="group/poll relative w-full space-y-6">
-      {canEdit && <PollOptions pollId={poll.id} />}
+      <PollOptions pollId={poll.id} canEdit={canEdit} />
 
       <header className="w-full">
         <h2 className="truncate text-xl font-semibold tracking-wide">{poll.title}</h2>

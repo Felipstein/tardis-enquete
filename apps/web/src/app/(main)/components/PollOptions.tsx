@@ -1,17 +1,29 @@
 'use client';
 
-import { MoreHorizontal, PenSquare, Trash2 } from 'lucide-react';
+import { MoreHorizontal, PenSquare, Share, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
+import { toast } from 'react-toastify';
 import { PollDeleteAlertDialog } from './PollDeleteAlertDialog';
 import { Dropdown } from '@/app/components/common/Dropdown';
 
 export type PollOptionsProps = {
   pollId: string;
+  canEdit?: boolean;
 };
 
-export function PollOptions({ pollId }: PollOptionsProps) {
+export function PollOptions({ pollId, canEdit = false }: PollOptionsProps) {
   const [isOpen, setIsOpen] = useState(false);
+
+  function handleCopyLink() {
+    const url = `${window.location.origin}/poll/${pollId}`;
+
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(url);
+
+      toast.success('Link de compartilhamento copiado');
+    }
+  }
 
   return (
     <Dropdown.Root open={isOpen} onOpenChange={setIsOpen}>
@@ -29,29 +41,43 @@ export function PollOptions({ pollId }: PollOptionsProps) {
 
       <Dropdown.Content>
         <Dropdown.Item asChild className="flex items-center gap-2">
-          <Link href={`/edit/${pollId}`}>
-            <Dropdown.ItemIcon src={PenSquare} />
+          <button type="button" onClick={handleCopyLink}>
+            <Dropdown.ItemIcon src={Share} />
 
-            <span>Editar</span>
-          </Link>
+            <span>Compartilhar</span>
+          </button>
         </Dropdown.Item>
 
-        <Dropdown.Separator />
+        {canEdit && (
+          <>
+            <Dropdown.Separator />
 
-        <PollDeleteAlertDialog pollId={pollId}>
-          <Dropdown.Item
-            variant="danger"
-            onSelect={(event) => event.preventDefault()}
-            asChild
-            className="flex items-center gap-2"
-          >
-            <button type="button" aria-label="Deletar">
-              <Dropdown.ItemIcon src={Trash2} />
+            <Dropdown.Item asChild className="flex items-center gap-2">
+              <Link href={`/edit/${pollId}`}>
+                <Dropdown.ItemIcon src={PenSquare} />
 
-              <span>Deletar</span>
-            </button>
-          </Dropdown.Item>
-        </PollDeleteAlertDialog>
+                <span>Editar</span>
+              </Link>
+            </Dropdown.Item>
+
+            <Dropdown.Separator />
+
+            <PollDeleteAlertDialog pollId={pollId}>
+              <Dropdown.Item
+                variant="danger"
+                onSelect={(event) => event.preventDefault()}
+                asChild
+                className="flex items-center gap-2"
+              >
+                <button type="button" aria-label="Deletar">
+                  <Dropdown.ItemIcon src={Trash2} />
+
+                  <span>Deletar</span>
+                </button>
+              </Dropdown.Item>
+            </PollDeleteAlertDialog>
+          </>
+        )}
       </Dropdown.Content>
     </Dropdown.Root>
   );
