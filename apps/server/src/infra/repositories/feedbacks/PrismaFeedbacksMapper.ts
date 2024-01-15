@@ -54,4 +54,15 @@ export default class PrismaFeedbacksMapper {
         throw new Error(`Invalid feedback status: ${prismaFeedbackStatus}`);
     }
   }
+
+  static statusToPrisma(feedbackStatus: FeedbackStatus): PrismaFeedbackStatus {
+    switch (feedbackStatus) {
+      case 'open':
+        return 'OPEN';
+      case 'closed':
+        return 'CLOSED';
+      default:
+        throw new Error(`Invalid feedback status: ${feedbackStatus}`);
+    }
+  }
 }

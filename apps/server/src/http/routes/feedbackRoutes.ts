@@ -12,4 +12,8 @@ route.get(RouteModels.getFeedbacks, ensureAuth('developer'), controller.listFeed
 
 route.post(RouteModels.sendFeedback, ensureAuth(), controller.sendFeedback.bind(controller));
 
+route.patch(RouteModels.closeFeedback, ensureAuth('developer'), controller.closeFeedback.bind(controller));
+
+route.delete(RouteModels.deleteFeedback, ensureAuth('developer'), controller.deleteFeedback.bind(controller));
+
 export { route as feedbackRoutes };
