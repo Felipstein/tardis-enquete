@@ -1,9 +1,10 @@
 'use client';
 
 import * as AlertDialog from '@radix-ui/react-alert-dialog';
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
+import { PollTimeline } from '@tardis-enquete/contracts';
 import { Button } from '@/app/components/common/Button';
 import { pollService } from '@/services/api/pollService';
 import { queryClient } from '@/libs/queryClient';
@@ -15,6 +16,8 @@ export type PollDeleteAlertDialogProps = {
 };
 
 export function PollDeleteAlertDialog({ pollId, children }: PollDeleteAlertDialogProps) {
+  const [isOpen, setIsOpen] = useState(false);
+
   const { mutate: deletePollRequest, isPending: isDeletingPoll } = useMutation({
     mutationFn: pollService.delete,
   });
@@ -25,9 +28,18 @@ export function PollDeleteAlertDialog({ pollId, children }: PollDeleteAlertDialo
       {
         onSuccess() {
           queryClient.removeQueries({ queryKey: queryKeys.poll(pollId) });
-          queryClient.invalidateQueries({ queryKey: queryKeys.polls() });
+
+          let polls = queryClient.getQueryData<PollTimeline[]>(queryKeys.polls());
+
+          if (polls) {
+            polls = polls.filter((poll) => poll.id !== pollId);
+
+            queryClient.setQueryData(queryKeys.polls(), polls);
+          }
 
           toast.success('Enquete excluída com sucesso');
+
+          setIsOpen(false);
         },
         onError(error) {
           toast.error(error.message);
@@ -37,7 +49,7 @@ export function PollDeleteAlertDialog({ pollId, children }: PollDeleteAlertDialo
   }
 
   return (
-    <AlertDialog.Root>
+    <AlertDialog.Root open={isOpen} onOpenChange={setIsOpen}>
       <AlertDialog.Trigger asChild>{children}</AlertDialog.Trigger>
       <AlertDialog.Portal>
         <AlertDialog.Overlay className="fixed inset-0 z-40 bg-primary-900/40 backdrop-blur-sm" />

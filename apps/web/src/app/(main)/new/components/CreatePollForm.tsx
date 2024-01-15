@@ -6,6 +6,7 @@ import { useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
+import { PollTimeline } from '@tardis-enquete/contracts';
 import PollForm, { PollFormComponent, PollFormData } from '@/app/components/forms/PollForm';
 import { Button } from '@/app/components/common/Button';
 import { queryKeys } from '@/config/queryKeys';
@@ -27,8 +28,26 @@ export default function CreatePollForm() {
     createPollRequest(
       { title, description: description!, expireAt, options },
       {
-        onSuccess() {
-          queryClient.invalidateQueries({ queryKey: queryKeys.polls() });
+        onSuccess(pollCreated) {
+          const polls = queryClient.getQueryData<PollTimeline[]>(queryKeys.polls());
+
+          if (polls) {
+            polls.unshift({
+              id: pollCreated.id,
+              title: pollCreated.title,
+              description: pollCreated.description,
+              expireAt: pollCreated.expireAt,
+              createdAt: pollCreated.createdAt,
+              author: pollCreated.author,
+              options: pollCreated.options.map((option) => ({
+                id: option.id,
+                text: option.text,
+                votes: [],
+              })),
+            });
+
+            queryClient.setQueryData(queryKeys.polls(), polls);
+          }
 
           toast.success('Enquete criada com êxito');
 
