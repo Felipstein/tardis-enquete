@@ -12,10 +12,9 @@ import { LoaderIcon } from '@/app/components/common/LoaderIcon';
 import { queryKeys } from '@/config/queryKeys';
 import { pollService } from '@/services/api/pollService';
 import { usePollsSearchStore } from '@/stores/PollsSearchStore';
-import { useSocketEvent } from '@/hooks/useSocketEvent';
-import { queryClient } from '@/libs/queryClient';
 import { w } from '@/utils/w';
 import { usePollsListGridTemplate } from '@/stores/PollsListGridTemplate';
+import { usePollVotesChanges } from '@/hooks/usePollVotesChanges';
 
 export type PollsListProps = {
   pollsAlreadyFetched?: PollTimeline[];
@@ -38,16 +37,7 @@ export function PollsList({ pollsAlreadyFetched, errorOnInitialFetch }: PollsLis
 
   const searchInput = usePollsSearchStore((s) => s.searchInput);
 
-  useSocketEvent('pollVotesChanges', ({ poll: pollUpdated }) => {
-    console.info('A poll has updated, poll:', pollUpdated);
-
-    const polls = queryClient.getQueryData<PollTimeline[]>(queryKeys.polls()) || [];
-
-    queryClient.setQueryData<PollTimeline[]>(
-      queryKeys.polls(),
-      polls.map((poll) => (poll.id === pollUpdated.id ? pollUpdated : poll)),
-    );
-  });
+  usePollVotesChanges();
 
   const pollsFiltered = useMemo(() => {
     if (!searchInput) {

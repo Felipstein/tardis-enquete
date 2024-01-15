@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation';
-import { PollCard } from '../../components/PollCard';
+import { PollView } from '../../components/PollView';
 import { queryKeys } from '@/config/queryKeys';
 import { queryClient } from '@/libs/queryClient';
 import { pollService } from '@/services/api/pollService';
@@ -22,7 +22,7 @@ export default async function PollPage({ params }: NextPage<{ pollId: string }>)
 
     return (
       <main className="mx-2 mt-16 w-full min-w-0 sm:mx-auto sm:max-w-2xl">
-        <PollCard poll={poll} />
+        <PollView poll={poll} />
       </main>
     );
   } catch (error: unknown) {
