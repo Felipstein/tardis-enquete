@@ -23,7 +23,7 @@ export default class PrismaPollsRepository implements IPollsRepository {
   async findAllWithOptionsAndVotes(): Promise<PollWithOptionsAndVotes[]> {
     const polls = await this.prismaClient.poll.findMany({
       orderBy: {
-        createdAt: 'asc',
+        createdAt: 'desc',
       },
       include: {
         options: {
