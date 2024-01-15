@@ -15,6 +15,7 @@ export const updatePollBodyRequest = z.object({
       required_error: 'Descrição é obrigatória',
       invalid_type_error: 'Descrição deve ser um texto',
     })
+    .nullable()
     .optional(),
   expireAt: z.coerce
     .date({
