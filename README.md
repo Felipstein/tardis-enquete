@@ -1,6 +1,4 @@
 # Pendentes
-- Corrigir erros do BUILD.
-- Adicionar sistema de feedbacks (FALTA A PARTE DE LISTAR FEEDBACKS).
 - Adicionar sockets para enviar notificações
 - Verificar quais usuários estão editando/deletando os enquetes, para que sejam apenas administradores.
 - Abstrair os casos de usos criar, editar e buscar enquete (possui código repetido para buscar informações do usuário).
