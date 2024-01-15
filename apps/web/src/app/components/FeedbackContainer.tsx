@@ -30,7 +30,7 @@ const feedbackFormSchema = z.object({
 type FeedbackFormData = z.infer<typeof feedbackFormSchema>;
 
 export function FeedbackContainer() {
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const dragControls = useDragControls();
 
