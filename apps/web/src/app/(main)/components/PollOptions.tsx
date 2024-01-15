@@ -29,7 +29,7 @@ export function PollOptions({ pollId }: PollOptionsProps) {
 
       <Dropdown.Content>
         <Dropdown.Item asChild className="flex items-center gap-2">
-          <Link href={`/polls/${pollId}`}>
+          <Link href={`/edit/${pollId}`}>
             <Dropdown.ItemIcon src={PenSquare} />
 
             <span>Editar</span>

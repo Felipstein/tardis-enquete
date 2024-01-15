@@ -5,7 +5,7 @@ import { queryClient } from '@/libs/queryClient';
 import { pollService } from '@/services/api/pollService';
 import { NextPage } from '@/types/NextPage';
 
-export default async function PollPage({ params }: NextPage<{ pollId: string }>) {
+export default async function EditPollPage({ params }: NextPage<{ pollId: string }>) {
   const { pollId } = params;
 
   try {
