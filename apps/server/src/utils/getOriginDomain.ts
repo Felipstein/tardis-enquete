@@ -1,5 +1,9 @@
+import { envParsed } from '../env';
+
 export function origin() {
-  const origin = process.env.ORIGIN;
+  const { ORIGINS } = envParsed();
+
+  const origin = ORIGINS[0];
 
   const [protocol, domain] = origin.split('://');
 
