@@ -5,6 +5,7 @@ import { PollsSearchInput } from './PollsSearchInput';
 import { HeaderSettings } from './HeaderSettings';
 import { NewPollButton } from './NewPollButton';
 import { LogoImage } from '@/app/components/LogoImage';
+import { AdminSection } from '@/app/components/AdminSection';
 
 export function HeaderContent() {
   return (
@@ -22,9 +23,11 @@ export function HeaderContent() {
       <div className="flex h-full items-center gap-4">
         <HeaderSettings />
 
-        <div className="h-6 w-px bg-primary-700" />
+        <AdminSection>
+          <div className="h-6 w-px bg-primary-700" />
 
-        <NewPollButton />
+          <NewPollButton />
+        </AdminSection>
 
         <div className="h-6 w-px bg-primary-700" />
 

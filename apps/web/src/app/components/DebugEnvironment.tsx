@@ -2,7 +2,7 @@
 
 import { ReactNode } from 'react';
 
-import { useDebugEnvironment } from '@/hooks/useUserFlags';
+import { useDebugEnvironment } from '@/hooks/useDebugEnvironment';
 
 export type DebugEnvironmentProps = {
   children: ReactNode;
