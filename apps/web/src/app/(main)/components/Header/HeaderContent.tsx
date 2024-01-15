@@ -3,6 +3,7 @@ import { UserInfo } from '../UserInfo';
 
 import { PollsSearchInput } from './PollsSearchInput';
 import { HeaderSettings } from './HeaderSettings';
+import { NewPollButton } from './NewPollButton';
 import { LogoImage } from '@/app/components/LogoImage';
 
 export function HeaderContent() {
@@ -20,6 +21,10 @@ export function HeaderContent() {
 
       <div className="flex h-full items-center gap-4">
         <HeaderSettings />
+
+        <div className="h-6 w-px bg-primary-700" />
+
+        <NewPollButton />
 
         <div className="h-6 w-px bg-primary-700" />
 

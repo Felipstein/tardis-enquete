@@ -1,4 +1,6 @@
 import {
+  CreatePollBodyRequest,
+  CreatePollResponse,
   DeletePollParamsRequest,
   GetPollByIdParamsRequest,
   GetPollByIdResponse,
@@ -13,6 +15,8 @@ import { api } from './apiService';
 
 export type GetPollRequest = GetPollByIdParamsRequest;
 
+export type CreatePollRequest = CreatePollBodyRequest;
+
 export type UpdatePollRequest = UpdatePollParamsRequest & UpdatePollBodyRequest;
 
 export type DeletePollRequest = DeletePollParamsRequest;
@@ -26,6 +30,12 @@ export default class PollService {
 
   async getPoll({ pollId }: GetPollRequest) {
     const response = await api.get<GetPollByIdResponse>(RouteModels.buildRoute(RouteModels.getPoll, { pollId }));
+
+    return response.data.poll;
+  }
+
+  async create(data: CreatePollRequest) {
+    const response = await api.post<CreatePollResponse>(RouteModels.createPoll, data);
 
     return response.data.poll;
   }
