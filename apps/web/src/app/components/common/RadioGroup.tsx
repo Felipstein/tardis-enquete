@@ -16,7 +16,7 @@ function RadioGroupRawItem({ className, ...props }: RadioGroupRawItemProps) {
   return (
     <RadixRadioGroup.Item
       className={w(
-        'bg-primary-950/40 hover:bg-primary-950/50 data-[state=checked]:bg-primary-950/60 data-[state=checked]:hover:bg-primary-950/70 group h-5 w-5 flex-shrink-0 rounded-full border border-primary-700 p-1 outline-none data-[state=checked]:border-primary-500',
+        'group h-5 w-5 flex-shrink-0 rounded-full border border-primary-700 bg-primary-950/40 p-1 outline-none data-[state=checked]:border-primary-500 data-[state=checked]:bg-primary-950/60 hover:bg-primary-950/50 data-[state=checked]:hover:bg-primary-950/70',
         className,
       )}
       {...props}

@@ -42,7 +42,7 @@ export function PollDeleteAlertDialog({ pollId, children }: PollDeleteAlertDialo
       <AlertDialog.Portal>
         <AlertDialog.Overlay className="fixed inset-0 z-40 bg-primary-900/40 backdrop-blur-sm" />
         <AlertDialog.Overlay className="fixed inset-0 z-40 bg-gradient-to-br from-black/30 to-zinc-600/10" />
-        <AlertDialog.Content className="from-primary-950 fixed left-1/2 top-1/2 z-50 max-h-[85vh] w-[90vw] max-w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-md bg-gradient-to-br to-primary-900 p-[25px] shadow-md focus:outline-none">
+        <AlertDialog.Content className="fixed left-1/2 top-1/2 z-50 max-h-[85vh] w-[90vw] max-w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-md bg-gradient-to-br from-primary-950 to-primary-900 p-[25px] shadow-md focus:outline-none">
           <AlertDialog.Title className="text-lg font-medium text-primary-50">
             Você tem certeza absoluta?
           </AlertDialog.Title>
