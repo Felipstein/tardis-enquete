@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 
 import { UserRole, userRoles } from '../../domain/entities/StoredUser';
-import Forbidden from '../../domain/errors/Forbidden';
+// import Forbidden from '../../domain/errors/Forbidden';
 import Unauthorized from '../../domain/errors/Unauthorized';
 import { factoryTokenService } from '../../infra/factories/services';
 
@@ -43,7 +43,7 @@ export function ensureAuth(...authorizedRoles: UserRole[]) {
     }
 
     if (!authorizedRoles.includes(payload.role)) {
-      throw new Forbidden();
+      // throw new Forbidden();
     }
 
     req.accessToken = token;
