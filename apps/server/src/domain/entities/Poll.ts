@@ -5,7 +5,7 @@ import Entity from './core/Entity';
 interface PollProps {
   id: string;
   title: string;
-  description: string;
+  description: string | null;
   createdAt: Date;
   expireAt: Date;
   authorId: string;
@@ -28,7 +28,7 @@ export default class Poll extends Entity<PollProps> {
     return this.attributes.description;
   }
 
-  set description(description: string) {
+  set description(description: string | null) {
     this.attributes.description = description;
   }
 
