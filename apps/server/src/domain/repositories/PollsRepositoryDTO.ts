@@ -4,13 +4,15 @@ import Poll from '../entities/Poll';
 
 export interface CreatePollDTO {
   title: string;
-  description: string;
+  description?: string;
   expireAt: Date;
   authorId: string;
   options: string[];
 }
 
-export type UpdatePollDTO = Partial<OmitTyped<EntityProps<Poll>, 'id' | 'createdAt' | 'authorId'>>;
+export type UpdatePollDTO = Partial<
+  OmitTyped<EntityProps<Poll>, 'id' | 'createdAt' | 'authorId' | 'description'> & { description?: string | null }
+>;
 
 export interface PollWithOptions {
   poll: Poll;

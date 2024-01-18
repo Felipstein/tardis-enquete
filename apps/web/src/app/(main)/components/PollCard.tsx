@@ -147,9 +147,11 @@ export function PollCard({ poll }: PollCardProps) {
         </div>
       </header>
 
-      <p className="text-sm leading-relaxed tracking-wide text-primary-300">
-        <Balancer>{poll.description}</Balancer>
-      </p>
+      {poll.description && (
+        <p className="text-sm leading-relaxed tracking-wide text-primary-300">
+          <Balancer>{poll.description}</Balancer>
+        </p>
+      )}
 
       <ul className="space-y-3.5">
         {poll.options.map((option) => {

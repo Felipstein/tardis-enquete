@@ -1,7 +1,7 @@
 export interface Poll {
   id: string;
   title: string;
-  description: string;
+  description: string | null;
   expireAt: Date;
   createdAt: Date;
   author: {
