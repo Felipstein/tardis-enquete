@@ -7,6 +7,7 @@ import { environment } from '@/utils/environment';
 import { getAccessTokenClientSide } from '@/utils/getAccessTokenClientSide';
 import { getServerURL } from '@/utils/getServerURL';
 import { fetchToken } from '@/app/actions';
+import SessionExpired from '@/shared/SessionExpired';
 
 export const api = axios.create({
   baseURL: getServerURL(),
@@ -55,6 +56,10 @@ api.interceptors.response.use(
 
       if (isAPIError) {
         const apiErrorResponse = error.response!.data as APIErrorResponse;
+
+        if (apiErrorResponse.message.includes('expirou')) {
+          throw new SessionExpired(apiErrorResponse);
+        }
 
         throw new APIError(apiErrorResponse);
       }
