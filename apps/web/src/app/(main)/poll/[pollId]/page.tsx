@@ -1,7 +1,5 @@
 import { redirect } from 'next/navigation';
 import { PollView } from '../../components/PollView';
-import { queryKeys } from '@/config/queryKeys';
-import { queryClient } from '@/libs/queryClient';
 import { pollService } from '@/services/api/pollService';
 import { NextPage } from '@/types/NextPage';
 
@@ -9,10 +7,7 @@ export default async function PollPage({ params }: NextPage<{ pollId: string }>)
   const { pollId } = params;
 
   try {
-    const polls = await queryClient.fetchQuery({
-      queryKey: queryKeys.polls(),
-      queryFn: () => pollService.getPolls(),
-    });
+    const polls = await pollService.getPolls();
 
     const poll = polls.find((poll) => poll.id === pollId);
 

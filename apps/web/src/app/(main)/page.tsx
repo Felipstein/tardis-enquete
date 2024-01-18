@@ -4,8 +4,6 @@ import { PollTimeline } from '@tardis-enquete/contracts';
 import { PollsList } from './components/PollsList';
 
 import { getAccessTokenServerSide } from '@/utils/getAccessTokenServerSide';
-import { queryClient } from '@/libs/queryClient';
-import { queryKeys } from '@/config/queryKeys';
 import { pollService } from '@/services/api/pollService';
 
 export default async function HomePage() {
@@ -19,10 +17,7 @@ export default async function HomePage() {
   let errorOnFetchPolls: unknown | null | undefined;
 
   try {
-    polls = await queryClient.fetchQuery({
-      queryKey: queryKeys.polls(),
-      queryFn: () => pollService.getPolls(),
-    });
+    polls = await pollService.getPolls();
   } catch (error: unknown) {
     if (error instanceof Error) {
       errorOnFetchPolls = { ...error };
