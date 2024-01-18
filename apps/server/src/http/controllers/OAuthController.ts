@@ -68,8 +68,8 @@ export default class OAuthController {
 
       const user = await this.userService.upsert(tokenInfo);
 
-      log.verbose.success('User updated/created.');
-      log.verbose.success('User info:', JSON.stringify(user.toObject(), null, 2));
+      log.success('User updated/created.');
+      log.success('User info:', JSON.stringify(user.toObject(), null, 2));
 
       const token = await this.tokenService.sign('access', { role: user.role, sub: user.id });
 
