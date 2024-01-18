@@ -9,3 +9,8 @@
 - Sistema de compartilhar enquetes
 - Adicionar links personalizados para enquetes
 - Mover a edição de enquetes para /edit/:id, pois a visualização de enquetes ficará em /polls/:id
+- As votações demoraram para responder
+- Adicionar botão CLEAR ALL CACHE
+- Verificar por que criar enquete deu erro de não autorizado mesmo sendo DEV
+- Remover os caches do lado do servidor para verificar se vai funcionar a questão de aparecer apenas 1 enquete
+- Corrigir a ordenação aleatória
