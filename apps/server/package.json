@@ -7,7 +7,7 @@
     "test:watch": "jest --watch",
     "dev": "cross-env NODE_ENV=development cross-env VERBOSE=true tsx watch src/http/server.ts",
     "build": "rm -rf dist && tsup src",
-    "start": "concurrently \"cross-env NODE_ENV=production node dist/http/server.js\" \"yarn prisma studio\"",
+    "start": "cross-env NODE_ENV=production node dist/http/server.js",
     "typecheck": "tsc --noEmit",
     "lint": "eslint --ext .ts src",
     "lint:fix": "eslint --ext .ts src --fix",
