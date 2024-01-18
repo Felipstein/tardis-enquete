@@ -1,6 +1,6 @@
 'use client';
 
-import { MoreHorizontal, PenSquare, Share, Trash2 } from 'lucide-react';
+import { ExternalLink, MoreHorizontal, PenSquare, Share, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
@@ -41,6 +41,14 @@ export function PollOptions({ pollId, canEdit = false }: PollOptionsProps) {
 
       <Dropdown.Content>
         <Dropdown.Item asChild className="flex items-center gap-2">
+          <Link href={`/poll/${pollId}`}>
+            <Dropdown.ItemIcon src={ExternalLink} />
+
+            <span>Abrir em uma nova aba</span>
+          </Link>
+        </Dropdown.Item>
+
+        <Dropdown.Item asChild className="flex items-center gap-2">
           <button type="button" onClick={handleCopyLink}>
             <Dropdown.ItemIcon src={Share} />
 
@@ -59,8 +67,6 @@ export function PollOptions({ pollId, canEdit = false }: PollOptionsProps) {
                 <span>Editar</span>
               </Link>
             </Dropdown.Item>
-
-            <Dropdown.Separator />
 
             <PollDeleteAlertDialog pollId={pollId}>
               <Dropdown.Item
