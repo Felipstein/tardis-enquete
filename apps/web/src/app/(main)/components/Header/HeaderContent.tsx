@@ -2,8 +2,8 @@ import Link from 'next/link';
 import { UserInfo } from '../UserInfo';
 
 import { PollsSearchInput } from './PollsSearchInput';
-import { HeaderSettings } from './HeaderSettings';
 import { NewPollButton } from './NewPollButton';
+import { HeaderSettings } from './HeaderSettings';
 import { LogoImage } from '@/app/components/LogoImage';
 import { AdminSection } from '@/app/components/AdminSection';
 
@@ -21,13 +21,13 @@ export function HeaderContent() {
       </div>
 
       <div className="flex h-full items-center gap-4">
-        <HeaderSettings />
-
         <AdminSection>
-          <div className="h-6 w-px bg-primary-700" />
-
           <NewPollButton />
         </AdminSection>
+
+        <div className="h-6 w-px bg-primary-700" />
+
+        <HeaderSettings />
 
         <div className="h-6 w-px bg-primary-700" />
 

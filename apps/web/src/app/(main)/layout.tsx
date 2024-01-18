@@ -3,9 +3,11 @@ import { ReactNode } from 'react';
 
 import { Footer } from '../components/Footer';
 
-import { FeedbackContainer } from '../components/FeedbackContainer';
+import { DebugEnvironment } from '../components/DebugEnvironment';
 import { Header } from './components/Header';
 
+import { FeedbackSection } from './components/FeedbackSection';
+import { DebugSection } from './components/DebugSection';
 import { getAccessTokenServerSide } from '@/utils/getAccessTokenServerSide';
 
 export default function MainLayout({ children }: { children: ReactNode }) {
@@ -27,7 +29,11 @@ export default function MainLayout({ children }: { children: ReactNode }) {
         <Footer />
       </div>
 
-      <FeedbackContainer />
+      <FeedbackSection />
+
+      <DebugEnvironment>
+        <DebugSection />
+      </DebugEnvironment>
     </>
   );
 }

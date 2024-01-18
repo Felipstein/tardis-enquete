@@ -7,8 +7,7 @@ import { Inter } from 'next/font/google';
 import { DebugEnvironment } from './components/DebugEnvironment';
 import { Providers } from './providers';
 
-import { AllSocketsInfo } from './components/_debug/AllSocketsInfo';
-import { SocketInfo } from './components/_debug/SocketInfo';
+import { SocketsInfo } from './(main)/components/SocketsInfo';
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 
@@ -37,11 +36,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <DebugEnvironment>
               <ReactQueryDevtools />
 
-              <div className="fixed bottom-6 left-6 z-40 flex flex-col items-start gap-4">
-                <AllSocketsInfo />
-
-                <SocketInfo />
-              </div>
+              <SocketsInfo />
             </DebugEnvironment>
             {/* </TrackMousePosition> */}
           </HydrationBoundary>

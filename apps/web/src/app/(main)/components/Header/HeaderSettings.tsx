@@ -1,32 +1,74 @@
 'use client';
 
-import { LayoutGrid, List } from 'lucide-react';
-import { Toggle } from '@/app/components/common/Toggle';
-import { usePollsListGridTemplate } from '@/stores/PollsListGridTemplate';
+import { Settings } from 'lucide-react';
+import { useState } from 'react';
+import { Button } from '@/app/components/common/Button';
+import { Dropdown } from '@/app/components/common/Dropdown';
+import { w } from '@/utils/w';
+import { GridTemplate, usePreferencesStore } from '@/stores/PreferencesStore';
+import { DebugEnvironment } from '@/app/components/DebugEnvironment';
+
+const gridTemplateLabel: Record<GridTemplate, string> = {
+  grid: 'Por Grades',
+  row: 'Por Linhas',
+};
 
 export function HeaderSettings() {
-  const { gridTemplate, setGridTemplate } = usePollsListGridTemplate();
+  const {
+    showFeedbackPopup,
+    setShowFeedbackPopup,
+    showSocketsSection,
+    setShowSocketsSection,
+    showDebugPanel,
+    setShowDebugPanel,
+    gridTemplate,
+    setGridTemplate,
+  } = usePreferencesStore();
+
+  const [isOpened, setIsOpened] = useState(false);
 
   return (
-    <div className="hidden items-stretch sm:flex">
-      <Toggle
-        pressed={gridTemplate === 'grid'}
-        onPressedChange={() => setGridTemplate('grid')}
-        cannotDisable
-        title="Exibir em formato de grade"
-        className="rounded-none rounded-l-md"
-      >
-        <LayoutGrid className="h-4 w-4" />
-      </Toggle>
-      <Toggle
-        pressed={gridTemplate === 'row'}
-        onPressedChange={() => setGridTemplate('row')}
-        cannotDisable
-        title="Exibir em formato de lista"
-        className="rounded-none rounded-r-md"
-      >
-        <List className="h-4 w-4" />
-      </Toggle>
-    </div>
+    <Dropdown.Root open={isOpened} onOpenChange={setIsOpened}>
+      <Dropdown.Trigger asChild>
+        <Button variant="ghost-with-background" className={w(isOpened && 'cursor-default bg-black/20 text-white')}>
+          <Settings data-open={isOpened} className="h-5 w-5 transition-transform data-[open=true]:rotate-180" />
+        </Button>
+      </Dropdown.Trigger>
+
+      <Dropdown.Content>
+        <Dropdown.CheckboxItem checked={showFeedbackPopup} onCheckedChange={setShowFeedbackPopup}>
+          <Dropdown.ItemIndicator iconType="check" />
+          Exibir Feedback
+        </Dropdown.CheckboxItem>
+
+        <DebugEnvironment>
+          <Dropdown.CheckboxItem checked={showSocketsSection} onCheckedChange={setShowSocketsSection}>
+            <Dropdown.ItemIndicator iconType="check" />
+            Exibir Sockets
+          </Dropdown.CheckboxItem>
+
+          <Dropdown.CheckboxItem checked={showDebugPanel} onCheckedChange={setShowDebugPanel}>
+            <Dropdown.ItemIndicator iconType="check" />
+            Exibir Dev Panel
+          </Dropdown.CheckboxItem>
+
+          <Dropdown.Separator />
+
+          <Dropdown.Label hasItemIndicator>Ordenar enquetes por</Dropdown.Label>
+
+          <Dropdown.RadioGroup
+            value={gridTemplate}
+            onValueChange={(gridTemplate) => setGridTemplate(gridTemplate as GridTemplate)}
+          >
+            {Object.entries(gridTemplateLabel).map(([value, label]) => (
+              <Dropdown.RadioItem key={value} value={value}>
+                <Dropdown.ItemIndicator iconType="radio" />
+                {label}
+              </Dropdown.RadioItem>
+            ))}
+          </Dropdown.RadioGroup>
+        </DebugEnvironment>
+      </Dropdown.Content>
+    </Dropdown.Root>
   );
 }

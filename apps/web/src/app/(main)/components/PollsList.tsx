@@ -13,8 +13,8 @@ import { queryKeys } from '@/config/queryKeys';
 import { pollService } from '@/services/api/pollService';
 import { usePollsSearchStore } from '@/stores/PollsSearchStore';
 import { w } from '@/utils/w';
-import { usePollsListGridTemplate } from '@/stores/PollsListGridTemplate';
 import { usePollVotesChanges } from '@/hooks/usePollVotesChanges';
+import { usePreferencesStore } from '@/stores/PreferencesStore';
 
 export type PollsListProps = {
   pollsAlreadyFetched?: PollTimeline[];
@@ -22,7 +22,7 @@ export type PollsListProps = {
 };
 
 export function PollsList({ pollsAlreadyFetched, errorOnInitialFetch }: PollsListProps) {
-  const gridTemplate = usePollsListGridTemplate((s) => s.gridTemplate);
+  const gridTemplate = usePreferencesStore((s) => s.gridTemplate);
 
   const {
     data: polls = [],
@@ -133,8 +133,7 @@ export function PollsList({ pollsAlreadyFetched, errorOnInitialFetch }: PollsLis
             className={w(
               gridTemplate === 'row' &&
                 'w-full data-[last=false]:border-b data-[last=false]:border-primary-700/70 data-[last=false]:pb-12',
-              gridTemplate === 'grid' &&
-                'w-full rounded-md bg-gradient-to-br from-primary-900/40 to-primary-800/60 p-12 sm:w-[520px]',
+              gridTemplate === 'grid' && 'w-full rounded-md p-12 sm:w-[520px]',
             )}
           >
             <PollCard poll={poll} />
