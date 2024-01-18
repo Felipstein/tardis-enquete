@@ -7,8 +7,6 @@
 - Criar sistema de categorias para enquetes
 - Melhorar filtragem pelas enquetes (datas, apenas expirados, apenas não expirados, etc.).
 - Enviar sockets quando alguma enquete é criada, atualizada ou delatada.
-- As votações demoraram para responder
-- Adicionar botão CLEAR ALL CACHE
 - Verificar por que criar enquete deu erro de não autorizado mesmo sendo DEV
 - Corrigir a ordenação aleatória
 - Opção para fechar enquete
