@@ -54,7 +54,7 @@ export function HeaderSettings() {
 
           <Dropdown.Separator />
 
-          <Dropdown.Label hasItemIndicator>Ordenar enquetes por</Dropdown.Label>
+          <Dropdown.Label hasItemIndicator>Ordenar enquetes</Dropdown.Label>
 
           <Dropdown.RadioGroup
             value={gridTemplate}
