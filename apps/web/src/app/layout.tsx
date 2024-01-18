@@ -4,9 +4,9 @@ import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Inter } from 'next/font/google';
 
-import { AllSocketsInfo } from './components/_debug/AllSocketsInfo';
+// import { AllSocketsInfo } from './components/_debug/AllSocketsInfo';
 // import { RenderMousePositions } from './components/RenderMousePositions';
-import { SocketInfo } from './components/_debug/SocketInfo';
+// import { SocketInfo } from './components/_debug/SocketInfo';
 import { DebugEnvironment } from './components/DebugEnvironment';
 // import { TrackMousePosition } from './components/TrackMousePosition';
 import { Providers } from './providers';
@@ -39,7 +39,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <DebugEnvironment>
               <ReactQueryDevtools />
 
-              <div className="fixed bottom-6 left-6 z-40 flex flex-col items-start gap-4">
+              {/* <div className="fixed bottom-6 left-6 z-40 flex flex-col items-start gap-4">
                 <AllSocketsInfo />
 
                 <SocketInfo />
@@ -47,7 +47,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                 <span className="select-none text-xs text-primary-300">
                   seu curioso do caralho | build 0.1.0 (web) | build 0.1.1 (server){' '}
                 </span>
-              </div>
+              </div> */}
             </DebugEnvironment>
             {/* </TrackMousePosition> */}
           </HydrationBoundary>
