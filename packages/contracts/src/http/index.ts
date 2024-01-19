@@ -1,3 +1,4 @@
+export * from './categories';
 export * from './dev';
 export * from './feedbacks';
 export * from './oauth';
