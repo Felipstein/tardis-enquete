@@ -141,7 +141,7 @@ export function PollCard({ poll }: PollCardProps) {
             <Clock10 className="h-3.5 w-3.5" />
 
             <span className="text-xs sm:text-sm">
-              {isExpired ? 'expirado' : `expira ${moment(poll.expireAt).fromNow()}`}
+              {isExpired ? 'fechado' : `fecha ${moment(poll.expireAt).fromNow()}`}
             </span>
           </div>
         </div>

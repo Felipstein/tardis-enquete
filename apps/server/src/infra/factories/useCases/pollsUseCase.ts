@@ -22,6 +22,7 @@ const createPollUseCase = new CreatePollUseCase(
   factoryPollsRepository(),
   factoryStoredUsersRepository(),
   factoryUserService(),
+  factoryPolulatePollService(),
 );
 
 export function factoryCreatePollUseCase() {
@@ -32,6 +33,7 @@ const updatePollUseCase = new UpdatePollUseCase(
   factoryPollsRepository(),
   factoryOptionsRepository(),
   factoryUserService(),
+  factoryPolulatePollService(),
 );
 
 export function factoryUpdatePollUseCase() {

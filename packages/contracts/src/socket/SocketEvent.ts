@@ -8,7 +8,9 @@ export interface SocketEventsWithPayloads {
   userMouseMove: { mousePosition: { x: number; y: number } };
   userMouseLeave: void;
   userMouseClick: { userId: string; mousePosition: { x: number; y: number } };
+  pollCreate: { poll: PollTimeline };
   pollVotesChanges: { poll: PollTimeline };
+  pollDelete: { pollId: string };
 }
 
 export type SocketEvent = keyof SocketEventsWithPayloads;

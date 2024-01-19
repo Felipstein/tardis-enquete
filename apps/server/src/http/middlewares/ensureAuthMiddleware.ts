@@ -42,8 +42,6 @@ export function ensureAuth(...authorizedRoles: UserRole[]) {
       throw new Unauthorized();
     }
 
-    console.log({ authorizedRoles, role: payload.role, includes: authorizedRoles.includes(payload.role) });
-
     if (!authorizedRoles.includes(payload.role)) {
       throw new Forbidden();
     }

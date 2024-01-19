@@ -1,15 +1,16 @@
 # Pendentes
-- Adicionar sockets para enviar notificações (notificações como feedback atendido, feedback recebido, enquete criada, enquete finalizada)
+- Adicionar sockets para enviar notificações (notificações como feedback atendido, feedback recebido)
+- Adicionar socket para enviar notificação sobre enquetes fechadas/fechadas
 - Verificar quais usuários estão editando/deletando os enquetes, para que sejam apenas administradores.
-- Abstrair os casos de usos criar, editar e buscar enquete (possui código repetido para buscar informações do usuário).
 - Adicionar possibilidade de qualquer usuário criar uma enquete.
 - Adicionar tags para as enquetes.
 - Criar sistema de categorias para enquetes
 - Melhorar filtragem pelas enquetes (datas, apenas expirados, apenas não expirados, etc.).
-- Enviar sockets quando alguma enquete é criada, atualizada ou delatada.
-- Verificar por que criar enquete deu erro de não autorizado mesmo sendo DEV
 - Corrigir a ordenação aleatória
 - Opção para fechar enquete
 - Adicionar opção "MODO ANONIMO VOTOS"
 - Remover o campo de buscar do header
 - Mover o capo de buscar em um campo de filtros
+- Quando editar uma poll, não perder os votos das outras opções
+- Fazer com que já venha com 2 opções mínimos no create poll page
+- Se tiver 2 opções no create poll page ou edit poll page, bloqueia os botões de delete

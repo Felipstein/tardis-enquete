@@ -1,3 +1,8 @@
+import { SocketEventPayload } from '@tardis-enquete/contracts';
+
+import { io } from '../../../http/app';
+import Logger from '../../../infra/logger';
+import PopulatePollService from '../../../services/PopulatePollService';
 import UserService from '../../../services/UserService';
 import StoredUserNotExists from '../../errors/StoredUserNotExists';
 import UnprocessableEntity from '../../errors/UnprocessableEntity';
@@ -6,11 +11,14 @@ import IStoredUsersRepository from '../../repositories/StoredUsersStoredReposito
 
 import { CreatePollUseCaseDTO, CreatePollUseCaseReturn } from './CreatePollUseCaseDTO';
 
+const log = Logger.start('CREATE POLL USE CASE');
+
 export default class CreatePollUseCase {
   constructor(
     private readonly pollsRepository: IPollsRepository,
     private readonly storedUsersRepository: IStoredUsersRepository,
     private readonly usersService: UserService,
+    private readonly populatePollService: PopulatePollService,
   ) {}
 
   async execute(data: CreatePollUseCaseDTO): Promise<CreatePollUseCaseReturn> {
@@ -30,6 +38,20 @@ export default class CreatePollUseCase {
       this._findUserInfo(poll.authorId),
       this.pollsRepository.countTotalPollsOfUserId(poll.authorId),
     ]);
+
+    if (process.env.NODE_ENV !== 'test') {
+      const pollUpdated = await this.pollsRepository.findByIdWithOptionsAndVotes(poll.id);
+
+      if (pollUpdated) {
+        const pollPopuled = await this.populatePollService.populate(pollUpdated);
+
+        log.verbose.info('Emitting socket event (poll create), poll info:', JSON.stringify(pollPopuled, null, 2));
+
+        io.emit('pollCreate', { poll: pollPopuled } as SocketEventPayload<'pollCreate'>);
+      } else {
+        log.warn('Poll not found to emit socket event, original poll info:', JSON.stringify(poll, null, 2));
+      }
+    }
 
     return {
       id: poll.id,

@@ -48,7 +48,7 @@ export function DatePicker({ value, onChange, errorFeedback, showExpireAt = fals
             >
               <Clock10 className="mr-1.5 h-3.5 w-3.5" />
 
-              {isExpired ? `expirado ${moment(value).fromNow()}` : `expira ${moment(value).fromNow()}`}
+              {isExpired ? `fechado ${moment(value).fromNow()}` : `fecha ${moment(value).fromNow()}`}
             </Input.Box>
           )}
         </Input.Root>

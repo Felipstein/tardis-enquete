@@ -15,6 +15,8 @@ import { usePollsSearchStore } from '@/stores/PollsSearchStore';
 import { w } from '@/utils/w';
 import { usePollVotesChanges } from '@/hooks/usePollVotesChanges';
 import { usePreferencesStore } from '@/stores/PreferencesStore';
+import { usePollCreated } from '@/hooks/usePollCreated';
+import { usePollDelete } from '@/hooks/usePollDelete';
 
 export type PollsListProps = {
   pollsAlreadyFetched?: PollTimeline[];
@@ -39,6 +41,10 @@ export function PollsList({ pollsAlreadyFetched, errorOnInitialFetch }: PollsLis
 
   usePollVotesChanges();
 
+  usePollCreated();
+
+  usePollDelete();
+
   const pollsFiltered = useMemo(() => {
     if (!searchInput) {
       return polls;
@@ -49,8 +55,8 @@ export function PollsList({ pollsAlreadyFetched, errorOnInitialFetch }: PollsLis
 
       const optionTexts = options.map((option) => option.text);
 
-      return [title, description, author.username, ...optionTexts].some((text) =>
-        text.toLowerCase().includes(searchInput.toLowerCase()),
+      return [title, description, author.username, ...optionTexts].some(
+        (text) => text?.toLowerCase().includes(searchInput.toLowerCase()),
       );
     });
   }, [polls, searchInput]);
