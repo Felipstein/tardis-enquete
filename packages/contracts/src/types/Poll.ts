@@ -4,6 +4,7 @@ export interface Poll {
   description: string | null;
   expireAt: Date;
   createdAt: Date;
+  categoryId: string | null;
   author: {
     id: string;
     username: string;

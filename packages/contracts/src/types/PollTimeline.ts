@@ -1,3 +1,4 @@
+import { Category } from './Category';
 import { Poll } from './Poll';
 
 type Option = Poll['options'][number];
@@ -14,6 +15,7 @@ type OptionWithVotes = Omit<Option, 'totalVotes'> & {
   }>;
 };
 
-export type PollTimeline = Omit<Poll, 'options'> & {
+export type PollTimeline = Omit<Poll, 'options' | 'categoryId'> & {
+  category: Pick<Category, 'id' | 'name'>;
   options: OptionWithVotes[];
 };
