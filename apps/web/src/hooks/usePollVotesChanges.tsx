@@ -5,7 +5,7 @@ import { useSocketEvent } from './useSocketEvent';
 import { queryClient } from '@/libs/queryClient';
 import { queryKeys } from '@/config/queryKeys';
 
-export function usePollVotesChanges() {
+export function usePollVotesChanges(onVotesChanges?: (pollUpdated: PollTimeline) => void) {
   useSocketEvent('pollVotesChanges', ({ poll: pollUpdated }) => {
     console.info('A poll has updated, poll:', pollUpdated);
 
@@ -15,5 +15,7 @@ export function usePollVotesChanges() {
       queryKeys.polls(),
       polls.map((poll) => (poll.id === pollUpdated.id ? pollUpdated : poll)),
     );
+
+    onVotesChanges?.(pollUpdated);
   });
 }
