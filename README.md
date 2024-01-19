@@ -4,7 +4,6 @@
 - Verificar quais usuários estão editando/deletando os enquetes, para que sejam apenas administradores.
 - Adicionar possibilidade de qualquer usuário criar uma enquete.
 - Adicionar tags para as enquetes.
-- Criar sistema de categorias para enquetes
 - Melhorar filtragem pelas enquetes (datas, apenas expirados, apenas não expirados, etc.).
 - Corrigir a ordenação aleatória
 - Opção para fechar enquete
