@@ -53,21 +53,20 @@ export function HeaderSettings() {
           </Dropdown.CheckboxItem>
 
           <Dropdown.Separator />
-
-          <Dropdown.Label hasItemIndicator>Ordenar enquetes</Dropdown.Label>
-
-          <Dropdown.RadioGroup
-            value={gridTemplate}
-            onValueChange={(gridTemplate) => setGridTemplate(gridTemplate as GridTemplate)}
-          >
-            {Object.entries(gridTemplateLabel).map(([value, label]) => (
-              <Dropdown.RadioItem key={value} value={value}>
-                <Dropdown.ItemIndicator iconType="radio" />
-                {label}
-              </Dropdown.RadioItem>
-            ))}
-          </Dropdown.RadioGroup>
         </DebugEnvironment>
+        <Dropdown.Label hasItemIndicator>Ordenar enquetes</Dropdown.Label>
+
+        <Dropdown.RadioGroup
+          value={gridTemplate}
+          onValueChange={(gridTemplate) => setGridTemplate(gridTemplate as GridTemplate)}
+        >
+          {Object.entries(gridTemplateLabel).map(([value, label]) => (
+            <Dropdown.RadioItem key={value} value={value}>
+              <Dropdown.ItemIndicator iconType="radio" />
+              {label}
+            </Dropdown.RadioItem>
+          ))}
+        </Dropdown.RadioGroup>
       </Dropdown.Content>
     </Dropdown.Root>
   );

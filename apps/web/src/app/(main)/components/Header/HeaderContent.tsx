@@ -23,9 +23,9 @@ export function HeaderContent() {
       <div className="flex h-full items-center gap-4">
         <AdminSection>
           <NewPollButton />
-        </AdminSection>
 
-        <div className="h-6 w-px bg-primary-700" />
+          <div className="h-6 w-px bg-primary-700" />
+        </AdminSection>
 
         <HeaderSettings />
 
