@@ -8,6 +8,7 @@ import { Poll } from '@tardis-enquete/contracts';
 import moment from 'moment';
 import { AlertCircle, List, Plus, Trash2 } from 'lucide-react';
 import { DragDropContext, Draggable, OnDragEndResponder } from 'react-beautiful-dnd';
+import { useQuery } from '@tanstack/react-query';
 import { Input } from '../common/Input';
 import { Label } from '../common/Label';
 import { DatePicker } from '../common/DatePicker';
@@ -15,7 +16,10 @@ import { TextArea } from '../common/TextArea';
 import { Button } from '../common/Button';
 import { StrictModeDroppable } from '../StrictModeDroppable';
 import { DebugEnvironment } from '../DebugEnvironment';
+import { Select } from '../common/Select';
 import { IDInputCopy } from './IDInputCopy';
+import { queryKeys } from '@/config/queryKeys';
+import { categoryService } from '@/services/api/categoryService';
 
 const DESCRIPTION_LENGTH_LIMIT = 600;
 
@@ -29,6 +33,7 @@ const pollFormSchema = z.object({
     .max(DESCRIPTION_LENGTH_LIMIT, 'Mah rapaz, aí você foi longe pra burro')
     .optional()
     .transform((description) => (description === '' ? undefined : description)),
+  categoryId: z.string().optional(),
   expireAt: z
     .date({ required_error: 'A data de expiração é obrigatória' })
     .refine((date) => date.getTime() > Date.now(), { message: 'Escolha uma data futura, tongo' }),
@@ -80,6 +85,15 @@ const PollForm = forwardRef<PollFormComponent, PollFormProps>(
       // @ts-ignore
       name: 'options',
       control,
+    });
+
+    const {
+      data: categories = [],
+      isLoading: isLoadingCategories,
+      error: errorOnFetchCategories,
+    } = useQuery({
+      queryKey: queryKeys.categoriesFilter(),
+      queryFn: categoryService.findCategoriesForFilter,
     });
 
     useImperativeHandle(
@@ -167,6 +181,32 @@ const PollForm = forwardRef<PollFormComponent, PollFormProps>(
                 )}
               </div>
             </TextArea.Root>
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <Label isOptional htmlFor="category">
+              Categoria
+            </Label>
+
+            <Controller
+              control={control}
+              name="categoryId"
+              render={({ field: { value, onChange } }) => (
+                <Select.Root value={value} onValueChange={onChange}>
+                  <Select.Trigger />
+
+                  <Select.Content>
+                    <Select.Group>
+                      {categories.map((category) => (
+                        <Select.Item key={category.id} value={category.id}>
+                          {category.name}
+                        </Select.Item>
+                      ))}
+                    </Select.Group>
+                  </Select.Content>
+                </Select.Root>
+              )}
+            />
           </div>
 
           <div className="flex flex-col gap-1">

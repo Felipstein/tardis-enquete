@@ -51,9 +51,10 @@ export function HeaderSettings() {
             <Dropdown.ItemIndicator iconType="check" />
             Exibir Dev Panel
           </Dropdown.CheckboxItem>
-
-          <Dropdown.Separator />
         </DebugEnvironment>
+
+        <Dropdown.Separator />
+
         <Dropdown.Label hasItemIndicator>Ordenar enquetes</Dropdown.Label>
 
         <Dropdown.RadioGroup

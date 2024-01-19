@@ -5,4 +5,5 @@ export const queryKeys = {
   polls: () => ['polls'],
   poll: (pollId: string) => ['poll', pollId],
   feedbacks: () => ['feedbacks'],
+  categoriesFilter: () => ['categoriesFilter'],
 } as const;
