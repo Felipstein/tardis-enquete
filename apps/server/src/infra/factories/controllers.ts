@@ -1,3 +1,4 @@
+import CategoryController from '../../http/controllers/CategoryController';
 import DevToolsController from '../../http/controllers/DevToolsController';
 import FeedbackController from '../../http/controllers/FeedbackController';
 import OAuthController from '../../http/controllers/OAuthController';
@@ -5,6 +6,14 @@ import PollController from '../../http/controllers/PollController';
 import VoteController from '../../http/controllers/VoteController';
 
 import { factoryDiscordService, factoryTokenService, factoryUserService } from './services';
+import {
+  factoryCreateCategoryUseCase,
+  factoryDeleteCategoryUseCase,
+  factoryFindCategoriesForFilterUseCase,
+  factoryFindCategoriesForSelectUseCase,
+  factoryFindCategoriesUseCase,
+  factoryUpdateCategoryUseCase,
+} from './useCases/categoriesUseCase';
 import { factoryGenerateAccessTokenUseCase, factoryGetDiscordUserInfoUseCase } from './useCases/devToolsUseCase';
 import {
   factoryCloseFeedbackUseCase,
@@ -63,4 +72,17 @@ const feedbackController = new FeedbackController(
 
 export function factoryFeedbackController() {
   return feedbackController;
+}
+
+const categoryController = new CategoryController(
+  factoryFindCategoriesUseCase(),
+  factoryFindCategoriesForFilterUseCase(),
+  factoryFindCategoriesForSelectUseCase(),
+  factoryCreateCategoryUseCase(),
+  factoryUpdateCategoryUseCase(),
+  factoryDeleteCategoryUseCase(),
+);
+
+export function factoryCategoryController() {
+  return categoryController;
 }

@@ -31,6 +31,7 @@ export default class FindPollByIdUseCase {
       description: poll.description,
       expireAt: poll.expireAt,
       createdAt: poll.createdAt,
+      categoryId: poll.categoryId,
       options,
       author: {
         id: authorInfo.id,

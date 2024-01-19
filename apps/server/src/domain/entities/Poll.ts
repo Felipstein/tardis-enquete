@@ -6,6 +6,7 @@ interface PollProps {
   id: string;
   title: string;
   description: string | null;
+  categoryId: string | null;
   createdAt: Date;
   expireAt: Date;
   authorId: string;
@@ -30,6 +31,14 @@ export default class Poll extends Entity<PollProps> {
 
   set description(description: string | null) {
     this.attributes.description = description;
+  }
+
+  get categoryId() {
+    return this.attributes.categoryId;
+  }
+
+  set categoryId(categoryId: string | null) {
+    this.attributes.categoryId = categoryId;
   }
 
   get createdAt() {

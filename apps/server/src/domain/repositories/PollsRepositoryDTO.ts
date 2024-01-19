@@ -7,11 +7,15 @@ export interface CreatePollDTO {
   description?: string;
   expireAt: Date;
   authorId: string;
+  categoryId?: string;
   options: string[];
 }
 
 export type UpdatePollDTO = Partial<
-  OmitTyped<EntityProps<Poll>, 'id' | 'createdAt' | 'authorId' | 'description'> & { description?: string | null }
+  OmitTyped<EntityProps<Poll>, 'id' | 'createdAt' | 'authorId' | 'description' | 'categoryId'> & {
+    description?: string | null;
+    categoryId?: string | null;
+  }
 >;
 
 export interface PollWithOptions {

@@ -3,6 +3,7 @@ import PolulatePollService from '../../services/PopulatePollService';
 import TokenService from '../../services/TokenService';
 import UserService from '../../services/UserService';
 
+import { factoryPrismaClient } from './prismaClient';
 import { factoryPollsRepository, factoryStoredUsersRepository } from './repositories';
 
 const discordService = new DiscordService();
@@ -23,7 +24,11 @@ export function factoryTokenService() {
   return tokenService;
 }
 
-const polulatePollService = new PolulatePollService(factoryPollsRepository(), factoryUserService());
+const polulatePollService = new PolulatePollService(
+  factoryPrismaClient(),
+  factoryPollsRepository(),
+  factoryUserService(),
+);
 
 export function factoryPolulatePollService() {
   return polulatePollService;

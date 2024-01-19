@@ -15,6 +15,12 @@ export const RouteModels = {
   sendFeedback: '/feedbacks',
   closeFeedback: '/feedbacks/:feedbackId/close',
   deleteFeedback: '/feedbacks/:feedbackId',
+  getCategories: '/categories',
+  getCategoriesForFilter: '/categories-filter',
+  getCategoriesForSelect: '/categories-select',
+  createCategory: '/categories',
+  updateCategory: '/categories/:categoryId',
+  deleteCategory: '/categories/:categoryId',
 
   buildRoute(route: string, params: Record<string, string | number>) {
     let builtRoute = route;

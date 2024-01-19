@@ -1,3 +1,4 @@
+import { PrismaClient } from '@prisma/client';
 import { PollTimeline } from '@tardis-enquete/contracts';
 
 import StoredUserNotExists from '../domain/errors/StoredUserNotExists';
@@ -8,6 +9,7 @@ import UserService from './UserService';
 
 export default class PopulatePollService {
   constructor(
+    private readonly prisma: PrismaClient,
     private readonly pollsRepository: IPollsRepository,
     private readonly usersService: UserService,
   ) {}
@@ -45,11 +47,21 @@ export default class PopulatePollService {
       ...optionsPromises,
     ]);
 
+    let category: PollTimeline['category'] | null = null;
+
+    if (poll.categoryId) {
+      category = await this.prisma.category.findUnique({
+        where: { id: poll.categoryId },
+        select: { id: true, name: true },
+      });
+    }
+
     return {
       id: poll.id,
       title: poll.title,
       description: poll.description,
       createdAt: poll.createdAt,
+      category,
       expireAt: poll.expireAt,
       author: {
         id: authorInfo.id,

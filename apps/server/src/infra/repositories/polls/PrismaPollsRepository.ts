@@ -150,6 +150,18 @@ export default class PrismaPollsRepository implements IPollsRepository {
     return totalPolls;
   }
 
+  async countTotalPollsOfCategoryId(categoryId: string): Promise<number> {
+    const totalPolls = await this.prismaClient.poll.count({ where: { categoryId } });
+
+    return totalPolls;
+  }
+
+  async countTotalPollsWithoutCategory(): Promise<number> {
+    const totalPolls = await this.prismaClient.poll.count({ where: { categoryId: null } });
+
+    return totalPolls;
+  }
+
   async create(data: CreatePollDTO): Promise<PollWithOptions> {
     const pollCreated = await this.prismaClient.poll.create({
       data: {
@@ -157,6 +169,7 @@ export default class PrismaPollsRepository implements IPollsRepository {
         description: data.description,
         expireAt: data.expireAt,
         authorId: data.authorId,
+        categoryId: data.categoryId,
         options: {
           createMany: {
             data: data.options.map((option) => ({

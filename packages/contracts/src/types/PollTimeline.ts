@@ -16,6 +16,6 @@ type OptionWithVotes = Omit<Option, 'totalVotes'> & {
 };
 
 export type PollTimeline = Omit<Poll, 'options' | 'categoryId'> & {
-  category: Pick<Category, 'id' | 'name'>;
+  category: Pick<Category, 'id' | 'name'> | null;
   options: OptionWithVotes[];
 };

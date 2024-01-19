@@ -57,6 +57,7 @@ export default class CreatePollUseCase {
       id: poll.id,
       title: poll.title,
       description: poll.description,
+      categoryId: poll.categoryId,
       expireAt: poll.expireAt,
       createdAt: poll.createdAt,
       options,

@@ -15,6 +15,10 @@ export default interface IPollsRepository {
 
   countTotalPollsOfUserId(userId: string): Promise<number>;
 
+  countTotalPollsOfCategoryId(categoryId: string): Promise<number>;
+
+  countTotalPollsWithoutCategory(): Promise<number>;
+
   create(data: CreatePollDTO): Promise<PollWithOptions>;
 
   update(id: string, data: UpdatePollDTO): Promise<PollWithOptions>;
