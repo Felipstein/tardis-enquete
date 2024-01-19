@@ -11,6 +11,3 @@
 - Adicionar opção "MODO ANONIMO VOTOS"
 - Remover o campo de buscar do header
 - Mover o capo de buscar em um campo de filtros
-- Fazer com que já venha com 2 opções mínimos no create poll page
-- Se tiver 2 opções no create poll page ou edit poll page, bloqueia os botões de delete
-- Adicionar opção tipo usuário, para poder botar foto de perfil
