@@ -3,7 +3,7 @@
 import { Poll } from '@tardis-enquete/contracts';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import { AlertCircle } from 'lucide-react';
 import PollForm, { PollFormComponent, PollFormData } from '@/app/components/forms/PollForm';
@@ -40,6 +40,8 @@ export default function EditPollForm({ pollId, defaultPollFetched }: EditPollFor
   const { mutate: updatePollRequest, isPending: isUpdatingPoll } = useMutation({
     mutationFn: pollService.update,
   });
+
+  const hasVotes = useMemo(() => poll?.options.some((option) => option.totalVotes > 0), [poll?.options]);
 
   function updatePoll({ title, description, expireAt, options }: PollFormData) {
     updatePollRequest(
@@ -98,6 +100,7 @@ export default function EditPollForm({ pollId, defaultPollFetched }: EditPollFor
         onSubmit={updatePoll}
         onChangeForm={setHasChanges}
         onIsValid={setIsValid}
+        showOptionsWarn={hasVotes}
         disableFields={isUpdatingPoll}
       >
         <footer className="flex items-center justify-between gap-4">

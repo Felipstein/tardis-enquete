@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { ReactNode, forwardRef, useEffect, useImperativeHandle } from 'react';
 import { Poll } from '@tardis-enquete/contracts';
 import moment from 'moment';
-import { List, Plus, Trash2 } from 'lucide-react';
+import { AlertCircle, List, Plus, Trash2 } from 'lucide-react';
 import { DragDropContext, Draggable, OnDragEndResponder } from 'react-beautiful-dnd';
 import { Input } from '../common/Input';
 import { Label } from '../common/Label';
@@ -45,6 +45,7 @@ export type PollFormProps = {
   onChangeForm?: (isChanged: boolean) => void;
   onIsValid?: (isValid: boolean) => void;
   disableFields?: boolean;
+  showOptionsWarn?: boolean;
   children: ReactNode;
 };
 
@@ -53,7 +54,10 @@ export type PollFormComponent = {
 };
 
 const PollForm = forwardRef<PollFormComponent, PollFormProps>(
-  ({ defaultPoll, onSubmit, onChangeForm, onIsValid, disableFields = false, children }, ref) => {
+  (
+    { defaultPoll, onSubmit, onChangeForm, onIsValid, disableFields = false, showOptionsWarn = false, children },
+    ref,
+  ) => {
     const {
       control,
       handleSubmit,
@@ -68,7 +72,7 @@ const PollForm = forwardRef<PollFormComponent, PollFormProps>(
         title: defaultPoll?.title,
         description: defaultPoll?.description || undefined,
         expireAt: defaultPoll?.expireAt || moment().add(1, 'month').toDate(),
-        options: defaultPoll?.options.map((option) => option.text),
+        options: defaultPoll?.options.map((option) => option.text) || ['...', '...'],
       },
     });
 
@@ -186,7 +190,19 @@ const PollForm = forwardRef<PollFormComponent, PollFormProps>(
 
           <div className="flex flex-col gap-1">
             <header className="flex w-full items-center justify-between">
-              <Label>Opções</Label>
+              <div className="flex flex-col gap-2">
+                <Label>Opções</Label>
+
+                {showOptionsWarn && (
+                  <div className="mb-2 flex items-center gap-1.5 text-amber-300">
+                    <AlertCircle className="h-3.5 w-3.5" />
+
+                    <span className="text-xs font-medium">
+                      Há votos em algumas opções abaixos. Se você editar qualquer uma, os votos serão perdidos
+                    </span>
+                  </div>
+                )}
+              </div>
 
               <Button variant="thematic" className="h-[42px]" isDisabled={disableFields} onClick={() => append('')}>
                 <Plus className="h-4 w-4" />
@@ -227,7 +243,7 @@ const PollForm = forwardRef<PollFormComponent, PollFormProps>(
                               <Button
                                 variant="thematic-danger"
                                 className="max-h-[42px]"
-                                isDisabled={disableFields}
+                                isDisabled={disableFields || fields.length <= 2}
                                 onClick={() => remove(index)}
                               >
                                 <Trash2 className="h-4 w-4" />
