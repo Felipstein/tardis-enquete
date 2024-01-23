@@ -2,6 +2,7 @@ import * as RadixSelect from '@radix-ui/react-select';
 import { ComponentProps, forwardRef } from 'react';
 import { CheckIcon, ChevronDown, ChevronUp } from 'lucide-react';
 import { InputContainer } from './InputContainer';
+import { LoaderIcon } from './LoaderIcon';
 import { w } from '@/utils/w';
 import { OmitTyped } from '@/utils/OmitTyped';
 
@@ -13,18 +14,24 @@ function SelectRoot(props: SelectRootProps) {
 
 export type SelectTriggerProps = OmitTyped<ComponentProps<typeof RadixSelect.Trigger>, 'asChild'> & {
   placeholder?: string;
+  loadingPlaceholder?: string;
+  isLoading?: boolean;
+  error?: string;
 };
 
-const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(({ placeholder, className, ...props }, ref) => (
-  <RadixSelect.Trigger ref={ref} asChild {...props}>
-    <InputContainer asChild={false} className={w('flex cursor-pointer items-center justify-between', className)}>
-      <RadixSelect.Value placeholder={placeholder} />
-      <RadixSelect.Icon>
-        <ChevronDown />
-      </RadixSelect.Icon>
-    </InputContainer>
-  </RadixSelect.Trigger>
-));
+const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(
+  ({ placeholder, className, loadingPlaceholder, isLoading = false, disabled = false, error, ...props }, ref) => (
+    <RadixSelect.Trigger ref={ref} disabled={disabled || isLoading || !!error} asChild {...props}>
+      <InputContainer
+        asChild={false}
+        className={w('flex cursor-pointer items-center justify-between', !!error && 'text-red-500', className)}
+      >
+        <RadixSelect.Value placeholder={error || (isLoading ? loadingPlaceholder : placeholder)} />
+        <RadixSelect.Icon>{isLoading ? <LoaderIcon /> : <ChevronDown />}</RadixSelect.Icon>
+      </InputContainer>
+    </RadixSelect.Trigger>
+  ),
+);
 
 export type SelectContentProps = ComponentProps<typeof RadixSelect.Content>;
 
@@ -76,10 +83,32 @@ const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(({ className, chi
   </RadixSelect.Item>
 ));
 
+export type SelectButtonProps = ComponentProps<'button'>;
+
+const SelectButton = forwardRef<HTMLButtonElement, SelectButtonProps>(({ className, ...props }, ref) => (
+  // eslint-disable-next-line react/button-has-type
+  <button
+    ref={ref}
+    className={w(
+      'buttons-center relative flex w-full cursor-pointer rounded py-2 pl-6 pr-9 text-sm font-normal leading-none text-primary-50 outline-none transition-colors data-[state=checked]:font-medium hover:bg-primary-500/10 data-[state=checked]:hover:bg-teal-500/10 active:bg-primary-500/20',
+      className,
+    )}
+    {...props}
+  />
+));
+
+export type SelectSeparatorProps = ComponentProps<typeof RadixSelect.Separator>;
+
+const SelectSeparator = forwardRef<HTMLDivElement, SelectSeparatorProps>(({ className, ...props }, ref) => (
+  <RadixSelect.Separator ref={ref} className={w('m-1.5 h-px bg-primary-500/20', className)} {...props} />
+));
+
 export const Select = {
   Root: SelectRoot,
   Trigger: SelectTrigger,
   Content: SelectContent,
   Group: SelectGroup,
   Item: SelectItem,
+  Button: SelectButton,
+  Separator: SelectSeparator,
 };

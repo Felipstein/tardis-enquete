@@ -193,7 +193,12 @@ const PollForm = forwardRef<PollFormComponent, PollFormProps>(
               name="categoryId"
               render={({ field: { value, onChange } }) => (
                 <Select.Root value={value} onValueChange={onChange}>
-                  <Select.Trigger />
+                  <Select.Trigger
+                    loadingPlaceholder="Buscando categorias..."
+                    isLoading={isLoadingCategories}
+                    // hasError={!!errorOnFetchCategories}
+                    error={errorOnFetchCategories?.message}
+                  />
 
                   <Select.Content>
                     <Select.Group>
@@ -202,6 +207,13 @@ const PollForm = forwardRef<PollFormComponent, PollFormProps>(
                           {category.name}
                         </Select.Item>
                       ))}
+
+                      <Select.Separator />
+
+                      <Select.Button className="opacity-80 transition-all hover:opacity-100">
+                        <Plus className="mr-1.5 h-3.5 w-3.5" />
+                        Criar Categoria
+                      </Select.Button>
                     </Select.Group>
                   </Select.Content>
                 </Select.Root>
