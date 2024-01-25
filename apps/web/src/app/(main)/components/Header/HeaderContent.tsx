@@ -16,9 +16,7 @@ export function HeaderContent() {
         <h1 className="text-xl font-bold uppercase tracking-wide text-primary-50">TARDIS</h1>
       </Link>
 
-      <div className="hidden w-full max-w-[400px] sm:absolute sm:left-1/2 sm:block sm:-translate-x-1/2">
-        <PollsSearchInput />
-      </div>
+      <PollsSearchInput />
 
       <div className="flex h-full items-center gap-4">
         <AdminSection>
