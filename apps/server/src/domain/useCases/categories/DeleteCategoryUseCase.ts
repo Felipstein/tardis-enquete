@@ -12,9 +12,9 @@ export default class DeleteCategoryUseCase {
   constructor(private readonly prisma: PrismaClient) {}
 
   async execute({ categoryId }: IInput): Promise<IOutput> {
-    const categoryExists = await this.prisma.category.findUnique({ where: { id: categoryId }, select: {} });
+    const categoryExists = await this.prisma.category.findUnique({ where: { id: categoryId }, select: { id: true } });
 
-    if (categoryExists) {
+    if (!categoryExists) {
       throw new CategoryNotExists();
     }
 
