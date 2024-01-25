@@ -1,4 +1,5 @@
 import { Plus } from 'lucide-react';
+import { CategoryCreateDialog } from './CategoryCreateDialog';
 import { Button } from '@/app/components/common/Button';
 import { BackButton } from '@/app/components/BackButton';
 
@@ -19,10 +20,12 @@ export function CategoriesHeader({ totalCategories }: CategoriesHeaderProps) {
         </h2>
       </div>
 
-      <Button variant="thematic">
-        <Plus className="mr-1 h-4 w-4" />
-        Categoria
-      </Button>
+      <CategoryCreateDialog>
+        <Button variant="thematic">
+          <Plus className="mr-1 h-4 w-4" />
+          Categoria
+        </Button>
+      </CategoryCreateDialog>
     </header>
   );
 }

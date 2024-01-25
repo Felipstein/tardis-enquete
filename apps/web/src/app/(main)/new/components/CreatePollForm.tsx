@@ -12,6 +12,7 @@ import { Button } from '@/app/components/common/Button';
 import { queryKeys } from '@/config/queryKeys';
 import { pollService } from '@/services/api/pollService';
 import { queryClient } from '@/libs/queryClient';
+import { categoryService } from '@/services/api/categoryService';
 
 export default function CreatePollForm() {
   const router = useRouter();
@@ -26,10 +27,17 @@ export default function CreatePollForm() {
 
   function createPoll({ title, description, expireAt, options }: PollFormData) {
     createPollRequest(
-      { title, description: description!, expireAt, options },
+      { title, description: description || undefined, expireAt, options },
       {
-        onSuccess(pollCreated) {
+        async onSuccess(pollCreated) {
           const polls = queryClient.getQueryData<PollTimeline[]>(queryKeys.polls());
+
+          const categories = await queryClient.fetchQuery({
+            queryKey: queryKeys.categoriesSelect(),
+            queryFn: categoryService.findCategoriesForSelect,
+          });
+
+          const category = categories.find((category) => category.id === pollCreated.categoryId);
 
           if (polls) {
             polls.unshift({
@@ -39,6 +47,12 @@ export default function CreatePollForm() {
               expireAt: pollCreated.expireAt,
               createdAt: pollCreated.createdAt,
               author: pollCreated.author,
+              category: category
+                ? {
+                    id: category.id,
+                    name: category.name,
+                  }
+                : null,
               options: pollCreated.options.map((option) => ({
                 id: option.id,
                 text: option.text,
