@@ -30,6 +30,7 @@ export function CategoryDeleteAlertDialog({ categoryId, children }: CategoryDele
             queryClient.invalidateQueries({ queryKey: queryKeys.categories() }),
             queryClient.invalidateQueries({ queryKey: queryKeys.categoriesFilter() }),
             queryClient.invalidateQueries({ queryKey: queryKeys.categoriesSelect() }),
+            queryClient.invalidateQueries({ queryKey: queryKeys.polls() }),
           ]);
 
           toast.success('Categoria excluída com sucesso');
