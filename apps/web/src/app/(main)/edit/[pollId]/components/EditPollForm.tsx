@@ -43,9 +43,9 @@ export default function EditPollForm({ pollId, defaultPollFetched }: EditPollFor
 
   const hasVotes = useMemo(() => poll?.options.some((option) => option.totalVotes > 0), [poll?.options]);
 
-  function updatePoll({ title, description, expireAt, options }: PollFormData) {
+  function updatePoll(data: PollFormData) {
     updatePollRequest(
-      { pollId, title, description, expireAt, options },
+      { pollId, ...data },
       {
         async onSuccess(data) {
           queryClient.setQueryData<Poll>(queryKeys.poll(pollId), data);

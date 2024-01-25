@@ -9,6 +9,7 @@ export const createPollBodyRequest = z.object({
       invalid_type_error: 'Descrição deve ser um texto',
     })
     .optional(),
+  categoryId: z.string({ invalid_type_error: 'Categoria deve ser um texto' }).optional(),
   expireAt: z.coerce.date({
     required_error: 'Data de expiração é obrigatória',
     invalid_type_error: 'O formato da Data de expiração está inválido',
