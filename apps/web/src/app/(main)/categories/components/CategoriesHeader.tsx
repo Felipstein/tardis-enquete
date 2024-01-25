@@ -12,7 +12,7 @@ export function CategoriesHeader({ totalCategories, openCreateDialog = false }: 
   return (
     <header className="mb-3 flex items-center justify-between">
       <div className="flex items-center gap-2">
-        <BackButton title="Voltar para Página Inicial" href="/" />
+        <BackButton absolute={false} title="Voltar para Página Inicial" href="/" />
 
         <h2 className="text-xl font-semibold tracking-wide text-primary-50">
           {totalCategories === 0
