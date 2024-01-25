@@ -9,6 +9,9 @@
 - Opção para fechar enquete
 - Adicionar opção "MODO ANONIMO VOTOS"
 - Remover o campo de buscar do header
-- Mover o capo de buscar em um campo de filtros
+- Mover o campo de buscar em um campo de filtros
 - Adicionar seção de usuários, para os administradores setarem novos administradores
 - Sistema de banimento
+- Esconder a porcentagem de votos para participantes
+- Adicionar opção de nunca expirar
+- Quando editei uma enquete todas as opções sumiram
