@@ -31,8 +31,9 @@ const pollFormSchema = z.object({
   description: z
     .string()
     .max(DESCRIPTION_LENGTH_LIMIT, 'Mah rapaz, aí você foi longe pra burro')
-    .optional()
-    .transform((description) => (description === '' ? undefined : description)),
+    .transform((description) => (description === '' ? null : description))
+    .nullable()
+    .optional(),
   categoryId: z.string().optional(),
   expireAt: z
     .date({ required_error: 'A data de expiração é obrigatória' })
@@ -75,7 +76,7 @@ const PollForm = forwardRef<PollFormComponent, PollFormProps>(
       mode: 'all',
       defaultValues: {
         title: defaultPoll?.title,
-        description: defaultPoll?.description || undefined,
+        description: defaultPoll?.description,
         expireAt: defaultPoll?.expireAt || moment().add(1, 'month').toDate(),
         categoryId: defaultPoll?.categoryId || undefined,
         options: defaultPoll?.options.map((option) => option.text) || ['...', '...'],

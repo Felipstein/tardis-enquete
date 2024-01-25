@@ -20,7 +20,11 @@ const categoryFormSchema = z.object({
       invalid_type_error: 'Nome da categoria deve ser um texto',
     })
     .min(3, 'O nome deve possuir pelo menos 3 caracteres'),
-  description: z.string({ invalid_type_error: 'Descrição deve ser um texto' }).optional(),
+  description: z
+    .string({ invalid_type_error: 'Descrição deve ser um texto' })
+    .transform((description) => (description === '' ? null : description))
+    .nullable()
+    .optional(),
 });
 
 export type CategoryFormData = z.infer<typeof categoryFormSchema>;
@@ -51,7 +55,7 @@ export const CategoryForm = forwardRef<CategoryFomComponent, CategoryFormProps>(
       mode: 'all',
       defaultValues: {
         name: defaultCategory?.name,
-        description: defaultCategory?.description || undefined,
+        description: defaultCategory?.description,
       },
     });
 
