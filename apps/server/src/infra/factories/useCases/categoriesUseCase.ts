@@ -37,6 +37,7 @@ const createCategoryUseCase = new CreateCategoryUseCase(
   factoryPrismaClient(),
   factoryUserService(),
   factoryPollsRepository(),
+  factoryFindCategoriesForSelectUseCase(),
 );
 
 export function factoryCreateCategoryUseCase() {
@@ -47,13 +48,14 @@ const updateCategoryUseCase = new UpdateCategoryUseCase(
   factoryPrismaClient(),
   factoryUserService(),
   factoryPollsRepository(),
+  factoryFindCategoriesForSelectUseCase(),
 );
 
 export function factoryUpdateCategoryUseCase() {
   return updateCategoryUseCase;
 }
 
-const deleteCategoryUseCase = new DeleteCategoryUseCase(factoryPrismaClient());
+const deleteCategoryUseCase = new DeleteCategoryUseCase(factoryPrismaClient(), factoryFindCategoriesForSelectUseCase());
 
 export function factoryDeleteCategoryUseCase() {
   return deleteCategoryUseCase;

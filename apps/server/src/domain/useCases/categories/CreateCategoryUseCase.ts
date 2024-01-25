@@ -1,9 +1,12 @@
 import { PrismaClient } from '@prisma/client';
-import { Category } from '@tardis-enquete/contracts';
+import { Category, SocketEventPayload } from '@tardis-enquete/contracts';
 
+import { io } from '../../../http/app';
 import UserService from '../../../services/UserService';
 import StoredUserNotExists from '../../errors/StoredUserNotExists';
 import IPollsRepository from '../../repositories/PollsRepository';
+
+import FindCategoriesForSelectUseCase from './FindCategoriesForSelectUseCase';
 
 type IInput = {
   name: string;
@@ -18,6 +21,7 @@ export default class CreateCategoryUseCase {
     private readonly prisma: PrismaClient,
     private readonly usersService: UserService,
     private readonly pollsRepository: IPollsRepository,
+    private readonly findCategoriesForSelectUseCase: FindCategoriesForSelectUseCase,
   ) {}
 
   async execute(data: IInput): Promise<IOutput> {
@@ -26,6 +30,12 @@ export default class CreateCategoryUseCase {
       this._findUserInfo(data.authorId),
       this.pollsRepository.countTotalPollsOfUserId(data.authorId),
     ]);
+
+    if (process.env.NODE_ENV !== 'test') {
+      this.findCategoriesForSelectUseCase.execute().then((categories) => {
+        io.emit('updateCategoriesSelect', { categories } as SocketEventPayload<'updateCategoriesSelect'>);
+      });
+    }
 
     return {
       id: category.id,

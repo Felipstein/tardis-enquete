@@ -1,4 +1,4 @@
-import { PollTimeline } from '../types';
+import { CategorySelectInfo, PollTimeline } from '../types';
 
 import type { Session } from './Session';
 
@@ -11,6 +11,7 @@ export interface SocketEventsWithPayloads {
   pollCreate: { poll: PollTimeline };
   pollVotesChanges: { poll: PollTimeline };
   pollDelete: { pollId: string };
+  updateCategoriesSelect: { categories: CategorySelectInfo[] };
 }
 
 export type SocketEvent = keyof SocketEventsWithPayloads;

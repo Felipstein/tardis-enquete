@@ -8,8 +8,6 @@ import { Poll } from '@tardis-enquete/contracts';
 import moment from 'moment';
 import { AlertCircle, List, Plus, Trash2 } from 'lucide-react';
 import { DragDropContext, Draggable, OnDragEndResponder } from 'react-beautiful-dnd';
-import { useQuery } from '@tanstack/react-query';
-import Link from 'next/link';
 import { Input } from '../common/Input';
 import { Label } from '../common/Label';
 import { DatePicker } from '../common/DatePicker';
@@ -17,10 +15,8 @@ import { TextArea } from '../common/TextArea';
 import { Button } from '../common/Button';
 import { StrictModeDroppable } from '../StrictModeDroppable';
 import { DebugEnvironment } from '../DebugEnvironment';
-import { Select } from '../common/Select';
 import { IDInputCopy } from './IDInputCopy';
-import { queryKeys } from '@/config/queryKeys';
-import { categoryService } from '@/services/api/categoryService';
+import { CategorySelecter } from './CategorySelecter';
 
 const DESCRIPTION_LENGTH_LIMIT = 600;
 
@@ -88,15 +84,6 @@ const PollForm = forwardRef<PollFormComponent, PollFormProps>(
       // @ts-ignore
       name: 'options',
       control,
-    });
-
-    const {
-      data: categories = [],
-      isLoading: isLoadingCategories,
-      error: errorOnFetchCategories,
-    } = useQuery({
-      queryKey: queryKeys.categoriesSelect(),
-      queryFn: categoryService.findCategoriesForSelect,
     });
 
     useImperativeHandle(
@@ -195,34 +182,12 @@ const PollForm = forwardRef<PollFormComponent, PollFormProps>(
               control={control}
               name="categoryId"
               render={({ field: { value, onChange } }) => (
-                <Select.Root value={value} onValueChange={onChange}>
-                  <Select.Trigger
-                    loadingPlaceholder="Buscando categorias..."
-                    placeholder="Sem categoria"
-                    isLoading={isLoadingCategories}
-                    disabled={disableFields}
-                    error={errorOnFetchCategories?.message}
-                  />
-
-                  <Select.Content>
-                    <Select.Group>
-                      {categories.map((category) => (
-                        <Select.Item key={category.id} value={category.id}>
-                          {category.name}
-                        </Select.Item>
-                      ))}
-
-                      <Select.Separator />
-
-                      <Select.Button className="opacity-80 transition-all hover:opacity-100" asChild>
-                        <Link href="/categories?createDialog=open" target="_blank">
-                          <Plus className="mr-1.5 h-3.5 w-3.5" />
-                          Criar Categoria
-                        </Link>
-                      </Select.Button>
-                    </Select.Group>
-                  </Select.Content>
-                </Select.Root>
+                <CategorySelecter
+                  selectedCategoryId={value}
+                  onChange={onChange}
+                  disabled={disableFields}
+                  error={errors.categoryId?.message}
+                />
               )}
             />
           </div>
