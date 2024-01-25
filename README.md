@@ -10,3 +10,5 @@
 - Adicionar opção "MODO ANONIMO VOTOS"
 - Remover o campo de buscar do header
 - Mover o capo de buscar em um campo de filtros
+- Adicionar seção de usuários, para os administradores setarem novos administradores
+- Sistema de banimento
