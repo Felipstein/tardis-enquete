@@ -5,9 +5,10 @@ import { BackButton } from '@/app/components/BackButton';
 
 export type CategoriesHeaderProps = {
   totalCategories: number;
+  openCreateDialog?: boolean;
 };
 
-export function CategoriesHeader({ totalCategories }: CategoriesHeaderProps) {
+export function CategoriesHeader({ totalCategories, openCreateDialog = false }: CategoriesHeaderProps) {
   return (
     <header className="mb-3 flex items-center justify-between">
       <div className="flex items-center gap-2">
@@ -20,7 +21,7 @@ export function CategoriesHeader({ totalCategories }: CategoriesHeaderProps) {
         </h2>
       </div>
 
-      <CategoryCreateDialog>
+      <CategoryCreateDialog defaultOpen={openCreateDialog}>
         <Button variant="thematic">
           <Plus className="mr-1 h-4 w-4" />
           Categoria

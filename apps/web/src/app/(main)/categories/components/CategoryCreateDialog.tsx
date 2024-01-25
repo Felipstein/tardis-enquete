@@ -11,11 +11,12 @@ import { queryClient } from '@/libs/queryClient';
 import { queryKeys } from '@/config/queryKeys';
 
 export type CategoryCreateDialogProps = {
+  defaultOpen?: boolean;
   children: ReactNode;
 };
 
-export function CategoryCreateDialog({ children }: CategoryCreateDialogProps) {
-  const [isOpen, setIsOpen] = useState(false);
+export function CategoryCreateDialog({ defaultOpen = false, children }: CategoryCreateDialogProps) {
+  const [isOpen, setIsOpen] = useState(defaultOpen);
   const [isValid, setIsValid] = useState(false);
 
   const categoryFormRef = useRef<CategoryFomComponent>(null);
@@ -68,7 +69,14 @@ export function CategoryCreateDialog({ children }: CategoryCreateDialogProps) {
               Limpar
             </Button>
 
-            <Button type="submit" isDisabled={!isValid} isLoading={isCreatingCategory}>
+            <Button
+              type="submit"
+              isDisabled={!isValid}
+              isLoading={isCreatingCategory}
+              onClick={(event) => {
+                event.stopPropagation();
+              }}
+            >
               Criar categoria
             </Button>
           </Dialog.Footer>

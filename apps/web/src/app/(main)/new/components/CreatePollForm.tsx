@@ -33,8 +33,8 @@ export default function CreatePollForm() {
           const polls = queryClient.getQueryData<PollTimeline[]>(queryKeys.polls());
 
           const categories = await queryClient.fetchQuery({
-            queryKey: queryKeys.categoriesSelect(),
-            queryFn: categoryService.findCategoriesForSelect,
+            queryKey: queryKeys.categoriesFilter(),
+            queryFn: categoryService.findCategoriesForFilter,
           });
 
           const category = categories.find((category) => category.id === pollCreated.categoryId);

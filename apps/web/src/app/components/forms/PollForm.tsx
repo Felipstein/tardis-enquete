@@ -9,6 +9,7 @@ import moment from 'moment';
 import { AlertCircle, List, Plus, Trash2 } from 'lucide-react';
 import { DragDropContext, Draggable, OnDragEndResponder } from 'react-beautiful-dnd';
 import { useQuery } from '@tanstack/react-query';
+import Link from 'next/link';
 import { Input } from '../common/Input';
 import { Label } from '../common/Label';
 import { DatePicker } from '../common/DatePicker';
@@ -213,9 +214,11 @@ const PollForm = forwardRef<PollFormComponent, PollFormProps>(
 
                       <Select.Separator />
 
-                      <Select.Button className="opacity-80 transition-all hover:opacity-100">
-                        <Plus className="mr-1.5 h-3.5 w-3.5" />
-                        Criar Categoria
+                      <Select.Button className="opacity-80 transition-all hover:opacity-100" asChild>
+                        <Link href="/categories?createDialog=open" target="_blank">
+                          <Plus className="mr-1.5 h-3.5 w-3.5" />
+                          Criar Categoria
+                        </Link>
                       </Select.Button>
                     </Select.Group>
                   </Select.Content>

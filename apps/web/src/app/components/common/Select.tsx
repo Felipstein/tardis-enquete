@@ -1,6 +1,7 @@
 import * as RadixSelect from '@radix-ui/react-select';
 import { ComponentProps, forwardRef } from 'react';
 import { CheckIcon, ChevronDown, ChevronUp } from 'lucide-react';
+import { Slot } from '@radix-ui/react-slot';
 import { InputContainer } from './InputContainer';
 import { LoaderIcon } from './LoaderIcon';
 import { w } from '@/utils/w';
@@ -88,19 +89,27 @@ const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(({ className, chi
   </RadixSelect.Item>
 ));
 
-export type SelectButtonProps = ComponentProps<'button'>;
+export type SelectButtonProps = ComponentProps<'button'> & {
+  asChild?: boolean;
+};
 
-const SelectButton = forwardRef<HTMLButtonElement, SelectButtonProps>(({ className, ...props }, ref) => (
-  // eslint-disable-next-line react/button-has-type
-  <button
-    ref={ref}
-    className={w(
-      'buttons-center relative flex w-full cursor-pointer rounded py-2 pl-6 pr-9 text-sm font-normal leading-none text-primary-50 outline-none transition-colors data-[state=checked]:font-medium hover:bg-primary-500/10 data-[state=checked]:hover:bg-teal-500/10 active:bg-primary-500/20',
-      className,
-    )}
-    {...props}
-  />
-));
+const SelectButton = forwardRef<HTMLButtonElement, SelectButtonProps>(
+  ({ asChild = false, className, ...props }, ref) => {
+    const Comp = asChild ? Slot : 'button';
+
+    return (
+      // @ts-expect-error
+      // eslint-disable-next-line prettier/prettier
+      <Comp ref={ref}
+        className={w(
+          'buttons-center relative flex w-full cursor-pointer rounded py-2 pl-6 pr-9 text-sm font-normal leading-none text-primary-50 outline-none transition-colors data-[state=checked]:font-medium hover:bg-primary-500/10 data-[state=checked]:hover:bg-teal-500/10 active:bg-primary-500/20',
+          className,
+        )}
+        {...props}
+      />
+    );
+  },
+);
 
 export type SelectSeparatorProps = ComponentProps<typeof RadixSelect.Separator>;
 

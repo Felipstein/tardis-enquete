@@ -9,8 +9,11 @@ import { categoryService } from '@/services/api/categoryService';
 import { queryKeys } from '@/config/queryKeys';
 import { LoaderIcon } from '@/app/components/common/LoaderIcon';
 import { Button } from '@/app/components/common/Button';
+import { NextPage } from '@/types/NextPage';
 
-export default function CategoriesPage() {
+export default function CategoriesPage({ searchParams }: NextPage<{}, { createDialog?: string }>) {
+  const openCreateCategoryDialog = searchParams.createDialog === 'open';
+
   const {
     data: categories = [],
     isLoading: isLoadingCategories,
@@ -61,7 +64,7 @@ export default function CategoriesPage() {
 
   return (
     <div className="m-16 mx-auto flex h-full w-[95vw] max-w-[1280px] flex-col justify-center">
-      <CategoriesHeader totalCategories={categories.length} />
+      <CategoriesHeader openCreateDialog={openCreateCategoryDialog} totalCategories={categories.length} />
 
       <CategoriesTable categories={categories} />
     </div>
