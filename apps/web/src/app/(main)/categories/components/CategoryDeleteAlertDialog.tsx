@@ -1,10 +1,9 @@
 'use client';
 
 import { ReactNode, useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import { Button } from '@/app/components/common/Button';
-import { queryClient } from '@/libs/queryClient';
 import { queryKeys } from '@/config/queryKeys';
 import { AlertDialog } from '@/app/components/common/AlertDialog';
 import { categoryService } from '@/services/api/categoryService';
@@ -15,6 +14,8 @@ export type CategoryDeleteAlertDialogProps = {
 };
 
 export function CategoryDeleteAlertDialog({ categoryId, children }: CategoryDeleteAlertDialogProps) {
+  const queryClient = useQueryClient();
+
   const [isOpen, setIsOpen] = useState(false);
 
   const { mutate: deleteCategoryRequest, isPending: isDeletingPoll } = useMutation({
@@ -32,6 +33,10 @@ export function CategoryDeleteAlertDialog({ categoryId, children }: CategoryDele
             queryClient.invalidateQueries({ queryKey: queryKeys.categoriesSelect() }),
             queryClient.invalidateQueries({ queryKey: queryKeys.polls() }),
           ]);
+
+          queryClient.removeQueries({
+            predicate: (query) => query.queryKey[0] === queryKeys.poll('')[0],
+          });
 
           toast.success('Categoria excluída com sucesso');
 
