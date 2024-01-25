@@ -24,9 +24,14 @@ const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(
     <RadixSelect.Trigger ref={ref} disabled={disabled || isLoading || !!error} asChild {...props}>
       <InputContainer
         asChild={false}
-        className={w('flex cursor-pointer items-center justify-between', !!error && 'text-red-500', className)}
+        className={w(
+          'group relative flex cursor-pointer items-center justify-between',
+          !!error && 'text-red-500',
+          className,
+        )}
       >
         <RadixSelect.Value placeholder={error || (isLoading ? loadingPlaceholder : placeholder)} />
+
         <RadixSelect.Icon>{isLoading ? <LoaderIcon /> : <ChevronDown />}</RadixSelect.Icon>
       </InputContainer>
     </RadixSelect.Trigger>

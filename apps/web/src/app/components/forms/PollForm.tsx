@@ -77,6 +77,7 @@ const PollForm = forwardRef<PollFormComponent, PollFormProps>(
         title: defaultPoll?.title,
         description: defaultPoll?.description || undefined,
         expireAt: defaultPoll?.expireAt || moment().add(1, 'month').toDate(),
+        categoryId: defaultPoll?.categoryId || undefined,
         options: defaultPoll?.options.map((option) => option.text) || ['...', '...'],
       },
     });
@@ -195,8 +196,9 @@ const PollForm = forwardRef<PollFormComponent, PollFormProps>(
                 <Select.Root value={value} onValueChange={onChange}>
                   <Select.Trigger
                     loadingPlaceholder="Buscando categorias..."
+                    placeholder="Sem categoria"
                     isLoading={isLoadingCategories}
-                    // hasError={!!errorOnFetchCategories}
+                    disabled={disableFields}
                     error={errorOnFetchCategories?.message}
                   />
 
@@ -250,7 +252,7 @@ const PollForm = forwardRef<PollFormComponent, PollFormProps>(
                     <AlertCircle className="h-3.5 w-3.5" />
 
                     <span className="text-xs font-medium">
-                      Há votos em algumas opções abaixos. Se você editar qualquer uma, os votos serão perdidos
+                      Há votos em algumas opções abaixo. Se você editar qualquer uma, os votos serão perdidos
                     </span>
                   </div>
                 )}

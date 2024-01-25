@@ -8,6 +8,7 @@ import { UserAvatar } from '@/app/components/UserAvatar';
 import { useUser } from '@/hooks/useUser';
 import { Dropdown } from '@/app/components/common/Dropdown';
 import { DebugEnvironment } from '@/app/components/DebugEnvironment';
+import { AdminSection } from '@/app/components/AdminSection';
 
 export function UserInfo() {
   const { status, user } = useUser(true);
@@ -37,6 +38,14 @@ export function UserInfo() {
       </Dropdown.Trigger>
 
       <Dropdown.Content>
+        <AdminSection>
+          <Dropdown.Item asChild>
+            <Link href="/categories" rel="noreferrer">
+              Categorias
+            </Link>
+          </Dropdown.Item>
+        </AdminSection>
+
         <DebugEnvironment>
           <Dropdown.Item asChild>
             <Link href="/feedbacks" rel="noreferrer">
