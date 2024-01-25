@@ -54,7 +54,7 @@ export default class CategoryService {
   }
 
   async delete({ categoryId }: DeleteCategoryRequest) {
-    const response = await api.put<DeleteCategoryResponse>(
+    const response = await api.delete<DeleteCategoryResponse>(
       RouteModels.buildRoute(RouteModels.deleteCategory, { categoryId }),
     );
 

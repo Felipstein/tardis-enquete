@@ -7,10 +7,10 @@ import { Button } from '../common/Button';
 import { Input } from '../common/Input';
 
 export type IDInputCopyProps = {
-  pollId: string;
+  id: string;
 };
 
-export function IDInputCopy({ pollId }: IDInputCopyProps) {
+export function IDInputCopy({ id }: IDInputCopyProps) {
   const [hasCopied, setHasCopied] = useState(false);
 
   // eslint-disable-next-line no-undef
@@ -27,7 +27,7 @@ export function IDInputCopy({ pollId }: IDInputCopyProps) {
 
   function handleCopy() {
     if (navigator.clipboard) {
-      navigator.clipboard.writeText(pollId);
+      navigator.clipboard.writeText(id);
 
       toast.success('ID copiado');
     }
@@ -42,7 +42,7 @@ export function IDInputCopy({ pollId }: IDInputCopyProps) {
   return (
     <div className="flex items-stretch gap-2">
       <Input.Root className="w-full">
-        <Input.Input type="text" placeholder="ID" readOnly id="id" value={pollId} />
+        <Input.Input type="text" placeholder="ID" readOnly id="id" value={id} />
       </Input.Root>
 
       <Button variant="thematic" onClick={handleCopy} className="text-primary-100">

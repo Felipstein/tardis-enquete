@@ -93,8 +93,8 @@ const PollForm = forwardRef<PollFormComponent, PollFormProps>(
       isLoading: isLoadingCategories,
       error: errorOnFetchCategories,
     } = useQuery({
-      queryKey: queryKeys.categoriesFilter(),
-      queryFn: categoryService.findCategoriesForFilter,
+      queryKey: queryKeys.categoriesSelect(),
+      queryFn: categoryService.findCategoriesForSelect,
     });
 
     useImperativeHandle(
@@ -133,7 +133,7 @@ const PollForm = forwardRef<PollFormComponent, PollFormProps>(
               <div className="flex flex-col gap-1">
                 <Label htmlFor="id">ID</Label>
 
-                <IDInputCopy pollId={defaultPoll.id} />
+                <IDInputCopy id={defaultPoll.id} />
               </div>
             </DebugEnvironment>
           )}

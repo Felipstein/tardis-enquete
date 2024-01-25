@@ -7,7 +7,9 @@ export default class FindCategoriesForSelectUseCase {
   constructor(private readonly prisma: PrismaClient) {}
 
   async execute(): Promise<IOutput> {
-    const categories = await this.prisma.category.findMany();
+    const categories = await this.prisma.category.findMany({
+      orderBy: { name: 'asc' },
+    });
 
     const categoriesPopuledPromises = categories.map(
       async (category) =>

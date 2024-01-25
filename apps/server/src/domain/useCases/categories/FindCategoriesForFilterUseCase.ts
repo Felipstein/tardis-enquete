@@ -12,7 +12,9 @@ export default class FindCategoriesForFilterUseCase {
   ) {}
 
   async execute(): Promise<IOutput> {
-    const categories = await this.prisma.category.findMany();
+    const categories = await this.prisma.category.findMany({
+      orderBy: { name: 'asc' },
+    });
 
     const categoriesPopuledPromises = categories.map(async (category) => {
       const totalPolls = await this.pollsRepository.countTotalPollsOfCategoryId(category.id);

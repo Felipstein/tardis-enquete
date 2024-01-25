@@ -15,7 +15,9 @@ export default class FindCategoriesUseCase {
   ) {}
 
   async execute(): Promise<IOutput> {
-    const categories = await this.prisma.category.findMany();
+    const categories = await this.prisma.category.findMany({
+      orderBy: { name: 'asc' },
+    });
 
     const categoriesPopuledPromises = categories.map(async (category) => {
       const [totalPolls, author, authorTotalPolls] = await Promise.all([

@@ -3,41 +3,36 @@
 import { ReactNode, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
-import { PollTimeline } from '@tardis-enquete/contracts';
 import { Button } from '@/app/components/common/Button';
-import { pollService } from '@/services/api/pollService';
 import { queryClient } from '@/libs/queryClient';
 import { queryKeys } from '@/config/queryKeys';
 import { AlertDialog } from '@/app/components/common/AlertDialog';
+import { categoryService } from '@/services/api/categoryService';
 
-export type PollDeleteAlertDialogProps = {
-  pollId: string;
+export type CategoryDeleteAlertDialogProps = {
+  categoryId: string;
   children: ReactNode;
 };
 
-export function PollDeleteAlertDialog({ pollId, children }: PollDeleteAlertDialogProps) {
+export function CategoryDeleteAlertDialog({ categoryId, children }: CategoryDeleteAlertDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const { mutate: deletePollRequest, isPending: isDeletingPoll } = useMutation({
-    mutationFn: pollService.delete,
+  const { mutate: deleteCategoryRequest, isPending: isDeletingPoll } = useMutation({
+    mutationFn: categoryService.delete,
   });
 
-  function deletePoll() {
-    deletePollRequest(
-      { pollId },
+  function deleteCategory() {
+    deleteCategoryRequest(
+      { categoryId },
       {
-        onSuccess() {
-          queryClient.removeQueries({ queryKey: queryKeys.poll(pollId) });
+        async onSuccess() {
+          await Promise.all([
+            queryClient.invalidateQueries({ queryKey: queryKeys.categories() }),
+            queryClient.invalidateQueries({ queryKey: queryKeys.categoriesFilter() }),
+            queryClient.invalidateQueries({ queryKey: queryKeys.categoriesSelect() }),
+          ]);
 
-          let polls = queryClient.getQueryData<PollTimeline[]>(queryKeys.polls());
-
-          if (polls) {
-            polls = polls.filter((poll) => poll.id !== pollId);
-
-            queryClient.setQueryData(queryKeys.polls(), polls);
-          }
-
-          toast.success('Enquete excluída com sucesso');
+          toast.success('Categoria excluída com sucesso');
 
           setIsOpen(false);
         },
@@ -56,7 +51,12 @@ export function PollDeleteAlertDialog({ pollId, children }: PollDeleteAlertDialo
         <AlertDialog.Title>Você tem certeza absoluta?</AlertDialog.Title>
 
         <AlertDialog.Description>
-          Essa ação não poderá ser desfeita. Isso irá deletar permanentemente a enquete e todos os votos serão perdidos.
+          Essa ação não poderá ser desfeita. Isso irá deletar permanentemente a categoria.
+        </AlertDialog.Description>
+
+        <AlertDialog.Description className="mt-1">
+          Todas as enquetes vinculadas com essa categoria não serão afetadas, apenas serão desvinculadas e ficarão sem
+          categoria definida.
         </AlertDialog.Description>
 
         <AlertDialog.Footer>
@@ -67,11 +67,11 @@ export function PollDeleteAlertDialog({ pollId, children }: PollDeleteAlertDialo
               variant="danger"
               onClick={(event) => {
                 event.preventDefault();
-                deletePoll();
+                deleteCategory();
               }}
               isLoading={isDeletingPoll}
             >
-              Sim, deletar enquete
+              Sim, deletar categoria
             </Button>
           </AlertDialog.Action>
         </AlertDialog.Footer>
