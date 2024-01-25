@@ -8,7 +8,7 @@ interface PollProps {
   description: string | null;
   categoryId: string | null;
   createdAt: Date;
-  expireAt: Date;
+  expireAt: Date | null;
   authorId: string;
 }
 
@@ -49,8 +49,8 @@ export default class Poll extends Entity<PollProps> {
     return this.attributes.expireAt;
   }
 
-  set expireAt(expireAt: Date) {
-    if (expireAt < this.createdAt) {
+  set expireAt(expireAt: Date | null) {
+    if (expireAt && expireAt < this.createdAt) {
       throw new BadRequest('A data de expiração deve ser posterior a data de criação');
     }
 
@@ -62,6 +62,10 @@ export default class Poll extends Entity<PollProps> {
   }
 
   isExpired() {
-    return this.expireAt < new Date();
+    return this.expireAt && this.expireAt < new Date();
+  }
+
+  neverExpire() {
+    return this.expireAt === null;
   }
 }

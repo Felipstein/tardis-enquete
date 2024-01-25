@@ -22,8 +22,10 @@ export default class CreatePollUseCase {
   ) {}
 
   async execute(data: CreatePollUseCaseDTO): Promise<CreatePollUseCaseReturn> {
-    if (data.expireAt <= new Date()) {
-      throw new UnprocessableEntity('A data de expiração deve ser posterior a data de criação');
+    if (data.expireAt) {
+      if (data.expireAt <= new Date()) {
+        throw new UnprocessableEntity('A data de expiração deve ser posterior a data de criação');
+      }
     }
 
     const storedUsersExists = await this.storedUsersRepository.exists(data.authorId);

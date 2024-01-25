@@ -31,13 +31,13 @@ model User {
 }
 
 model Poll {
-  id          String   @id @default(cuid())
+  id          String    @id @default(cuid())
   title       String
   description String?
-  createdAt   DateTime @default(now()) @map("created_at")
-  expireAt    DateTime @map("expire_at")
-  authorId    String   @map("author_id")
-  categoryId  String?  @map("category_id")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  expireAt    DateTime? @map("expire_at")
+  authorId    String    @map("author_id")
+  categoryId  String?   @map("category_id")
 
   options Option[]
 

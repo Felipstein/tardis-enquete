@@ -2,7 +2,7 @@ export interface Poll {
   id: string;
   title: string;
   description: string | null;
-  expireAt: Date;
+  expireAt: Date | null;
   createdAt: Date;
   categoryId: string | null;
   author: {
