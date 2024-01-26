@@ -1,11 +1,10 @@
 'use client';
 
 import { z } from 'zod';
-import { Controller, useFieldArray, useForm } from 'react-hook-form';
+import { Controller, FieldErrors, useFieldArray, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ReactNode, forwardRef, useEffect, useImperativeHandle } from 'react';
 import { Poll } from '@tardis-enquete/contracts';
-import moment from 'moment';
 import { AlertCircle, List, Plus, Trash2 } from 'lucide-react';
 import { DragDropContext, Draggable, OnDragEndResponder } from 'react-beautiful-dnd';
 import { Input } from '../common/Input';
@@ -15,12 +14,13 @@ import { TextArea } from '../common/TextArea';
 import { Button } from '../common/Button';
 import { StrictModeDroppable } from '../StrictModeDroppable';
 import { DebugEnvironment } from '../DebugEnvironment';
+import { Checkbox } from '../common/Checkbox';
 import { IDInputCopy } from './IDInputCopy';
 import { CategorySelecter } from './CategorySelecter';
 
 const DESCRIPTION_LENGTH_LIMIT = 600;
 
-const pollFormSchema = z.object({
+const pollDefaultFormSchema = z.object({
   title: z
     .string()
     .min(3, 'O título deve possuir pelo menos 3 caracteres')
@@ -32,15 +32,29 @@ const pollFormSchema = z.object({
     .nullable()
     .optional(),
   categoryId: z.string().optional(),
-  expireAt: z
-    .date({ required_error: 'A data de expiração é obrigatória' })
-    .refine((date) => date.getTime() > Date.now(), { message: 'Escolha uma data futura, tongo' }),
   options: z
     .array(z.string().min(3, 'A opção deve possuir pelo menos 3 caracteres'))
     .min(2, 'Deve haver pelo menos 2 opções'),
 });
 
-export type PollFormData = z.infer<typeof pollFormSchema>;
+const pollExpireAtFormSchema = z.discriminatedUnion('neverExpireAt', [
+  z.object({
+    neverExpireAt: z.literal(true),
+    expireAt: z
+      .date({ required_error: 'A data de expiração é obrigatória', invalid_type_error: 'Data inválida' })
+      .optional(),
+  }),
+  z.object({
+    neverExpireAt: z.literal(false),
+    expireAt: z.date({ required_error: 'A data de expiração é obrigatória', invalid_type_error: 'Data inválida' }),
+  }),
+]);
+
+const pollFormSchema = pollDefaultFormSchema.and(pollExpireAtFormSchema);
+
+type InternalPollFormData = z.infer<typeof pollFormSchema>;
+
+export type PollFormData = z.infer<typeof pollDefaultFormSchema> & { expireAt?: Date | null };
 
 export type PollFormProps = {
   defaultPoll?: Poll;
@@ -68,13 +82,14 @@ const PollForm = forwardRef<PollFormComponent, PollFormProps>(
       watch,
       reset: resetFields,
       formState: { errors, isDirty, isValid },
-    } = useForm<PollFormData>({
+    } = useForm<InternalPollFormData>({
       resolver: zodResolver(pollFormSchema),
       mode: 'all',
       defaultValues: {
         title: defaultPoll?.title,
         description: defaultPoll?.description,
-        expireAt: defaultPoll?.expireAt || moment().add(1, 'month').toDate(),
+        neverExpireAt: defaultPoll ? !defaultPoll.expireAt : true,
+        expireAt: defaultPoll?.expireAt || undefined,
         categoryId: defaultPoll?.categoryId || undefined,
         options: defaultPoll?.options.map((option) => option.text) || ['...', '...'],
       },
@@ -110,12 +125,34 @@ const PollForm = forwardRef<PollFormComponent, PollFormProps>(
       move(result.source.index, result.destination.index);
     };
 
+    function preSubmit(data: InternalPollFormData) {
+      if (!onSubmit) {
+        return;
+      }
+
+      if (data.neverExpireAt) {
+        // @ts-expect-error
+        data.expireAt = null;
+      }
+
+      // @ts-expect-error
+      delete data.neverExpireAt;
+
+      onSubmit(data);
+    }
+
+    function onSubmitError(error: FieldErrors<InternalPollFormData>) {
+      console.error('Failed on submit form:', error);
+    }
+
     const descriptionLength = watch('description')?.length || 0;
 
     const showDescriptionLength = descriptionLength > (descriptionLength > 0 ? DESCRIPTION_LENGTH_LIMIT / 2 : 0);
 
+    const neverExpireAt = watch('neverExpireAt');
+
     return (
-      <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-4">
+      <form onSubmit={handleSubmit(preSubmit, onSubmitError)} noValidate className="space-y-4">
         <div className="space-y-3">
           {defaultPoll && (
             <DebugEnvironment>
@@ -192,24 +229,45 @@ const PollForm = forwardRef<PollFormComponent, PollFormProps>(
             />
           </div>
 
-          <div className="flex flex-col gap-1">
-            <Label htmlFor="description">Data de expiração</Label>
+          <fieldset className="!my-6 flex flex-col gap-3">
+            <Label htmlFor="expireAt">Data de expiração</Label>
 
             <Controller
               control={control}
-              name="expireAt"
+              name="neverExpireAt"
               render={({ field: { value, onChange } }) => (
-                <DatePicker
-                  value={value}
-                  onChange={onChange}
-                  placeholder="Data de expiração"
-                  errorFeedback={errors.expireAt?.message}
-                  disabled={disableFields}
-                  showExpireAt
-                />
+                <Checkbox.Root>
+                  <Checkbox.Input
+                    disabled={disableFields}
+                    id="neverExpireAt"
+                    checked={value}
+                    onCheckedChange={onChange}
+                  />
+
+                  <Checkbox.Label htmlFor="neverExpireAt">Nunca expirar</Checkbox.Label>
+                </Checkbox.Root>
               )}
             />
-          </div>
+
+            {!neverExpireAt && (
+              <div className="flex flex-col gap-1">
+                <Controller
+                  control={control}
+                  name="expireAt"
+                  render={({ field: { value, onChange } }) => (
+                    <DatePicker
+                      value={value}
+                      onChange={onChange}
+                      placeholder="Data de expiração"
+                      errorFeedback={errors.expireAt?.message}
+                      disabled={disableFields}
+                      showExpireAt
+                    />
+                  )}
+                />
+              </div>
+            )}
+          </fieldset>
 
           <div className="flex flex-col gap-1">
             <header className="flex w-full items-center justify-between">

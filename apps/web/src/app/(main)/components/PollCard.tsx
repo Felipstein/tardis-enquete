@@ -32,7 +32,7 @@ export function PollCard({ poll }: PollCardProps) {
     [poll.options],
   );
 
-  const isExpired = poll.expireAt < new Date();
+  const isExpired = !!poll.expireAt && poll.expireAt < new Date();
 
   const isAuthor = poll.author.id === user?.id;
 
@@ -134,16 +134,18 @@ export function PollCard({ poll }: PollCardProps) {
             <span className="text-[10px] text-primary-500 sm:text-xs">{moment(poll.createdAt).fromNow()}</span>
           </div>
 
-          <div
-            data-expired={isExpired}
-            className="flex items-center gap-1.5 text-primary-300 data-[expired=true]:text-red-500"
-          >
-            <Clock10 className="h-3.5 w-3.5" />
+          {poll.expireAt && (
+            <div
+              data-expired={isExpired}
+              className="flex items-center gap-1.5 text-primary-300 data-[expired=true]:text-red-500"
+            >
+              <Clock10 className="h-3.5 w-3.5" />
 
-            <span className="text-xs sm:text-sm">
-              {isExpired ? 'fechado' : `fecha ${moment(poll.expireAt).fromNow()}`}
-            </span>
-          </div>
+              <span className="text-xs sm:text-sm">
+                {isExpired ? 'fechado' : `fecha ${moment(poll.expireAt).fromNow()}`}
+              </span>
+            </div>
+          )}
         </div>
       </header>
 

@@ -80,7 +80,7 @@ export default function EditPollForm({ pollId, defaultPollFetched }: EditPollFor
     return null;
   }
 
-  const isExpired = !isValid && new Date() > new Date(poll.expireAt);
+  const isExpired = !isValid && poll.expireAt && new Date() > new Date(poll.expireAt);
 
   return (
     <div className="space-y-6">
@@ -107,15 +107,11 @@ export default function EditPollForm({ pollId, defaultPollFetched }: EditPollFor
           {hasChanges && (
             <div
               data-expired={isExpired}
-              className="flex items-center gap-1.5 text-primary-500 data-[expired=true]:text-red-500"
+              className="flex items-center gap-1.5 text-primary-500 data-[expired=true]:text-amber-500"
             >
               <AlertCircle className="h-3.5 w-3.5 flex-shrink-0" />
 
-              <span className="inline-block w-fit text-sm">
-                {isExpired
-                  ? 'Você não pode salvar as alterações pois a data escolhida já está expirada'
-                  : 'Há alterações não salvas'}
-              </span>
+              <span className="inline-block w-fit text-sm">Há alterações não salvas</span>
             </div>
           )}
 
@@ -128,7 +124,7 @@ export default function EditPollForm({ pollId, defaultPollFetched }: EditPollFor
               Cancelar
             </Button>
 
-            <Button type="submit" largePaddingX isDisabled={!hasChanges || !isValid} isLoading={isUpdatingPoll}>
+            <Button type="submit" largePaddingX isDisabled={!hasChanges} isLoading={isUpdatingPoll}>
               Editar
             </Button>
           </div>

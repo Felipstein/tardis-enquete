@@ -1,6 +1,8 @@
 {
   "extends": ["next/core-web-vitals", "@tardis-enquete/eslint-config/react"],
   "rules": {
-    "react/destructuring-assignment": "off"
+    "react/destructuring-assignment": "off",
+
+    "no-param-reassign": "off"
   }
 }
