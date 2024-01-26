@@ -1,4 +1,5 @@
 import { CategorySelectInfo, PollTimeline } from '../types';
+import { Notification } from '../types/Notification';
 
 import type { Session } from './Session';
 
@@ -12,6 +13,7 @@ export interface SocketEventsWithPayloads {
   pollVotesChanges: { poll: PollTimeline };
   pollDelete: { pollId: string };
   updateCategoriesSelect: { categories: CategorySelectInfo[] };
+  pushNotification: { notification: Notification };
 }
 
 export type SocketEvent = keyof SocketEventsWithPayloads;

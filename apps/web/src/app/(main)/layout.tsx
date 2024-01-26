@@ -8,6 +8,7 @@ import { Header } from './components/Header';
 
 import { FeedbackSection } from './components/FeedbackSection';
 import { DebugSection } from './components/DebugSection';
+import { NotificationListener } from './components/NotificationListener';
 import { getAccessTokenServerSide } from '@/utils/getAccessTokenServerSide';
 
 export default function MainLayout({ children }: { children: ReactNode }) {
@@ -23,7 +24,9 @@ export default function MainLayout({ children }: { children: ReactNode }) {
         <div className="h-fit min-h-[80vh]">
           <Header />
 
-          <main className="h-fit">{children}</main>
+          <NotificationListener>
+            <main className="h-fit">{children}</main>
+          </NotificationListener>
         </div>
 
         <Footer />

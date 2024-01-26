@@ -4,6 +4,7 @@ import DeletePollUseCase from '../../../domain/useCases/polls/DeletePollUseCase'
 import FindPollByIdUseCase from '../../../domain/useCases/polls/FindPollByIdUseCase';
 import FindPollsUseCase from '../../../domain/useCases/polls/FindPollsUseCase';
 import UpdatePollUseCase from '../../../domain/useCases/polls/UpdatePollUseCase';
+import { factoryPrismaClient } from '../prismaClient';
 import { factoryOptionsRepository, factoryPollsRepository, factoryStoredUsersRepository } from '../repositories';
 import { factoryPolulatePollService, factoryUserService } from '../services';
 
@@ -41,7 +42,10 @@ export function factoryUpdatePollUseCase() {
   return updatePollUseCase;
 }
 
-const changePollClosedStatusUseCase = new ChangePollClosedStatusUseCase(factoryUpdatePollUseCase());
+const changePollClosedStatusUseCase = new ChangePollClosedStatusUseCase(
+  factoryUpdatePollUseCase(),
+  factoryPrismaClient(),
+);
 
 export function factoryChangePollClosedStatusUseCase() {
   return changePollClosedStatusUseCase;
