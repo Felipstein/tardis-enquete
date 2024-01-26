@@ -26,7 +26,7 @@ export default class ChangePollClosedStatusUseCase {
           title: `Enquete ${poll.title} fechada.`,
           description: 'A enquete foi fechada, clique aqui para visualizar as respostas',
           content: {
-            urlToRedirect: `/polls/${pollId}`,
+            urlToRedirect: `/poll/${pollId}`,
             buttonLabel: 'Acessar Enquete',
           },
           forUsers: { common: true, admin: true, developer: true },

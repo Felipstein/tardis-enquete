@@ -4,6 +4,7 @@ import { ReactNode } from 'react';
 import { Footer } from '../components/Footer';
 
 import { DebugEnvironment } from '../components/DebugEnvironment';
+import { Toaster } from '../components/common/sonner';
 import { Header } from './components/Header';
 
 import { FeedbackSection } from './components/FeedbackSection';
@@ -26,6 +27,8 @@ export default function MainLayout({ children }: { children: ReactNode }) {
 
           <NotificationListener>
             <main className="h-fit">{children}</main>
+
+            <Toaster />
           </NotificationListener>
         </div>
 
