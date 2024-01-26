@@ -88,7 +88,7 @@ const PollForm = forwardRef<PollFormComponent, PollFormProps>(
       defaultValues: {
         title: defaultPoll?.title,
         description: defaultPoll?.description,
-        neverExpireAt: defaultPoll ? !defaultPoll.expireAt : true,
+        neverExpireAt: defaultPoll ? !defaultPoll.expireAt : false,
         expireAt: defaultPoll?.expireAt || undefined,
         categoryId: defaultPoll?.categoryId || undefined,
         options: defaultPoll?.options.map((option) => option.text) || ['...', '...'],
