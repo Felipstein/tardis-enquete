@@ -22,6 +22,7 @@ import {
   factorySendFeedbackUseCase,
 } from './useCases/feedbacksUseCase';
 import {
+  factoryChangePollClosedStatusUseCase,
   factoryCreatePollUseCase,
   factoryDeletePollUseCase,
   factoryFindPollByIdUseCase,
@@ -50,6 +51,7 @@ const pollController = new PollController(
   factoryFindPollByIdUseCase(),
   factoryCreatePollUseCase(),
   factoryUpdatePollUseCase(),
+  factoryChangePollClosedStatusUseCase(),
   factoryDeletePollUseCase(),
 );
 

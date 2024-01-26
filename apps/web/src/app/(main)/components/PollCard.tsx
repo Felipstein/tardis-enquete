@@ -1,7 +1,7 @@
 'use client';
 
 import { PollTimeline, UnvoteParamsRequest, VoteParamsRequest } from '@tardis-enquete/contracts';
-import { Clock10 } from 'lucide-react';
+import { AlarmClockCheck, Clock10 } from 'lucide-react';
 import { useMemo, useRef } from 'react';
 import Balancer from 'react-wrap-balancer';
 
@@ -33,6 +33,7 @@ export function PollCard({ poll }: PollCardProps) {
   );
 
   const isExpired = !!poll.expireAt && poll.expireAt < new Date();
+  const isClosed = poll.closed || isExpired;
 
   const isAuthor = poll.author.id === user?.id;
 
@@ -112,7 +113,7 @@ export function PollCard({ poll }: PollCardProps) {
 
   return (
     <div className="group/poll relative w-full space-y-6">
-      <PollOptions pollId={poll.id} canEdit={canEdit} />
+      <PollOptions pollId={poll.id} isClosed={isClosed} isExpired={isExpired} canEdit={canEdit} />
 
       <header className="w-full">
         <h2 className="truncate text-xl font-semibold tracking-wide">{poll.title}</h2>
@@ -134,16 +135,19 @@ export function PollCard({ poll }: PollCardProps) {
             <span className="text-[10px] text-primary-500 sm:text-xs">{moment(poll.createdAt).fromNow()}</span>
           </div>
 
-          {poll.expireAt && (
-            <div
-              data-expired={isExpired}
-              className="flex items-center gap-1.5 text-primary-300 data-[expired=true]:text-red-500"
-            >
+          {!isClosed && poll.expireAt && (
+            <div className="flex items-center gap-1.5 text-primary-300">
               <Clock10 className="h-3.5 w-3.5" />
 
-              <span className="text-xs sm:text-sm">
-                {isExpired ? 'fechado' : `fecha ${moment(poll.expireAt).fromNow()}`}
-              </span>
+              <span className="text-xs sm:text-sm">fecha {moment(poll.expireAt).fromNow()}</span>
+            </div>
+          )}
+
+          {isClosed && (
+            <div className="flex items-center gap-1.5 text-red-500">
+              <AlarmClockCheck className="h-3.5 w-3.5" />
+
+              <span className="text-xs sm:text-sm">fechado</span>
             </div>
           )}
         </div>
@@ -167,11 +171,11 @@ export function PollCard({ poll }: PollCardProps) {
           return (
             <li key={option.id}>
               <Option
-                isPollExpired={!!poll.expireAt && poll.expireAt < new Date()}
+                isPollClosed={isClosed}
                 option={option}
                 progress={progress}
                 isSelected={isSelected}
-                isDisabled={isExpired}
+                isDisabled={isClosed}
                 isLoading={optionIDAction.current === option.id}
                 onClick={() => (isSelected ? handleUnvote(option.id, voteOfUser.id) : handleVote(option.id))}
               />

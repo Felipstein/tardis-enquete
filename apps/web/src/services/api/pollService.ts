@@ -1,4 +1,7 @@
 import {
+  ChangePollCloseStatusBodyRequest,
+  ChangePollCloseStatusParamsRequest,
+  ChangePollCloseStatusResponse,
   CreatePollBodyRequest,
   CreatePollResponse,
   DeletePollParamsRequest,
@@ -19,19 +22,33 @@ export type CreatePollRequest = CreatePollBodyRequest;
 
 export type UpdatePollRequest = UpdatePollParamsRequest & UpdatePollBodyRequest;
 
+export type ChangePollClosedStatusRequest = ChangePollCloseStatusParamsRequest & ChangePollCloseStatusBodyRequest;
+
 export type DeletePollRequest = DeletePollParamsRequest;
 
 export default class PollService {
   async getPolls() {
     const response = await api.get<GetPollsResponse>(RouteModels.getPolls);
 
-    return response.data.polls;
+    const polls = response.data.polls.map((poll) => ({
+      ...poll,
+      createdAt: new Date(poll.createdAt),
+      expireAt: poll.expireAt && new Date(poll.expireAt),
+    }));
+
+    return polls;
   }
 
   async getPoll({ pollId }: GetPollRequest) {
     const response = await api.get<GetPollByIdResponse>(RouteModels.buildRoute(RouteModels.getPoll, { pollId }));
 
-    return response.data.poll;
+    const poll = {
+      ...response.data.poll,
+      createdAt: new Date(response.data.poll.createdAt),
+      expireAt: response.data.poll.expireAt && new Date(response.data.poll.expireAt),
+    };
+
+    return poll;
   }
 
   async create(data: CreatePollRequest) {
@@ -47,6 +64,15 @@ export default class PollService {
     );
 
     return response.data.poll;
+  }
+
+  async changeClosedStatus({ pollId, ...data }: ChangePollClosedStatusRequest) {
+    const response = await api.patch<ChangePollCloseStatusResponse>(
+      RouteModels.buildRoute(RouteModels.changePollClosedStatus, { pollId }),
+      data,
+    );
+
+    return response.data;
   }
 
   async delete({ pollId }: DeletePollRequest) {

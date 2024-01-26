@@ -10,7 +10,7 @@ import { useAdminSection } from '@/hooks/useAdminSection';
 import { usePreferencesStore } from '@/stores/PreferencesStore';
 
 export type OptionProps = {
-  isPollExpired: boolean;
+  isPollClosed: boolean;
   option: PollTimeline['options'][number];
   progress: number;
   isLoading?: boolean;
@@ -20,7 +20,7 @@ export type OptionProps = {
 };
 
 export function Option({
-  isPollExpired,
+  isPollClosed,
   option,
   progress,
   isLoading = false,
@@ -31,7 +31,7 @@ export function Option({
   const showResults = usePreferencesStore((s) => s.showResults);
   const isAdmin = useAdminSection();
 
-  const showProgress = isPollExpired || (isAdmin && showResults);
+  const showProgress = isPollClosed || (isAdmin && showResults);
 
   return (
     <button

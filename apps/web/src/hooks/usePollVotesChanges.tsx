@@ -9,6 +9,12 @@ export function usePollVotesChanges(onVotesChanges?: (pollUpdated: PollTimeline)
   useSocketEvent('pollVotesChanges', ({ poll: pollUpdated }) => {
     console.info('A poll has updated, poll:', pollUpdated);
 
+    pollUpdated = {
+      ...pollUpdated,
+      createdAt: new Date(pollUpdated.createdAt),
+      expireAt: pollUpdated.expireAt && new Date(pollUpdated.expireAt),
+    };
+
     const polls = queryClient.getQueryData<PollTimeline[]>(queryKeys.polls()) || [];
 
     queryClient.setQueryData<PollTimeline[]>(

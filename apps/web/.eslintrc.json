@@ -3,6 +3,8 @@
   "rules": {
     "react/destructuring-assignment": "off",
 
-    "no-param-reassign": "off"
+    "no-param-reassign": "off",
+
+    "no-nested-ternary": "off"
   }
 }

@@ -1,19 +1,40 @@
 'use client';
 
-import { ExternalLink, MoreHorizontal, PenSquare, Share, Trash2 } from 'lucide-react';
+import { ExternalLink, MessageSquare, MoreHorizontal, PenSquare, Share, Subtitles, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
+import { useMutation } from '@tanstack/react-query';
 import { PollDeleteAlertDialog } from './PollDeleteAlertDialog';
 import { Dropdown } from '@/app/components/common/Dropdown';
+import { pollService } from '@/services/api/pollService';
+import { w } from '@/utils/w';
+import { LoaderIcon } from '@/app/components/common/LoaderIcon';
 
 export type PollOptionsProps = {
   pollId: string;
+  isClosed: boolean;
+  isExpired: boolean;
   canEdit?: boolean;
 };
 
-export function PollOptions({ pollId, canEdit = false }: PollOptionsProps) {
+export function PollOptions({ pollId, isClosed, isExpired, canEdit = false }: PollOptionsProps) {
   const [isOpen, setIsOpen] = useState(false);
+
+  const { mutate: changeClosedStatusRequest, isPending: isChangingClosedStatus } = useMutation({
+    mutationFn: pollService.changeClosedStatus,
+  });
+
+  function changeClosedStatus() {
+    changeClosedStatusRequest(
+      { pollId, close: !isClosed },
+      {
+        onError(error) {
+          toast.error(error.message);
+        },
+      },
+    );
+  }
 
   function handleCopyLink() {
     const url = `${window.location.origin}/poll/${pollId}`;
@@ -24,6 +45,8 @@ export function PollOptions({ pollId, canEdit = false }: PollOptionsProps) {
       toast.success('Link de compartilhamento copiado');
     }
   }
+
+  const cannotOpenPoll = isExpired;
 
   return (
     <Dropdown.Root open={isOpen} onOpenChange={setIsOpen}>
@@ -66,6 +89,32 @@ export function PollOptions({ pollId, canEdit = false }: PollOptionsProps) {
 
                 <span>Editar</span>
               </Link>
+            </Dropdown.Item>
+
+            <Dropdown.Item
+              title={
+                cannotOpenPoll
+                  ? 'Não é possível abrir essa enquete pois ela já está expirada. Para abrir, mude a data de expiração.'
+                  : undefined
+              }
+              asChild
+              className={w(
+                'flex items-center gap-2',
+                (cannotOpenPoll || isChangingClosedStatus) && 'cursor-default opacity-40',
+              )}
+              disabled={cannotOpenPoll || isChangingClosedStatus}
+            >
+              <button type="button" onClick={() => (cannotOpenPoll ? undefined : changeClosedStatus())}>
+                {isChangingClosedStatus ? (
+                  <Dropdown.ItemIcon src={LoaderIcon} />
+                ) : isClosed ? (
+                  <Dropdown.ItemIcon src={Subtitles} />
+                ) : (
+                  <Dropdown.ItemIcon src={MessageSquare} />
+                )}
+
+                <span>{isClosed ? 'Abrir enquete' : 'Fechar enquete'}</span>
+              </button>
             </Dropdown.Item>
 
             <PollDeleteAlertDialog pollId={pollId}>

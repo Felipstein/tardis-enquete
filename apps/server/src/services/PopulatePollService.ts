@@ -63,6 +63,7 @@ export default class PopulatePollService {
       createdAt: poll.createdAt,
       category,
       expireAt: poll.expireAt,
+      closed: poll.closed,
       author: {
         id: authorInfo.id,
         username: authorInfo.username,

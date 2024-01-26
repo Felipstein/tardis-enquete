@@ -4,7 +4,7 @@ import { io } from '../../../http/app';
 import Logger from '../../../infra/logger';
 import PopulatePollService from '../../../services/PopulatePollService';
 import Conflict from '../../errors/Conflict';
-import PollAlreadyExpired from '../../errors/PollAlreadyExpired';
+import PollAlreadyClosed from '../../errors/PollAlreadyClosed';
 import PollNotExists from '../../errors/PollNotExists';
 import StoredUserNotExists from '../../errors/StoredUserNotExists';
 import IOptionsRepository from '../../repositories/OptionsRepository';
@@ -32,8 +32,8 @@ export default class VoteUseCase {
       throw new PollNotExists('Não há nenhuma enquete que possui a opção providenciada');
     }
 
-    if (poll.isExpired()) {
-      throw new PollAlreadyExpired();
+    if (poll.isClosed()) {
+      throw new PollAlreadyClosed();
     }
 
     const userExists = await this.storedUsersRepository.exists(userId);

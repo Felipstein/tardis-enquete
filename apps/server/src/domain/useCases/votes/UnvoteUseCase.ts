@@ -4,7 +4,7 @@ import { io } from '../../../http/app';
 import Logger from '../../../infra/logger';
 import PopulatePollService from '../../../services/PopulatePollService';
 import Forbidden from '../../errors/Forbidden';
-import PollAlreadyExpired from '../../errors/PollAlreadyExpired';
+import PollAlreadyClosed from '../../errors/PollAlreadyClosed';
 import VoteNotExists from '../../errors/VoteNotExists';
 import IPollsRepository from '../../repositories/PollsRepository';
 import IVotesRepository from '../../repositories/VotesRepository';
@@ -33,8 +33,8 @@ export default class UnvoteUseCase {
       throw new VoteNotExists();
     }
 
-    if (poll.isExpired()) {
-      throw new PollAlreadyExpired();
+    if (poll.isClosed()) {
+      throw new PollAlreadyClosed();
     }
 
     if (onlySameUserCanUnvote) {

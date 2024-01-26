@@ -9,6 +9,7 @@ interface PollProps {
   categoryId: string | null;
   createdAt: Date;
   expireAt: Date | null;
+  closed: boolean;
   authorId: string;
 }
 
@@ -57,12 +58,20 @@ export default class Poll extends Entity<PollProps> {
     this.attributes.expireAt = expireAt;
   }
 
+  get closed() {
+    return this.attributes.closed;
+  }
+
+  set closed(closed: boolean) {
+    this.attributes.closed = closed;
+  }
+
   get authorId() {
     return this.attributes.authorId;
   }
 
-  isExpired() {
-    return this.expireAt && this.expireAt < new Date();
+  isClosed() {
+    return this.closed || (this.expireAt && this.expireAt < new Date());
   }
 
   neverExpire() {

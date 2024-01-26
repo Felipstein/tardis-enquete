@@ -8,6 +8,7 @@ export const RouteModels = {
   getPoll: '/polls/:pollId',
   createPoll: '/polls',
   updatePoll: '/polls/:pollId',
+  changePollClosedStatus: '/polls/:pollId/closed-status',
   deletePoll: '/polls/:pollId',
   vote: '/options/:optionId/votes',
   unvote: '/votes/:voteId',

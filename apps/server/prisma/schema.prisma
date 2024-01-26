@@ -36,6 +36,7 @@ model Poll {
   description String?
   createdAt   DateTime  @default(now()) @map("created_at")
   expireAt    DateTime? @map("expire_at")
+  closed      Boolean   @default(false)
   authorId    String    @map("author_id")
   categoryId  String?   @map("category_id")
 

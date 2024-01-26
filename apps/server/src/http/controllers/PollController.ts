@@ -3,6 +3,8 @@ import {
   GetPollByIdResponse,
   GetPollsResponse,
   UpdatePollResponse,
+  changePollCloseStatusBodyRequest,
+  changePollCloseStatusParamsRequest,
   createPollBodyRequest,
   deletePollParamsRequest,
   getPollByIdParamsRequest,
@@ -11,6 +13,7 @@ import {
 } from '@tardis-enquete/contracts';
 import { Request, Response } from 'express';
 
+import ChangePollClosedStatusUseCase from '../../domain/useCases/polls/ChangePollClosedStatusUseCase';
 import CreatePollUseCase from '../../domain/useCases/polls/CreatePollUseCase';
 import DeletePollUseCase from '../../domain/useCases/polls/DeletePollUseCase';
 import FindPollByIdUseCase from '../../domain/useCases/polls/FindPollByIdUseCase';
@@ -23,6 +26,7 @@ export default class PollController {
     private readonly findPollByIdUseCase: FindPollByIdUseCase,
     private readonly createPollUseCase: CreatePollUseCase,
     private readonly updatePollUseCase: UpdatePollUseCase,
+    private readonly changePollCloseStatusUseCase: ChangePollClosedStatusUseCase,
     private readonly deletePollUseCase: DeletePollUseCase,
   ) {}
 
@@ -94,6 +98,15 @@ export default class PollController {
     };
 
     return res.json(response);
+  }
+
+  async changePollClosedStatus(req: Request, res: Response) {
+    const { pollId } = changePollCloseStatusParamsRequest.parse(req.params);
+    const { close } = changePollCloseStatusBodyRequest.parse(req.body);
+
+    await this.changePollCloseStatusUseCase.execute({ pollId, closed: close });
+
+    return res.sendStatus(200);
   }
 
   async deletePoll(req: Request, res: Response) {

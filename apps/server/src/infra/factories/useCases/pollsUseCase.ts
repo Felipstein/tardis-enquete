@@ -1,3 +1,4 @@
+import ChangePollClosedStatusUseCase from '../../../domain/useCases/polls/ChangePollClosedStatusUseCase';
 import CreatePollUseCase from '../../../domain/useCases/polls/CreatePollUseCase';
 import DeletePollUseCase from '../../../domain/useCases/polls/DeletePollUseCase';
 import FindPollByIdUseCase from '../../../domain/useCases/polls/FindPollByIdUseCase';
@@ -38,6 +39,12 @@ const updatePollUseCase = new UpdatePollUseCase(
 
 export function factoryUpdatePollUseCase() {
   return updatePollUseCase;
+}
+
+const changePollClosedStatusUseCase = new ChangePollClosedStatusUseCase(factoryUpdatePollUseCase());
+
+export function factoryChangePollClosedStatusUseCase() {
+  return changePollClosedStatusUseCase;
 }
 
 const deletePollUseCase = new DeletePollUseCase(factoryPollsRepository());

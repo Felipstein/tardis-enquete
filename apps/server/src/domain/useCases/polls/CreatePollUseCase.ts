@@ -62,6 +62,7 @@ export default class CreatePollUseCase {
       categoryId: poll.categoryId,
       expireAt: poll.expireAt,
       createdAt: poll.createdAt,
+      closed: poll.closed,
       options,
       author: {
         id: authorInfo.id,

@@ -3,6 +3,7 @@ export interface Poll {
   title: string;
   description: string | null;
   expireAt: Date | null;
+  closed: boolean;
   createdAt: Date;
   categoryId: string | null;
   author: {
