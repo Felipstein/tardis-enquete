@@ -7,6 +7,7 @@ import { Dropdown } from '@/app/components/common/Dropdown';
 import { w } from '@/utils/w';
 import { GridTemplate, usePreferencesStore } from '@/stores/PreferencesStore';
 import { DebugEnvironment } from '@/app/components/DebugEnvironment';
+import { AdminSection } from '@/app/components/AdminSection';
 
 const gridTemplateLabel: Record<GridTemplate, string> = {
   grid: 'Por Grades',
@@ -17,6 +18,8 @@ export function HeaderSettings() {
   const {
     showFeedbackPopup,
     setShowFeedbackPopup,
+    showResults,
+    setShowResults,
     showSocketsSection,
     setShowSocketsSection,
     showDebugPanel,
@@ -40,6 +43,13 @@ export function HeaderSettings() {
           <Dropdown.ItemIndicator iconType="check" />
           Exibir Feedback
         </Dropdown.CheckboxItem>
+
+        <AdminSection>
+          <Dropdown.CheckboxItem checked={showResults} onCheckedChange={setShowResults}>
+            <Dropdown.ItemIndicator iconType="check" />
+            Exibir Resultados
+          </Dropdown.CheckboxItem>
+        </AdminSection>
 
         <DebugEnvironment>
           <Dropdown.CheckboxItem checked={showSocketsSection} onCheckedChange={setShowSocketsSection}>

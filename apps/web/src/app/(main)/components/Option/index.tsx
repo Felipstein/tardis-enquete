@@ -7,6 +7,7 @@ import { OptionProgressBar } from './OptionProgressBar';
 import { w } from '@/utils/w';
 import { LoaderIcon } from '@/app/components/common/LoaderIcon';
 import { useAdminSection } from '@/hooks/useAdminSection';
+import { usePreferencesStore } from '@/stores/PreferencesStore';
 
 export type OptionProps = {
   isPollExpired: boolean;
@@ -27,9 +28,10 @@ export function Option({
   isDisabled = false,
   onClick,
 }: OptionProps) {
+  const showResults = usePreferencesStore((s) => s.showResults);
   const isAdmin = useAdminSection();
 
-  const showProgress = isPollExpired || isAdmin;
+  const showProgress = isPollExpired || (isAdmin && showResults);
 
   return (
     <button

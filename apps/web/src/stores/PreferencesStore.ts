@@ -6,6 +6,9 @@ export interface PreferencesStore {
   showFeedbackPopup: boolean;
   setShowFeedbackPopup: (showFeedbackPopup: boolean) => void;
 
+  showResults: boolean;
+  setShowResults: (showResults: boolean) => void;
+
   gridTemplate: GridTemplate;
   setGridTemplate: (gridTemplate: GridTemplate) => void;
 
@@ -19,6 +22,9 @@ export interface PreferencesStore {
 export const usePreferencesStore = create<PreferencesStore>((set) => ({
   showFeedbackPopup: true,
   setShowFeedbackPopup: (showFeedbackPopup) => set(() => ({ showFeedbackPopup })),
+
+  showResults: true,
+  setShowResults: (showResults) => set(() => ({ showResults })),
 
   gridTemplate: 'row',
   setGridTemplate: (gridTemplate) => set(() => ({ gridTemplate })),
