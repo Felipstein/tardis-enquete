@@ -10,7 +10,11 @@ export default class SendFeedbackUseCase {
     const feedback = await this.feedbacksRepository.create(data);
 
     if (process.env.NODE_ENV !== 'test') {
-      pushNotification({ title: 'Novo feedback recebido', forUsers: { common: false, admin: false, developer: true } });
+      pushNotification({
+        title: 'Novo feedback recebido',
+        description: `Autor do feedback: ${data.authorId}`,
+        forUsers: { common: false, admin: false, developer: true },
+      });
     }
 
     return feedback.id;
