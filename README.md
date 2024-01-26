@@ -12,6 +12,4 @@
 - Mover o campo de buscar em um campo de filtros
 - Adicionar seção de usuários, para os administradores setarem novos administradores
 - Sistema de banimento
-- Esconder a porcentagem de votos para participantes
-- Adicionar opção de nunca expirar
 - Quando editei uma enquete todas as opções sumiram

@@ -167,6 +167,7 @@ export function PollCard({ poll }: PollCardProps) {
           return (
             <li key={option.id}>
               <Option
+                isPollExpired={!!poll.expireAt && poll.expireAt < new Date()}
                 option={option}
                 progress={progress}
                 isSelected={isSelected}

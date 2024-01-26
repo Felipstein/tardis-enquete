@@ -27,7 +27,25 @@ export default class PollController {
   ) {}
 
   async findPolls(req: Request, res: Response) {
-    const polls = await this.findPollsUseCase.execute();
+    let polls = await this.findPollsUseCase.execute();
+
+    const { id: userId, role: userRole } = req.user!;
+
+    if (userRole === 'common') {
+      polls = polls.map((poll) => {
+        if (poll.expireAt && poll.expireAt < new Date()) {
+          return poll;
+        }
+
+        return {
+          ...poll,
+          options: poll.options.map((option) => ({
+            ...option,
+            votes: option.votes.filter((vote) => vote.user.id === userId),
+          })),
+        };
+      });
+    }
 
     const response: GetPollsResponse = {
       polls,
