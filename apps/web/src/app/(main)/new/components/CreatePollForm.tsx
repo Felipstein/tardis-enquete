@@ -25,9 +25,9 @@ export default function CreatePollForm() {
     mutationFn: pollService.create,
   });
 
-  function createPoll({ description, ...data }: PollFormData) {
+  function createPoll({ description, expireAt, ...data }: PollFormData) {
     createPollRequest(
-      { description: description || undefined, ...data },
+      { description: description || undefined, expireAt: expireAt || undefined, ...data },
       {
         async onSuccess(pollCreated) {
           const polls = queryClient.getQueryData<PollTimeline[]>(queryKeys.polls());
@@ -47,6 +47,7 @@ export default function CreatePollForm() {
               expireAt: pollCreated.expireAt,
               createdAt: pollCreated.createdAt,
               author: pollCreated.author,
+              closed: pollCreated.closed,
               category: category
                 ? {
                     id: category.id,
