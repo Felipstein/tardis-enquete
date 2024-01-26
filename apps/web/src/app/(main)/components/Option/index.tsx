@@ -56,23 +56,20 @@ export function Option({
           {option.text}
         </h3>
 
-        {showProgress && (
-          <div className="flex items-center gap-2">
-            {isLoading && (
-              <LoaderIcon
-                data-selected={isSelected}
-                className="h-5 w-5 text-white data-[selected=true]:text-teal-400"
-              />
-            )}
+        <div className="flex items-center gap-2">
+          {isLoading && (
+            <LoaderIcon data-selected={isSelected} className="h-5 w-5 text-white data-[selected=true]:text-teal-400" />
+          )}
 
+          {showProgress && (
             <h4
               data-selected={isSelected}
               className="text-xs font-medium text-primary-50 data-[selected=true]:font-bold data-[selected=true]:text-teal-400"
             >
               {progress}%
             </h4>
-          </div>
-        )}
+          )}
+        </div>
       </div>
 
       {showProgress && (
