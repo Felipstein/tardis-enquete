@@ -2,6 +2,41 @@ import { z } from 'zod';
 
 import { Poll } from '../../types';
 
+const optionId = z.string({
+  invalid_type_error: 'ID da opção deve ser um texto',
+  required_error: 'ID da opção deve ser preenchido',
+});
+
+const optionText = z.string({
+  invalid_type_error: 'Cada opção deve ser um texto',
+  required_error: 'Cada opção deve ser preenchida',
+});
+
+const optionPosition = z
+  .number({
+    invalid_type_error: 'A posição de cada opção deve ser um número',
+    required_error: 'A posição de cada opção deve ser preenchida',
+  })
+  .min(1, 'A posição de cada opção deve ser maior ou igual a 1');
+
+const updateOption = z.discriminatedUnion('action', [
+  z.object({
+    action: z.literal('create'),
+    text: optionText,
+    position: optionPosition,
+  }),
+  z.object({
+    action: z.literal('update'),
+    id: optionId,
+    text: optionText,
+    position: optionPosition,
+  }),
+  z.object({
+    action: z.literal('delete'),
+    id: optionId,
+  }),
+]);
+
 export const updatePollParamsRequest = z.object({
   pollId: z.string(),
 });
@@ -25,13 +60,10 @@ export const updatePollBodyRequest = z.object({
     .nullable()
     .optional(),
   options: z
-    .array(
-      z.string({
-        invalid_type_error: 'Cada opção deve ser um texto',
-        required_error: 'Cada opção deve ser preenchida',
-      }),
-      { invalid_type_error: 'Opções devem ser uma lista de textos', required_error: 'Opções devem ser preenchidas' },
-    )
+    .array(updateOption, {
+      invalid_type_error: 'Opções devem ser uma lista',
+      required_error: 'Opções devem ser preenchidas',
+    })
     .min(2, 'Pelo menos duas opções devem ser preenchidas')
     .optional(),
 });

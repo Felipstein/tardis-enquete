@@ -16,6 +16,7 @@ export interface Poll {
   options: Array<{
     id: string;
     text: string;
+    position: number;
     totalVotes: number;
   }>;
 }

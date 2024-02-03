@@ -45,6 +45,7 @@ export default class PrismaPollsRepository implements IPollsRepository {
           ({
             id: option.id,
             text: option.text,
+            position: option.position,
             votes: option.votes.map(
               (vote) =>
                 ({
@@ -67,6 +68,7 @@ export default class PrismaPollsRepository implements IPollsRepository {
           select: {
             id: true,
             text: true,
+            position: true,
             _count: {
               select: {
                 votes: true,
@@ -120,6 +122,7 @@ export default class PrismaPollsRepository implements IPollsRepository {
           ({
             id: option.id,
             text: option.text,
+            position: option.position,
             votes: option.votes.map(
               (vote) =>
                 ({
@@ -173,15 +176,18 @@ export default class PrismaPollsRepository implements IPollsRepository {
         options: {
           createMany: {
             data: data.options.map((option) => ({
-              text: option,
+              text: option.text,
+              position: option.position,
             })),
           },
         },
       },
       include: {
         options: {
+          orderBy: { position: 'asc' },
           select: {
             id: true,
+            position: true,
             text: true,
             _count: {
               select: {
@@ -214,6 +220,7 @@ export default class PrismaPollsRepository implements IPollsRepository {
           select: {
             id: true,
             text: true,
+            position: true,
             _count: {
               select: {
                 votes: true,

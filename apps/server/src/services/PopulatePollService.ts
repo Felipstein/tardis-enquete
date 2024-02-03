@@ -37,6 +37,7 @@ export default class PopulatePollService {
       return {
         id: option.id,
         text: option.text,
+        position: option.position,
         votes,
       };
     });

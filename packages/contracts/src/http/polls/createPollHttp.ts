@@ -17,11 +17,19 @@ export const createPollBodyRequest = z.object({
     .optional(),
   options: z
     .array(
-      z.string({
-        invalid_type_error: 'Cada opção deve ser um texto',
-        required_error: 'Cada opção deve ser preenchida',
+      z.object({
+        text: z.string({
+          invalid_type_error: 'Cada opção deve ser um texto',
+          required_error: 'Cada opção deve ser preenchida',
+        }),
+        position: z
+          .number({
+            invalid_type_error: 'A posição de cada opção deve ser um número',
+            required_error: 'A posição de cada opção deve ser preenchida',
+          })
+          .min(1, 'A posição de cada opção deve ser maior ou igual a 1'),
       }),
-      { invalid_type_error: 'Opções devem ser uma lista de textos', required_error: 'Opções devem ser preenchidas' },
+      { invalid_type_error: 'Opções devem ser uma lista.', required_error: 'Opções devem ser preenchidas' },
     )
     .min(2, 'Pelo menos duas opções devem ser preenchidas'),
 });

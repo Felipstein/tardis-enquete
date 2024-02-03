@@ -1,13 +1,15 @@
+import { PrismaClient } from '@prisma/client';
 import { SocketEventPayload } from '@tardis-enquete/contracts';
 
 import { io } from '../../../http/app';
 import Logger from '../../../infra/logger';
 import PopulatePollService from '../../../services/PopulatePollService';
 import UserService from '../../../services/UserService';
+import OptionIsNotOfThePoll from '../../errors/OptionIsNotOfThePoll';
+import OptionNotExists from '../../errors/OptionNotExists';
 import PollNotExists from '../../errors/PollNotExists';
 import StoredUserNotExists from '../../errors/StoredUserNotExists';
 import UnprocessableEntity from '../../errors/UnprocessableEntity';
-import IOptionsRepository from '../../repositories/OptionsRepository';
 import IPollsRepository from '../../repositories/PollsRepository';
 
 import { UpdatePollUseCaseDTO, UpdatePollUseCaseReturn } from './UpdatePollUseCaseDTO';
@@ -17,12 +19,12 @@ const log = Logger.start('UPDATE POLL USE CASE');
 export default class UpdatePollUseCase {
   constructor(
     private readonly pollsRepository: IPollsRepository,
-    private readonly optionsRepository: IOptionsRepository,
     private readonly usersService: UserService,
     private readonly populatePollService: PopulatePollService,
+    private readonly prisma: PrismaClient,
   ) {}
 
-  async execute({ id, options: optionsToUpdate, ...data }: UpdatePollUseCaseDTO): Promise<UpdatePollUseCaseReturn> {
+  async execute({ id, options: optionsToChange, ...data }: UpdatePollUseCaseDTO): Promise<UpdatePollUseCaseReturn> {
     if (data.expireAt) {
       if (data.expireAt <= new Date()) {
         throw new UnprocessableEntity('A data de expiração deve ser posterior a data de criação');
@@ -34,11 +36,73 @@ export default class UpdatePollUseCase {
       throw new PollNotExists();
     }
 
-    if (optionsToUpdate) {
-      await Promise.all([
-        this.optionsRepository.deleteOptionsOfPoll(id),
-        this.optionsRepository.createMany(id, optionsToUpdate),
-      ]);
+    if (optionsToChange) {
+      const promises: Promise<unknown>[] = [
+        this.prisma.option.createMany({
+          data: optionsToChange
+            .filter((option) => option.action === 'create')
+            .map((option) => (option.action === 'create' ? { ...option, action: undefined } : ({} as any))),
+        }),
+      ];
+
+      promises.push(
+        ...optionsToChange
+          .filter((option) => option.action === 'update')
+          .map(async (option) => {
+            if (option.action !== 'update') {
+              throw new UnprocessableEntity('Opcional inválido');
+            }
+
+            const { id: optionId, ...data } = option;
+
+            const optionExists = await this.prisma.option.findUnique({
+              where: { id: optionId },
+              select: { pollId: true },
+            });
+            if (!optionExists) {
+              throw new OptionNotExists();
+            }
+
+            if (optionExists.pollId !== id) {
+              throw new OptionIsNotOfThePoll();
+            }
+
+            await this.prisma.option.update({
+              where: { id: optionId },
+              data,
+            });
+          }),
+      );
+
+      promises.push(
+        ...optionsToChange
+          .filter((option) => option.action === 'delete')
+          .map(async (option) => {
+            if (option.action !== 'delete') {
+              throw new UnprocessableEntity('Opcional inválido');
+            }
+
+            const { id: optionId } = option;
+
+            const optionExists = await this.prisma.option.findUnique({
+              where: { id: optionId },
+              select: { pollId: true },
+            });
+            if (!optionExists) {
+              throw new OptionNotExists();
+            }
+
+            if (optionExists.pollId !== id) {
+              throw new OptionIsNotOfThePoll();
+            }
+
+            await this.prisma.option.delete({
+              where: { id: optionId },
+            });
+          }),
+      );
+
+      await Promise.all(promises);
     }
 
     const { poll, options } = await this.pollsRepository.update(id, data);

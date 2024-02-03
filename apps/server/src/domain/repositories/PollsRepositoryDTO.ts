@@ -8,7 +8,7 @@ export interface CreatePollDTO {
   expireAt?: Date;
   authorId: string;
   categoryId?: string;
-  options: string[];
+  options: Array<{ position: number; text: string }>;
 }
 
 export type UpdatePollDTO = Partial<
@@ -24,6 +24,7 @@ export interface PollWithOptions {
   options: Array<{
     id: string;
     text: string;
+    position: number;
     totalVotes: number;
   }>;
 }
@@ -33,6 +34,7 @@ export interface PollWithOptionsAndVotes {
   options: Array<{
     id: string;
     text: string;
+    position: number;
     votes: Array<{
       id: string;
       userId: string;

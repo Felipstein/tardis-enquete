@@ -49,9 +49,10 @@ model Poll {
 }
 
 model Option {
-  id     String @id @default(cuid())
-  text   String
-  pollId String @map("poll_id")
+  id       String @id @default(cuid())
+  text     String
+  position Int    @default(autoincrement())
+  pollId   String @map("poll_id")
 
   votes Vote[]
 

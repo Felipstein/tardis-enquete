@@ -5,7 +5,7 @@ import FindPollByIdUseCase from '../../../domain/useCases/polls/FindPollByIdUseC
 import FindPollsUseCase from '../../../domain/useCases/polls/FindPollsUseCase';
 import UpdatePollUseCase from '../../../domain/useCases/polls/UpdatePollUseCase';
 import { factoryPrismaClient } from '../prismaClient';
-import { factoryOptionsRepository, factoryPollsRepository, factoryStoredUsersRepository } from '../repositories';
+import { factoryPollsRepository, factoryStoredUsersRepository } from '../repositories';
 import { factoryPolulatePollService, factoryUserService } from '../services';
 
 const findPollsUseCase = new FindPollsUseCase(factoryPollsRepository(), factoryPolulatePollService());
@@ -33,9 +33,9 @@ export function factoryCreatePollUseCase() {
 
 const updatePollUseCase = new UpdatePollUseCase(
   factoryPollsRepository(),
-  factoryOptionsRepository(),
   factoryUserService(),
   factoryPolulatePollService(),
+  factoryPrismaClient(),
 );
 
 export function factoryUpdatePollUseCase() {

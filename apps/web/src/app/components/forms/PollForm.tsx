@@ -15,6 +15,7 @@ import { Button } from '../common/Button';
 import { StrictModeDroppable } from '../StrictModeDroppable';
 import { DebugEnvironment } from '../DebugEnvironment';
 import { Checkbox } from '../common/Checkbox';
+import { InputContainer } from '../common/InputContainer';
 import { IDInputCopy } from './IDInputCopy';
 import { CategorySelecter } from './CategorySelecter';
 
@@ -33,7 +34,12 @@ const pollDefaultFormSchema = z.object({
     .optional(),
   categoryId: z.string().optional(),
   options: z
-    .array(z.string().min(3, 'A opção deve possuir pelo menos 3 caracteres'))
+    .array(
+      z.object({
+        text: z.string().min(3, 'A opção deve possuir pelo menos 3 caracteres'),
+        position: z.number().min(1, 'Posição deve ser maior ou igual a 1'),
+      }),
+    )
     .min(2, 'Deve haver pelo menos 2 opções'),
 });
 
@@ -80,6 +86,7 @@ const PollForm = forwardRef<PollFormComponent, PollFormProps>(
       handleSubmit,
       register,
       watch,
+      setValue,
       reset: resetFields,
       formState: { errors, isDirty, isValid },
     } = useForm<InternalPollFormData>({
@@ -91,7 +98,10 @@ const PollForm = forwardRef<PollFormComponent, PollFormProps>(
         neverExpireAt: defaultPoll ? !defaultPoll.expireAt : false,
         expireAt: defaultPoll?.expireAt || undefined,
         categoryId: defaultPoll?.categoryId || undefined,
-        options: defaultPoll?.options.map((option) => option.text) || ['...', '...'],
+        options: defaultPoll?.options || [
+          { position: 1, text: '...' },
+          { position: 2, text: '...' },
+        ],
       },
     });
 
@@ -117,12 +127,19 @@ const PollForm = forwardRef<PollFormComponent, PollFormProps>(
       onIsValid?.(isValid);
     }, [onIsValid, isValid]);
 
+    const options = watch('options');
+
     const handleDragEnd: OnDragEndResponder = (result) => {
       if (!result.destination) {
         return;
       }
 
-      move(result.source.index, result.destination.index);
+      const fromIndex = result.source.index;
+      const toIndex = result.destination.index;
+
+      if (toIndex > fromIndex) {
+        // todo: move all
+      }
     };
 
     function preSubmit(data: InternalPollFormData) {
@@ -285,7 +302,12 @@ const PollForm = forwardRef<PollFormComponent, PollFormProps>(
                 )}
               </div>
 
-              <Button variant="thematic" className="h-[42px]" isDisabled={disableFields} onClick={() => append('')}>
+              <Button
+                variant="thematic"
+                className="h-[42px]"
+                isDisabled={disableFields}
+                onClick={() => append({ position: fields.length + 1, text: '' })}
+              >
                 <Plus className="h-4 w-4" />
               </Button>
             </header>
@@ -308,12 +330,18 @@ const PollForm = forwardRef<PollFormComponent, PollFormProps>(
                                 <List className="h-4 w-4" />
                               </Button>
 
+                              <DebugEnvironment>
+                                <InputContainer className="ml-1 w-fit" asChild>
+                                  <span>{optionField.position}º</span>
+                                </InputContainer>
+                              </DebugEnvironment>
+
                               <Input.Root className="ml-1 mr-2 w-full">
                                 <Input.Input
                                   type="text"
                                   placeholder="Descreva sua opção"
                                   disabled={disableFields}
-                                  {...register(`options.${index}`)}
+                                  {...register(`options.${index}.text`)}
                                 />
 
                                 {errors.options?.[index]?.message && (
